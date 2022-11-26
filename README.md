@@ -1,4 +1,4 @@
-# wa_projekt2
+# Walk it - projekt iz kolegija Web Apps
 
 ## Project setup
 ```
