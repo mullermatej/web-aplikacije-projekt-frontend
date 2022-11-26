@@ -1,4 +1,4 @@
-# projekt
+# wa_projekt2
 
 ## Project setup
 ```

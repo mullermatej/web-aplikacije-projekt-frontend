@@ -2,7 +2,7 @@
   <v-content
     ><v-card width="400" class="mx-auto mt-5">
       <v-card-title>
-        <h1 class="display-1">Login</h1>
+        <h1 class="display-1">Register</h1>
       </v-card-title>
       <v-card-text>
         <v-form>
@@ -18,7 +18,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn color="info">Login</v-btn>
+        <v-btn color="info">Register</v-btn>
       </v-card-actions>
     </v-card>
   </v-content>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Register",
 
   data: () => ({
     showPassword: false,
