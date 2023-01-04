@@ -3,7 +3,7 @@
     <v-row class="text-center">
       <v-col cols="12">
         <v-img
-          :src="require('../assets/logo.svg')"
+          :src="require('../assets/WalkItLogo1.png')"
           class="my-3"
           contain
           height="200"
@@ -11,20 +11,24 @@
       </v-col>
 
       <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">Welcome to Walk it</h1>
+        <h1 class="display-2 font-weight-bold mb-3">Welcome back</h1>
 
         <p class="subheading font-weight-regular">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
+          Start walking
           <br />
-          molestias enim suscipit necessitatibus eaque eius iste error unde
-          <br />
-          dolores, iure dolorum, magnam quidem totam reprehenderit, mollitia
-          <br />
-          perferendis dignissimos! Beatae, iste.
+          <v-btn
+            class="ma-2"
+            :loading="loading"
+            :disabled="loading"
+            color="primary"
+            @click="loader = 'loading'"
+          >
+            Show me routes
+          </v-btn>
         </p>
       </v-col>
     </v-row>
-    <div class="text-center">
+    <!-- <div class="text-center">
       <v-btn
         class="ma-2"
         :loading="loading"
@@ -47,7 +51,7 @@
           <span>Loading...</span>
         </template>
       </v-btn>
-    </div>
+    </div> -->
   </v-container>
 </template>
 

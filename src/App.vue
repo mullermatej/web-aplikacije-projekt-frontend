@@ -3,12 +3,13 @@
     <v-content>
       <router-view />
       <v-app-bar app color="primary" dark>
-        <v-toolbar-title> Walk It </v-toolbar-title>
+        <v-toolbar-title> Balance: 0,00 </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn text rounded>Home</v-btn>
         <v-btn text rounded>Login</v-btn>
         <v-btn text rounded>Register</v-btn>
         <v-btn text rounded>My Profile</v-btn>
+        <v-btn text rounded>Map</v-btn>
       </v-app-bar>
     </v-content>
 
