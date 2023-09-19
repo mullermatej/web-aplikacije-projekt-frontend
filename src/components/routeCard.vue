@@ -8,7 +8,14 @@
             <!-- Display route description -->
             <p>{{ route.description }}</p>
 
-            <div class="icon-container">
+            <div
+                class="icon-container"
+                style="
+                    display: flex;
+                    justify-content: space-around;
+                    margin-top: 1rem;
+                "
+            >
                 <!-- Display route distance -->
                 <div class="icon-with-text">
                     <p>
@@ -124,16 +131,12 @@ export default {
     text-decoration: underline;
 }
 
-.icon-container {
+/* .icon-container {
     margin: 10px 0 0 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
 }
 .icon-container p {
     margin: 0 0 0 0;
-}
+} */
 
 .icon-with-text {
     display: flex;

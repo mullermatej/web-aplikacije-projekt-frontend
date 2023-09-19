@@ -1,111 +1,73 @@
 <template>
     <v-main>
-        <PublicProfileCard />
-        <div class="cards">
-            <div class="card">
-                <img class="card__image" src="@/assets/pulaRuta1.jpeg" alt="" />
-                <div class="card__content">
-                    <h3>Galebove stijene</h3>
-                    <p>
-                        Experience this 40.9-km loop trail near Pula - Pola,
-                        Istra. Generally considered a moderately challenging
-                        route. This is a popular trail for road biking and bike
-                        touring, but you can still enjoy some solitude during
-                        quieter times of day. The trail is open year-round and
-                        is beautiful to visit anytime.
-                    </p>
-                    <div class="icon-container">
-                        <div class="icon-with-text">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                width="20"
-                                height="20"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
-                                />
-                            </svg>
-                            <p>10km</p>
-                        </div>
-                        <div class="icon-with-text">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                width="20"
-                                height="20"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
-                            <p>30min</p>
-                        </div>
-                        <div class="icon-with-text">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                width="20"
-                                height="20"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                                />
-                            </svg>
-                            <p>easy</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card__info">
-                    <i
-                        class="fa-solid fa-heart"
-                        style="font-size: 1.3rem; color: white"
-                    ></i>
-                </div>
+        <header
+            class="container"
+            style="margin-top: 40px; padding-bottom: 20px"
+        >
+            <img src="@/assets/man.png" alt="" />
+
+            <div class="user-info">
+                <h1 id="naslov-korisnikovog-profila">
+                    Pero Peric
+
+                    <button
+                        type="button"
+                        id="follow-button"
+                        class="btn btn-outline btn-sm ml-4"
+                        @click="toggleFollowButton"
+                    >
+                        <span v-if="!isFollowing">Follow</span>
+                        <span v-else>Following</span>
+
+                        <i
+                            class="fa-regular fa-circle-check ml-2"
+                            style="color: #445462"
+                            v-if="isFollowing"
+                        ></i>
+                    </button>
+                </h1>
+                <p style="font-weight: 400; text-align: left">
+                    FOLLOWERS: <strong>1</strong>
+                </p>
             </div>
+        </header>
+        <div class="mojprofil-podnaslov">
+            <span style="text-decoration: underline; cursor: pointer"
+                >Favourites</span
+            >
+            /
+            <span style="cursor: pointer">Custom routes</span>
         </div>
     </v-main>
 </template>
 
 <script>
-import { Auth } from '@/services';
+import { Auth, Korisnik } from '@/services';
 import Vue from 'vue';
 import VueModal from 'vue-js-modal';
-import PublicProfileCard from '@/components/PublicProfileCard.vue';
+import Route from '../views/Route.vue';
+import routeCard from './routeCard.vue';
 
 Vue.use(VueModal);
 
 export default {
+    name: 'ProfileCard',
     data() {
         return {
             firstName: '',
             lastName: '',
             userEmail: '',
             showModal: false,
-            oldPassword: '',
-            newPassword: '',
+            isFollowing: false,
         };
+    },
+    created() {
+        this.fetchKorisnik();
     },
     mounted() {
         let data1 = window.localStorage.getItem('user');
         let parsedData = JSON.parse(data1);
-        console.log(parsedData.firstName);
-
+        // console.log(parsedData.firstName);
         // Assign values to the component's data properties
         this.firstName = parsedData.firstName;
         this.lastName = parsedData.lastName;
@@ -124,21 +86,33 @@ export default {
                 this.newPassword
             );
             console.log('Rezultat promjene lozinke ', success);
-
             if (success) {
-                this.$router.push({ name: 'FirstTimePage' });
+                this.$router.push({ name: 'Home' });
                 alert('Password changed successfully!');
             } else {
                 alert('Wrong password or an error occurred.');
             }
         },
+        fetchKorisnik() {
+            // Make an API request to fetch the list of routes from your backend
+            Korisnik.dohvatiKorisnika()
+                .then((response) => {
+                    // console.log('U mojprofil.vue sam: ', response);
+                    this.firstName = response.firstName;
+                    this.lastName = response.lastName;
+                    this.userEmail = response.username;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        toggleFollowButton() {
+            this.isFollowing = !this.isFollowing;
+        },
     },
-    components: {
-        PublicProfileCard,
-    },
+    components: { Route, routeCard },
 };
 </script>
-
 <style scoped>
 main {
     font-family: 'Alegreya Sans SC', sans-serif;
@@ -149,7 +123,14 @@ header {
     max-width: 80%;
     /* background-color: #64dfdf; */
     display: flex;
-    /*   */
+    /* border-bottom: 1px solid #eee; */
+}
+
+#naslov-korisnikovog-profila {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-top: 30px;
+    color: #445462;
 }
 
 header img {
@@ -170,6 +151,10 @@ header img {
     font-weight: 700;
     font-size: 15px;
     padding: 5px 10px;
+}
+
+#follow-button:focus {
+    box-shadow: none;
 }
 
 #follow-button:hover {
@@ -458,5 +443,15 @@ header img {
 
 .favorite-icon-red {
     color: #dc1c13;
+}
+
+.cards {
+    margin: 0 auto;
+    max-width: 70%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+    grid-auto-rows: auto;
+    gap: 60px;
+    row-gap: 100px;
 }
 </style>

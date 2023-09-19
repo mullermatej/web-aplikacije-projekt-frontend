@@ -10,7 +10,7 @@
             </header>
             <v-card justify="center" align="center">
                 <div class="card-content">
-                    <div class="gornji-buttoni">
+                    <!-- <div class="gornji-buttoni">
                         <div class="dodaj-omiljene">
                             <i
                                 class="fa-solid fa-heart"
@@ -18,20 +18,12 @@
                                 :class="{ 'favorite-icon-red': isHeartRed }"
                             ></i>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="cardDescription">
-                    <h4>Opis</h4>
-                    <h4 style="margin-left: auto">10 people visited</h4>
-                    <a href=""
-                        ><img
-                            src="@/assets/checkMarkCrna.png"
-                            alt=""
-                            class="ikonaPotvrda"
-                        />
-                    </a>
+                    <h4 style="margin: 0 0 0 0">Description</h4>
                 </div>
-                <hr />
+
                 <div class="opisSlike">
                     <p>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -44,22 +36,51 @@
                         aperiam! Maiores ut inventore tempora, enim vel
                         necessitatibus incidunt! Lorem ipsum dolor sit amet
                         consectetur adipisicing elit
-                        <span v-if="!showMore" id="dots">...</span
+                        <!-- <span v-if="!showMore" id="dots">...</span
                         ><span v-if="showMore" id="more">
                             necessitatibus voluptas ex quo facilis, quod totam
                             vitae provident velit ipsum, neque molestias dolorum
                             obcaecati consequatur tempore esse odio consectetur
                             impedit.</span
-                        >
+                        > -->
                     </p>
-                    <button @click="toggleShowMore" id="readMoreDugme">
+                    <!-- <button @click="toggleShowMore" id="readMoreDugme">
                         {{ showMore ? 'Manje' : 'Pročitaj više' }}
-                    </button>
+                    </button> -->
                 </div>
-                <div class="prognoza">
+                <!-- <div class="prognoza">
                     <h4>Prognoza</h4>
+                </div> -->
+                <!-- <hr /> -->
+                <div class="misc">
+                    <span @click="toggleFavourite">
+                        <!-- <transition name="heart-color-fade"> -->
+                        <i
+                            class="fa-solid fa-heart"
+                            v-if="!isFavourite"
+                            style="color: #445462; cursor: pointer"
+                        ></i
+                        ><i
+                            class="fa-solid fa-heart"
+                            v-else
+                            style="color: #dc1c13; cursor: pointer"
+                        ></i>
+                        <!-- </transition> -->
+                    </span>
+                    <p @click="toggleVisit">
+                        0 visited
+                        <i
+                            class="fa-regular fa-square ml-2"
+                            v-if="!hasVisited"
+                            style="cursor: pointer"
+                        ></i>
+                        <i
+                            class="fa-regular fa-square-check ml-2"
+                            v-else
+                            style="cursor: pointer"
+                        ></i>
+                    </p>
                 </div>
-                <hr />
             </v-card>
         </v-container>
     </v-main>
@@ -71,11 +92,19 @@ export default {
     data() {
         return {
             showMore: false, // Initialize to false to hide the content
+            hasVisited: false,
+            isFavourite: false,
         };
     },
     methods: {
         toggleShowMore() {
             this.showMore = !this.showMore;
+        },
+        toggleVisit() {
+            this.hasVisited = !this.hasVisited;
+        },
+        toggleFavourite() {
+            this.isFavourite = !this.isFavourite;
         },
     },
     async mounted() {
@@ -154,12 +183,12 @@ header h3 {
 .v-sheet.v-card:not(.v-sheet--outlined) {
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
         0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    padding-bottom: 550px;
+    /* padding-bottom: 550px; */
 }
 
 .cardDescription {
     text-align: left;
-    margin: 15px 0px 10px 20px; /* top right bottom left */
+    margin: 20px 0px 20px 20px; /* top right bottom left */
     display: flex;
     justify-content: space-between;
 }
@@ -188,5 +217,12 @@ header h3 {
     text-decoration: underline;
     cursor: pointer;
     font-size: 16px;
+}
+
+.misc {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 0px 20px;
+    font-size: 1.5rem;
 }
 </style>

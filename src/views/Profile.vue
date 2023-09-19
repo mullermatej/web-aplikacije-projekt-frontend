@@ -1,197 +1,6 @@
 <template>
     <v-main>
-        <header
-            class="container"
-            style="margin-top: 40px; padding-bottom: 20px"
-        >
-            <img src="@/assets/man (1).png" alt="" />
-
-            <div class="user-info">
-                <h1 id="naslov-korisnikovog-profila">
-                    {{ firstName }} {{ lastName }}
-                    <button
-                        type="button"
-                        id="follow-button"
-                        class="btn btn-outline btn-sm ml-4"
-                        @click="openModel"
-                    >
-                        <span>Edit profile</span>
-                        <i class="fa-solid fa-pen-to-square ml-1"></i>
-                    </button>
-                </h1>
-                <p style="font-weight: 400; text-align: left">
-                    FOLLOWERS: <strong>1</strong>
-                </p>
-            </div>
-
-            <!-- Modal structure outside of the button -->
-            <div class="custom-model-main" :class="{ 'model-open': showModal }">
-                <div class="custom-model-inner">
-                    <div class="custom-model-wrap">
-                        <div class="pop-up-content-wrap">
-                            <div class="zatvori-ikona">
-                                <span style="cursor: pointer">
-                                    <i
-                                        class="fa-regular fa-circle-xmark"
-                                        @click="closeModel"
-                                    ></i>
-                                </span>
-                            </div>
-                            <div class="naslov-flex">
-                                <h1
-                                    style="
-                                        font-weight: 700;
-                                        color: #798777;
-                                        font-size: 3rem;
-                                    "
-                                >
-                                    edit profile
-                                </h1>
-                            </div>
-                            <div class="titles-text">avatar</div>
-                            <div class="avatar-part">
-                                <div id="avatar-image">
-                                    <a href=""
-                                        ><img src="@/assets/man (1).png" alt=""
-                                    /></a>
-                                </div>
-                                <div id="avatar-undertext">
-                                    <button
-                                        id="avatar-button"
-                                        type="button"
-                                        class="btn btn-md my-3 mr-2"
-                                        style="
-                                            font-family: 'Alegreya Sans SC',
-                                                sans-serif;
-                                        "
-                                    >
-                                        choose avatar
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="titles-text">personal</div>
-                            <div class="personal-info">
-                                <form>
-                                    <div>
-                                        <input
-                                            v-model="firstName"
-                                            type="text"
-                                            class="form-control"
-                                            :placeholder="firstName"
-                                            style="width: 300px"
-                                        />
-                                        <p
-                                            class="form-text text-muted ml-1"
-                                            style="font-size: 12px"
-                                        >
-                                            Not obligated to change
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <input
-                                            v-model="lastName"
-                                            type="text"
-                                            class="form-control"
-                                            :placeholder="lastName"
-                                        />
-                                        <p
-                                            class="form-text text-muted ml-1"
-                                            style="font-size: 12px"
-                                        >
-                                            Not obligated to change
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <input
-                                            v-model="userEmail"
-                                            type="text"
-                                            class="form-control"
-                                            :placeholder="userEmail"
-                                        />
-                                        <p
-                                            class="form-text text-muted ml-1"
-                                            style="font-size: 12px"
-                                        >
-                                            Not obligated to change
-                                        </p>
-                                    </div>
-                                    <div class="password-submit-center">
-                                        <button
-                                            id="user-info-popup-save"
-                                            type=""
-                                            class="btn"
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="titles-text">change password</div>
-                            <div class="change-password">
-                                <form @submit.prevent="changePassword">
-                                    <div class="form-password-change">
-                                        <label
-                                            for="exampleInputOldPassword1"
-                                        ></label>
-                                        <input
-                                            v-model="oldPassword"
-                                            type="password"
-                                            class="form-control"
-                                            id="exampleInputOldPassword1"
-                                            placeholder="Old password"
-                                            style="width: 300px"
-                                        />
-                                        <p
-                                            id="passwordHelpBlock"
-                                            class="form-text text-muted ml-1"
-                                        >
-                                            Required
-                                        </p>
-                                    </div>
-                                    <div class="form-password-change">
-                                        <label
-                                            for="exampleInputNewPassword1"
-                                        ></label>
-                                        <input
-                                            v-model="newPassword"
-                                            type="password"
-                                            class="form-control"
-                                            id="exampleInputNewPassword1"
-                                            placeholder="newPassword"
-                                            style="width: 300px"
-                                        />
-                                        <p
-                                            id="passwordHelpBlock"
-                                            class="form-text text-muted ml-1"
-                                        >
-                                            Required
-                                        </p>
-                                    </div>
-                                    <div class="password-submit-center">
-                                        <button
-                                            id="change-password-popup"
-                                            type="submit"
-                                            class="btn"
-                                        >
-                                            Change
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-overlay" @click="closeModel"></div>
-            </div>
-        </header>
-        <div class="mojprofil-podnaslov">
-            <span style="text-decoration: underline; cursor: pointer"
-                >Saved routes</span
-            >
-            /
-            <span style="cursor: pointer">Your routes</span>
-        </div>
-
+        <ProfileCard />
         <div class="cards">
             <div class="card">
                 <img class="card__image" src="@/assets/pulaRuta1.jpeg" alt="" />
@@ -355,6 +164,7 @@ import Vue from 'vue';
 import VueModal from 'vue-js-modal';
 import Route from './Route.vue';
 import routeCard from '../components/routeCard.vue';
+import ProfileCard from '../components/ProfileCard.vue';
 
 Vue.use(VueModal);
 
@@ -415,7 +225,7 @@ export default {
                 });
         },
     },
-    components: { Route, routeCard },
+    components: { Route, routeCard, ProfileCard },
 };
 </script>
 
@@ -429,7 +239,7 @@ header {
     max-width: 80%;
     /* background-color: #64dfdf; */
     display: flex;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee; */
 }
 
 #naslov-korisnikovog-profila {
