@@ -2,7 +2,7 @@
     <v-main>
         <v-container class="custom-container">
             <header>
-                <h1>Galebove stijene</h1>
+                <h1>{{ route.name }}</h1>
                 <div style="margin-bottom: 65px">
                     <h3 style="display: inline">Pula, Croatia &nbsp;</h3>
                     <i class="fas fa-location" style="color: #798777"></i>
@@ -26,16 +26,7 @@
 
                 <div class="opisSlike">
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Minus numquam molestias maiores, saepe dolor, deserunt
-                        libero voluptates et adipisci at voluptas? Rem eius
-                        perspiciatis consectetur, ipsam eos est itaque
-                        repudiandae. Lorem ipsum dolor, sit amet consectetur
-                        adipisicing elit. Possimus et quas fuga pariatur ab
-                        natus sit corrupti deleniti, impedit saepe iusto
-                        aperiam! Maiores ut inventore tempora, enim vel
-                        necessitatibus incidunt! Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit
+                        {{ route.description }}
                         <!-- <span v-if="!showMore" id="dots">...</span
                         ><span v-if="showMore" id="more">
                             necessitatibus voluptas ex quo facilis, quod totam
@@ -87,16 +78,31 @@
 </template>
 
 <script>
+import { Rute } from '@/services';
+
 export default {
     name: 'Ruta',
     data() {
         return {
+            route: {}, // Store the route data
             showMore: false, // Initialize to false to hide the content
             hasVisited: false,
             isFavourite: false,
         };
     },
     methods: {
+        async fetchData() {
+            try {
+                // Use the route_id parameter from the URL to fetch the corresponding route data
+                const routeId = this.$route.params.route_id;
+                console.log('routeId: ', routeId);
+                // Make an API request to fetch route data based on routeId
+                const response = await Rute.getRouteById(routeId);
+                this.route = response;
+            } catch (error) {
+                console.error('Podaci o ruti error: ' + error);
+            }
+        },
         toggleShowMore() {
             this.showMore = !this.showMore;
         },
@@ -107,9 +113,9 @@ export default {
             this.isFavourite = !this.isFavourite;
         },
     },
-    async mounted() {
-        // Upit na backend za sve rute
-        // this.doc = await Rute.dohvatiRutu(this.id);
+    created() {
+        // Fetch route data when the component is created
+        this.fetchData();
     },
 };
 </script>

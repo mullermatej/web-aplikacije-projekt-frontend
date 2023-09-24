@@ -63,6 +63,17 @@ let Rute = {
         });
         return routes;
     },
+    async getRouteById(routeId) {
+        console.log('Pozivam fju iz services');
+        try {
+            const response = await Service.get(`/rute/${routeId}`);
+            console.log('Povratna info o ruti: ', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching route by ID:', error);
+            throw error;
+        }
+    },
 };
 
 // Definiranje metoda za komunikaciju sa backend-om, za sad samo login

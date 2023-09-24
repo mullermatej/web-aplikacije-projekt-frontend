@@ -51,9 +51,10 @@ const routes = [
         children: [],
     },
     {
-        path: '/routes/route_id',
-        component: Route,
-        children: [],
+        path: '/routes/:route_id',
+        name: 'RouteDetail',
+        component: () =>
+            import(/* webpackChunkName: "route-detail" */ '../views/Route.vue'),
     },
     {
         path: '/profile/user_id',
