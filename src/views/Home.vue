@@ -185,7 +185,7 @@
 
 <script>
 export default {
-    name: 'firstTimePage',
+    name: 'Home',
     data() {
         return {
             mojeKoordinate: {
