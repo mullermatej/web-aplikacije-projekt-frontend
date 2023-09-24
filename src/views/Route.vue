@@ -3,9 +3,19 @@
         <v-container class="custom-container">
             <header>
                 <h1>{{ route.name }}</h1>
-                <div style="margin-bottom: 65px">
-                    <h3 style="display: inline">Pula, Croatia &nbsp;</h3>
+                <div
+                    style="
+                        margin-bottom: 65px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.2rem;
+                    "
+                >
                     <i class="fas fa-location" style="color: #798777"></i>
+                    <h3 style="margin: 1px 0 0 0">
+                        {{ route.location }} &nbsp;
+                    </h3>
                 </div>
             </header>
             <v-card justify="center" align="center">
@@ -39,6 +49,48 @@
                         {{ showMore ? 'Manje' : 'Pročitaj više' }}
                     </button> -->
                 </div>
+                <section
+                    style="
+                        display: flex;
+                        justify-content: space-around;
+                        margin-top: 1rem;
+                    "
+                >
+                    <!-- Display route distance -->
+                    <div class="icon-with-text">
+                        <p>
+                            <i
+                                class="fa-solid fa-shoe-prints"
+                                style="color: #000000"
+                            ></i
+                            >&nbsp; {{ route.distance }}km
+                        </p>
+                    </div>
+
+                    <!-- Display route duration -->
+                    <div class="icon-with-text">
+                        <p>
+                            <i
+                                class="fa-regular fa-clock"
+                                style="color: #000000"
+                            ></i>
+                            &nbsp;
+                            {{ route.duration }}min
+                        </p>
+                    </div>
+
+                    <!-- Display route difficulty -->
+                    <div class="icon-with-text">
+                        <p>
+                            <i
+                                class="fa-solid fa-triangle-exclamation"
+                                style="color: #000000"
+                            ></i>
+                            &nbsp;
+                            {{ route.difficulty }}
+                        </p>
+                    </div>
+                </section>
                 <!-- <div class="prognoza">
                     <h4>Prognoza</h4>
                 </div> -->
@@ -49,7 +101,7 @@
                         <i
                             class="fa-solid fa-heart"
                             v-if="!isFavourite"
-                            style="color: #445462; cursor: pointer"
+                            style="color: white; cursor: pointer"
                         ></i
                         ><i
                             class="fa-solid fa-heart"
@@ -58,8 +110,11 @@
                         ></i>
                         <!-- </transition> -->
                     </span>
-                    <p @click="toggleVisit">
-                        0 visited
+                    <p
+                        @click="toggleVisit"
+                        style="margin: 0; color: white; font-weight: 700"
+                    >
+                        {{ route.visited }} visited
                         <i
                             class="fa-regular fa-square ml-2"
                             v-if="!hasVisited"
@@ -139,7 +194,7 @@ header h1 {
 
 header h3 {
     color: #798777;
-    margin-top: -5px;
+
     font-size: 1rem;
 }
 .card-content {
@@ -225,10 +280,17 @@ header h3 {
     font-size: 16px;
 }
 
+.icon-with-text {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
 .misc {
+    background-color: #bdd2b6;
     display: flex;
     justify-content: space-between;
-    padding: 0 20px 0px 20px;
+    padding: 10px 20px 10px 20px;
     font-size: 1.5rem;
 }
 </style>

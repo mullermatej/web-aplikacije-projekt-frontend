@@ -31,12 +31,17 @@
             </div>
         </header>
         <section class="cards">
-            <routeCard
-                v-for="route in routes"
-                :key="route._id"
-                :route="route"
-            ></routeCard>
+            <div v-for="route in routes" :key="route.id">
+                <router-link
+                    :to="'/routes/' + route.id"
+                    style="text-decoration: none"
+                >
+                    <!-- Your route card component here -->
+                    <route-card :route="route"></route-card>
+                </router-link>
+            </div>
         </section>
+
         <router-view></router-view>
     </v-main>
 </template>

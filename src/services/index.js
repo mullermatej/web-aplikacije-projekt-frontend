@@ -50,7 +50,7 @@ let Rute = {
         let data = response.data;
         console.log(response.data);
 
-        // Remap the data if necessary
+        // Remapiranje podataka iz baze u oblik koji zelim
         let routes = data.map((doc) => {
             return {
                 id: doc._id,
@@ -59,6 +59,8 @@ let Rute = {
                 distance: doc.distance,
                 duration: doc.duration,
                 difficulty: doc.difficulty,
+                location: doc.location,
+                visited: doc.visited,
             };
         });
         return routes;

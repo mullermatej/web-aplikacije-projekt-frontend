@@ -3,7 +3,21 @@
         <img class="card__image" src="@/assets/pulaRuta1.jpeg" alt="" />
         <div class="card__content">
             <!-- Display route name -->
-            <h3>{{ route.name }}</h3>
+            <div
+                style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: left;
+                    gap: 1rem;
+                "
+            >
+                <h3>{{ route.name }}</h3>
+
+                <p style="margin: 0">
+                    <i class="fas fa-location"></i>
+                    {{ route.location }}
+                </p>
+            </div>
 
             <!-- Display route description -->
             <p>{{ route.description }}</p>
@@ -29,30 +43,37 @@
 
                 <!-- Display route duration -->
                 <div class="icon-with-text">
-                    <i class="fa-regular fa-clock" style="color: #000000"></i>
-                    &nbsp;
-                    <p>{{ route.duration }}min</p>
+                    <p>
+                        <i
+                            class="fa-regular fa-clock"
+                            style="color: #000000"
+                        ></i>
+                        &nbsp;
+                        {{ route.duration }}min
+                    </p>
                 </div>
 
                 <!-- Display route difficulty -->
                 <div class="icon-with-text">
-                    <i
-                        class="fa-solid fa-triangle-exclamation"
-                        style="color: #000000"
-                    ></i>
-                    &nbsp;
-                    <p>{{ route.difficulty }}</p>
+                    <p>
+                        <i
+                            class="fa-solid fa-triangle-exclamation"
+                            style="color: #000000"
+                        ></i>
+                        &nbsp;
+                        {{ route.difficulty }}
+                    </p>
                 </div>
             </div>
         </div>
-        <div class="card__info">
-            <i
+        <!-- <div class="card__info"> -->
+        <!-- <i
                 class="fa-solid fa-heart"
                 style="font-size: 1.3rem"
                 @click="toggleHeartColor"
                 :class="{ 'favorite-icon-red': isHeartRed }"
-            ></i>
-        </div>
+            ></i> -->
+        <!-- </div> -->
     </div>
 </template>
 
@@ -108,7 +129,7 @@ export default {
 }
 
 .card__info {
-    padding: 15px;
+    padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -131,21 +152,10 @@ export default {
     text-decoration: underline;
 }
 
-/* .icon-container {
-    margin: 10px 0 0 0;
-}
-.icon-container p {
-    margin: 0 0 0 0;
-} */
-
 .icon-with-text {
     display: flex;
     align-items: center;
     margin-right: 20px;
-}
-
-.icon-with-text svg {
-    margin-right: 5px;
 }
 
 .favorite-icon-red {

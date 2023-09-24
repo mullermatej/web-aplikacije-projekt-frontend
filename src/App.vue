@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from '@/components/Footer.vue';
 import Navigation from '@/components/Navigation.vue';
 
