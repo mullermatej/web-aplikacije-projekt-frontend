@@ -19,14 +19,16 @@
                         <i class="fa-solid fa-pen-to-square ml-1"></i>
                     </button>
                 </h1>
-                <span>
+                <span @click="openFollowersModal">
                     <p style="font-weight: 400; text-align: left">
-                        FOLLOWERS: <strong>1</strong>
+                        <span style="cursor: pointer"
+                            >FOLLOWERS: <strong>3</strong>
+                        </span>
                     </p>
                 </span>
             </div>
 
-            <!-- Modal structure outside of the button -->
+            <!-- Edit profile modal -->
             <div class="custom-model-main" :class="{ 'model-open': showModal }">
                 <div class="custom-model-inner">
                     <div class="custom-model-wrap">
@@ -362,6 +364,96 @@
                     @click="closeAvatarsModal"
                 ></div>
             </div>
+
+            <!-- FollowersModal -->
+            <div
+                class="followers-custom-modal-main"
+                :class="{ 'followers-modal-open': showFollowersModal }"
+            >
+                <div class="followers-custom-modal-inner">
+                    <div class="followers-custom-modal-wrap">
+                        <div class="followers-pop-up-content-wrap">
+                            <div class="zatvori-ikona">
+                                <span style="cursor: pointer">
+                                    <i
+                                        class="fa-regular fa-circle-xmark"
+                                        @click="closeFollowersModal"
+                                    ></i>
+                                </span>
+                            </div>
+                            <div class="naslov-flex">
+                                <h1
+                                    style="
+                                        font-weight: 300;
+                                        color: #445462;
+                                        font-size: 2rem;
+                                        margin: 0 0 20px 0;
+                                    "
+                                >
+                                    Followers (3)
+                                </h1>
+                            </div>
+                            <div>
+                                <div class="follower">
+                                    <h3>
+                                        <img
+                                            src="@/assets/woman (5).png"
+                                            alt=""
+                                        />
+
+                                        <span>Ivana Ivic</span>
+                                    </h3>
+                                    <button
+                                        id="follow-button"
+                                        type="button"
+                                        class="btn btn-outline btn-sm"
+                                    >
+                                        Follow
+                                    </button>
+                                </div>
+                                <div class="follower">
+                                    <h3>
+                                        <img
+                                            src="@/assets/woman (7).png"
+                                            alt=""
+                                        />
+
+                                        <span>Ivana Ivic</span>
+                                    </h3>
+                                    <button
+                                        id="follow-button"
+                                        type="button"
+                                        class="btn btn-outline btn-sm"
+                                    >
+                                        Follow
+                                    </button>
+                                </div>
+                                <div class="follower">
+                                    <h3>
+                                        <img
+                                            src="@/assets/woman (6).png"
+                                            alt=""
+                                        />
+
+                                        <span>Ivana Ivic</span>
+                                    </h3>
+                                    <button
+                                        id="follow-button"
+                                        type="button"
+                                        class="btn btn-outline btn-sm"
+                                    >
+                                        Following
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="followers-bg-overlay"
+                    @click="closeFollowersModal"
+                ></div>
+            </div>
         </header>
         <div class="mojprofil-podnaslov">
             <span style="text-decoration: underline; cursor: pointer"
@@ -375,12 +467,8 @@
 
 <script>
 import { Auth, Korisnik } from '@/services';
-import Vue from 'vue';
-import VueModal from 'vue-js-modal';
 import Route from '../views/Route.vue';
 import routeCard from './routeCard.vue';
-
-Vue.use(VueModal);
 
 export default {
     name: 'ProfileCard',
@@ -391,6 +479,7 @@ export default {
             userEmail: '',
             showModal: false,
             showAvatarsModal: false,
+            showFollowersModal: false,
             oldPassword: '',
             newPassword: '',
         };
@@ -401,8 +490,6 @@ export default {
     mounted() {
         let data1 = window.localStorage.getItem('user');
         let parsedData = JSON.parse(data1);
-        // console.log(parsedData.firstName);
-        // Assign values to the component's data properties
         this.firstName = parsedData.firstName;
         this.lastName = parsedData.lastName;
         this.userEmail = parsedData.username;
@@ -419,6 +506,12 @@ export default {
         },
         closeAvatarsModal() {
             this.showAvatarsModal = false;
+        },
+        openFollowersModal() {
+            this.showFollowersModal = true;
+        },
+        closeFollowersModal() {
+            this.showFollowersModal = false;
         },
         async changePassword() {
             let success = await Auth.changePassword(
@@ -578,16 +671,7 @@ header img {
     color: #fff;
 }
 
-/* body {
-    font: normal 14px/100% 'Andale Mono', AndaleMono, monospace;
-    width: 300px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    height: 100vh;
-} */
-
-/* Uredivanje modala --> */
+/* Edit Profile Modal */
 .custom-model-main {
     text-align: center;
     overflow: hidden;
@@ -690,9 +774,9 @@ header img {
     }
 }
 
-/* <-- Uredivanje modala, kraj? */
+/* Edit Profile Modal kraj */
 
-/* Uredivanje modala --> */
+/* Avatars Modal */
 .avatars-custom-modal-main {
     text-align: center;
     overflow: hidden;
@@ -801,111 +885,130 @@ header img {
     margin: 20px 10px 10px 10px;
 }
 
-/* <-- Uredivanje modala, kraj? */
+/* Avatars Modal kraj */
 
-.cards {
-    margin: 0 auto;
-    max-width: 70%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-    grid-auto-rows: auto;
-    gap: 60px;
-    row-gap: 100px;
+/* Followers Modal */
+.followers-custom-modal-main {
+    text-align: center;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; /* z-index: 1050; */
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.15s linear, z-index 0.15;
+    -o-transition: opacity 0.15s linear, z-index 0.15;
+    transition: opacity 0.15s linear, z-index 0.15;
+    z-index: -1;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.card {
-    --bs-card-border-width: 0; /* Remove any border */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Initial shadow */
-    transition: box-shadow 0.3s ease, cursor 0.3s ease; /* Add a transition for a smoother effect */
-    /* ... other card styles ... */
-
-    /* Set cursor to pointer on hover */
-    cursor: pointer;
+.followers-modal-open {
+    z-index: 99999;
+    opacity: 1;
+    overflow: hidden;
 }
-
-.card:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Increased shadow on hover */
+.followers-custom-modal-inner {
+    -webkit-transform: translate(0, -25%);
+    -ms-transform: translate(0, -25%);
+    transform: translate(0, -25%);
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    -o-transition: -o-transform 0.3s ease-out;
+    transition: -webkit-transform 0.3s ease-out;
+    -o-transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    display: inline-block;
+    vertical-align: middle;
+    width: 600px;
+    margin: 30px auto;
+    max-width: 97%;
 }
-
-/* .cards * {
-    box-sizing: border-box;
-} */
-
-.card__image {
-    width: 100%;
-    object-fit: cover;
+.followers-custom-modal-wrap {
     display: block;
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    background-clip: padding-box;
+    outline: 0;
+    text-align: left;
+    padding: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+.followers-modal-open .followers-custom-modal-inner {
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
+    position: relative;
+    z-index: 999;
+}
+.followers-modal-open .followers-bg-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+}
+.followers-bg-overlay {
+    background: rgba(0, 0, 0, 0);
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    -webkit-transition: background 0.15s linear;
+    -o-transition: background 0.15s linear;
+    transition: background 0.15s linear;
 }
 
-.card__content {
-    font-size: 0.9em;
-    padding: 15px;
-    background: #fafafa;
+@media screen and (min-width: 800px) {
+    .followers-custom-modal-main:before {
+        content: '';
+        display: inline-block;
+        height: auto;
+        vertical-align: middle;
+        margin-right: -0px;
+        height: 100%;
+    }
+}
+@media screen and (max-width: 799px) {
+    .followers-custom-modal-inner {
+        margin-top: 45px;
+    }
 }
 
-.card__content > p:first-of-type {
-    margin-top: 0;
-}
-
-.card__content > p:last-of-type {
-    margin-bottom: 0;
-}
-
-.card__info {
-    padding: 15px;
+.follower {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
-    background: #bdd2b6;
-    font-size: 0.8em;
+    margin: 0 0 2rem 0;
 }
 
-.card__info i {
-    font-size: 0.9em;
-    margin-right: 8px;
+.follower h3 {
+    margin: 0;
+}
+.follower img {
+    height: 3rem;
+    width: 3rem;
+}
+.follower span {
+    font-size: 1.5rem;
+    color: #445462;
+    margin-left: 1rem;
 }
 
-.card__link {
-    color: #64968c;
-    text-decoration: none;
-}
-
-.card__link:hover {
-    text-decoration: underline;
-}
-
-.icon-container {
-    margin: 10px 0 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.icon-container p {
-    margin: 0 0 0 0;
-}
-
-.icon-with-text {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.icon-with-text svg {
-    margin-right: 5px;
-}
-
-.favorite-icon-red {
-    color: #dc1c13;
-}
-
-.cards {
-    margin: 0 auto;
-    max-width: 70%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-    grid-auto-rows: auto;
-    gap: 60px;
-    row-gap: 100px;
-}
+/* Followers Modal kraj */
 </style>
