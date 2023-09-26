@@ -34,12 +34,17 @@ const routes = [
         component: () =>
             import(/* webpackChunkName: "about" */ '../views/Register.vue'),
     },
+
     {
-        path: '/profile/my_id',
+        path: '/my_profile/:user_id',
         name: 'Profile',
         component: Profile,
     },
-
+    {
+        path: '/profile/:user_id',
+        name: 'public profile',
+        component: ProfilePublic,
+    },
     {
         path: '/explore',
         name: 'Explore',
@@ -55,11 +60,6 @@ const routes = [
         name: 'RouteDetail',
         component: () =>
             import(/* webpackChunkName: "route-detail" */ '../views/Route.vue'),
-    },
-    {
-        path: '/profile/user_id',
-        name: 'ProfilePublic',
-        component: ProfilePublic,
     },
 ];
 
@@ -77,6 +77,11 @@ router.beforeEach((to, from, next) => {
     if (loginPotreban && !user) {
         // Ako je login potreban i user ne postoji u local storage-u onda ga preusmjeri na login
         next('/Login');
+        return;
+    }
+    if (!loginPotreban && user) {
+        // Ako je login potreban i user ne postoji u local storage-u onda ga preusmjeri na login
+        next('/');
         return;
     }
 

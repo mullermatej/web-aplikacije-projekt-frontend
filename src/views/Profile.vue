@@ -180,16 +180,16 @@ export default {
         };
     },
     created() {
-        this.fetchKorisnik();
+        this.fetchUser();
     },
     mounted() {
-        let data1 = window.localStorage.getItem('user');
-        let parsedData = JSON.parse(data1);
+        // let data1 = window.localStorage.getItem('user');
+        // let parsedData = JSON.parse(data1);
         // console.log(parsedData.firstName);
         // Assign values to the component's data properties
-        this.firstName = parsedData.firstName;
-        this.lastName = parsedData.lastName;
-        this.userEmail = parsedData.username;
+        // this.firstName = parsedData.firstName;
+        // this.lastName = parsedData.lastName;
+        // this.userEmail = parsedData.username;
     },
     methods: {
         openModel() {
@@ -211,9 +211,10 @@ export default {
                 alert('Wrong password or an error occurred.');
             }
         },
-        fetchKorisnik() {
-            // Make an API request to fetch the list of routes from your backend
-            Korisnik.dohvatiKorisnika()
+        fetchUser() {
+            const user_id = this.$route.params.user_id;
+            console.log('user_id: ', user_id); // Console loga user_id koji je upisan u URL
+            Korisnik.getUser(user_id)
                 .then((response) => {
                     // console.log('U mojprofil.vue sam: ', response);
                     this.firstName = response.firstName;

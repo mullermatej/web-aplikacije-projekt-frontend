@@ -30,9 +30,9 @@ Service.interceptors.response.use(
 );
 
 let Korisnik = {
-    async dohvatiKorisnika(korisnikId) {
+    async getUser(user_id) {
         try {
-            const response = await Service.get(`/korisnici/${korisnikId}`);
+            const response = await Service.get(`/korisnici/${user_id}`);
             console.log('Tu sam', response.data);
             return response.data;
         } catch (error) {

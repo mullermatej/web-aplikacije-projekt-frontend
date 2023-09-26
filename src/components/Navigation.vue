@@ -19,7 +19,10 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="/profile/my_id"
+                        <!-- ne smije biti hardcoded, nego izvući iz local storagea npr. -->
+                        <a
+                            class="nav-link px-3"
+                            href="/my_profile/64fdc5c5165f75fb2ba421b3"
                             >Profile</a
                         >
                     </li>

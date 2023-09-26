@@ -87,12 +87,13 @@ export default {
             console.log('Rezultat prijave ', success);
 
             if (success == true) {
-                this.$router.push({ name: 'FirstTimePage' }); // Mozemo koristit this.$router.push("/home") jer smo u vuejs komponenti
+                this.$router.push({ name: 'Home' });
             }
+            this.$router.go();
         },
-        prebaci() {
-            this.$router.push({ name: 'ChangePassword' });
-        },
+        // prebaci() {
+        //     this.$router.push({ name: 'ChangePassword' });
+        // },
     },
 };
 </script>

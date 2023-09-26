@@ -341,12 +341,42 @@
                                         /></a>
                                     </div>
                                 </div>
+                                <div class="avatar-images">
+                                    <div id="avatar-image">
+                                        <a href=""
+                                            ><img
+                                                src="@/assets/woman (4).png"
+                                                alt=""
+                                        /></a>
+                                    </div>
+                                    <div id="avatar-image">
+                                        <a href=""
+                                            ><img
+                                                src="@/assets/woman (5).png"
+                                                alt=""
+                                        /></a>
+                                    </div>
+                                    <div id="avatar-image">
+                                        <a href=""
+                                            ><img
+                                                src="@/assets/woman (6).png"
+                                                alt=""
+                                        /></a>
+                                    </div>
+                                    <div id="avatar-image">
+                                        <a href=""
+                                            ><img
+                                                src="@/assets/woman (7).png"
+                                                alt=""
+                                        /></a>
+                                    </div>
+                                </div>
 
                                 <div id="avatar-undertext">
                                     <button
                                         id="avatar-button"
                                         type="button"
-                                        class="btn btn-md my-3 mr-2 mt-10"
+                                        class="btn btn-md my-3 mr-2 mt-16"
                                         style="
                                             font-family: 'Alegreya Sans SC',
                                                 sans-serif;
@@ -401,7 +431,13 @@
                                             alt=""
                                         />
 
-                                        <span>Ivana Ivic</span>
+                                        <span
+                                            ><a
+                                                href="/profile/6513308bbb17c5e3afba7e2a"
+                                                style="color: #445462"
+                                                >Ivana Ivić</a
+                                            ></span
+                                        >
                                     </h3>
                                     <button
                                         id="follow-button"
@@ -418,7 +454,7 @@
                                             alt=""
                                         />
 
-                                        <span>Ivana Ivic</span>
+                                        <span>Ana Anić</span>
                                     </h3>
                                     <button
                                         id="follow-button"
@@ -431,11 +467,11 @@
                                 <div class="follower">
                                     <h3>
                                         <img
-                                            src="@/assets/woman (6).png"
+                                            src="@/assets/man (6).png"
                                             alt=""
                                         />
 
-                                        <span>Ivana Ivic</span>
+                                        <span>Andrija Andrić</span>
                                     </h3>
                                     <button
                                         id="follow-button"
@@ -485,14 +521,14 @@ export default {
         };
     },
     created() {
-        this.fetchKorisnik();
+        this.fetchUser();
     },
     mounted() {
-        let data1 = window.localStorage.getItem('user');
-        let parsedData = JSON.parse(data1);
-        this.firstName = parsedData.firstName;
-        this.lastName = parsedData.lastName;
-        this.userEmail = parsedData.username;
+        // let data1 = window.localStorage.getItem('user');
+        // let parsedData = JSON.parse(data1);
+        // this.firstName = parsedData.firstName;
+        // this.lastName = parsedData.lastName;
+        // this.userEmail = parsedData.username;
     },
     methods: {
         openModel() {
@@ -526,9 +562,10 @@ export default {
                 alert('Wrong password or an error occurred.');
             }
         },
-        fetchKorisnik() {
-            // Make an API request to fetch the list of routes from your backend
-            Korisnik.dohvatiKorisnika()
+        fetchUser() {
+            const user_id = this.$route.params.user_id;
+            console.log('user_id: ', user_id); // Console loga user_id koji je upisan u URL
+            Korisnik.getUser(user_id)
                 .then((response) => {
                     // console.log('U mojprofil.vue sam: ', response);
                     this.firstName = response.firstName;

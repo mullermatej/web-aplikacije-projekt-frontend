@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import { Rute } from '@/services';
 
 export default {
@@ -171,6 +172,10 @@ export default {
     created() {
         // Fetch route data when the component is created
         this.fetchData();
+    },
+    mounted() {
+        // Scroll to the top of the page when the component is mounted, wow
+        window.scrollTo(0, 0);
     },
 };
 </script>
