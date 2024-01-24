@@ -1,6 +1,30 @@
 <template>
     <div class="card">
-        <img class="card__image" src="@/assets/pulaRuta1.jpeg" alt="" />
+        <!-- <img class="card__image" :src="getImagePath(slikaPath)" alt="" /> -->
+
+        <!-- <img
+            class="card__image"
+            src="../assets/route_thumbnails/lungomare.jpeg"
+            alt=""
+        /> -->
+
+        <!-- <img class="card__image" :src="`${slikaRuta}`" alt="" /> -->
+        <!-- <v-img class="card__image" :src="getRouteImage(route.image)" alt="">
+        </v-img> -->
+        <!-- <v-img
+            v-for="image in images"
+            :key="image._id"
+            :src="getFullImageUrl(image.filePath)"
+            :alt="image._id"
+        ></v-img> -->
+        <!-- <v-img class="card__image" :src="image" alt=""></v-img> -->
+
+        <img
+            src="http://localhost:3000/images/edc8452c-b694-4e93-95e2-4198430e51c7.jpeg"
+            alt=""
+        />
+        <!-- <div class="images"></div> -->
+
         <div class="card__content">
             <!-- Display route name -->
             <div
@@ -66,29 +90,82 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="card__info"> -->
-        <!-- <i
-                class="fa-solid fa-heart"
-                style="font-size: 1.3rem"
-                @click="toggleHeartColor"
-                :class="{ 'favorite-icon-red': isHeartRed }"
-            ></i> -->
-        <!-- </div> -->
     </div>
 </template>
 
 <script>
 export default {
-    props: ['route'],
+    props: ['route', 'images'],
     data() {
         return {
             isHeartRed: false,
+            slikaPath: '',
         };
+    },
+    created() {
+        // Save route.name into the routeName variable when the component is created        this.routeName = this.route.name;
+        // this.slikaPath = this.route.slika;
+        // console.log('Slika path:', this.slikaPath);
+    },
+    mounted() {
+        // this.loadImage();
     },
     methods: {
         toggleHeartColor() {
             this.isHeartRed = !this.isHeartRed;
         },
+        // getImagePath(path) {
+        //     // Assuming that `path` is something like "@/assets/route_thumbnails/galebove_stijene.jpeg"
+        //     // Use dynamic import to load the image path
+        //     return require(`../${path}`);
+        // },
+
+        // getRouteImage(imageId) {
+        //     const image = this.images.find((img) => img._id === imageId);
+        //     console.log(
+        //         'Image IDs:',
+        //         this.images.map((img) => img._id)
+        //     );
+
+        //     if (image && image.filePath) {
+        //         return this.getFullImageUrl(image.filePath);
+        //     } else {
+        //         console.log('Nema slike');
+        //         // Return a default image URL or handle the case where image.filePath is missing
+        //     }
+        // },
+        // getFullImageUrl(filePath) {
+        //     // Replace with the actual base URL of your backend server
+        //     const baseUrl = 'http://localhost:3000'; // Update with your server's URL
+        //     return `${baseUrl}/${filePath}`;
+        // },
+        // async loadImage() {
+        //     const imageUrl =
+        //         'http://localhost:3000/images/edc8452c-b694-4e93-95e2-4198430e51c7.jpeg';
+
+        //     try {
+        //         // Fetch the image as binary data
+        //         const response = await fetch(imageUrl);
+
+        //         if (response.ok) {
+        //             // Create an img element and set its src attribute
+        //             const imgElement = document.createElement('img');
+        //             imgElement.src = imageUrl;
+        //             imgElement.alt = ''; // Set alt text as needed
+
+        //             // Append the img element to a container in your HTML
+        //             const imagesElement = document.querySelector('.images');
+        //             imagesElement.appendChild(imgElement);
+        //         } else {
+        //             console.error(
+        //                 'Failed to fetch image:',
+        //                 response.statusText
+        //             );
+        //         }
+        //     } catch (error) {
+        //         console.error('Error fetching image:', error);
+        //     }
+        // },
     },
 };
 </script>
