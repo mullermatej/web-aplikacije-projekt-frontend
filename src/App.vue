@@ -6,7 +6,7 @@
 			<router-view />
 			<!-- <v-app-bar app color="white" dark> </v-app-bar> -->
 
-			<Footer />
+			<!-- <Footer /> -->
 		</v-main>
 	</v-app>
 </template>

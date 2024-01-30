@@ -56,10 +56,8 @@ let Korisnik = {
 let Rute = {
 	// Fetch all routes from the database
 	async getAll() {
-		console.log('Fetching routes from the database...');
 		let response = await Service.get(`/rute`);
 		let data = response.data;
-		console.log(response.data);
 
 		// Remapiranje podataka iz baze u oblik koji zelim
 		let routes = data.map((doc) => {
@@ -72,7 +70,7 @@ let Rute = {
 				difficulty: doc.difficulty,
 				location: doc.location,
 				visited: doc.visited,
-				slika: doc.slika,
+				imageUrl: doc.imageUrl,
 			};
 		});
 		return routes;
