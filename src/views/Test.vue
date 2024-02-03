@@ -10,7 +10,7 @@
 				lg="4"
 			>
 				<router-link
-					:to="'#'"
+					:to="'/test2/' + route.id"
 					style="text-decoration: none"
 				>
 					<RouteCard :route="route" />

@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Route from '../views/Route.vue';
-import Routes from '../views/Routes.vue';
 import Explore from '../views/Explore.vue';
 import Profile from '../views/Profile.vue';
 import Home from '../views/Home.vue';
@@ -40,21 +38,6 @@ const routes = [
 		component: Explore,
 	},
 	{
-		path: '/routes',
-		component: Routes,
-		children: [],
-	},
-	{
-		path: '/routes/:route_id',
-		name: 'RouteDetail',
-		component: () => import(/* webpackChunkName: "route-detail" */ '../views/Route.vue'),
-	},
-	{
-		path: '/imageUpload',
-		name: 'imageUpload',
-		component: () => import(/* webpackChunkName: "route-detail" */ '../views/ImageUpload.vue'),
-	},
-	{
 		path: '/profile',
 		name: 'Profile',
 		component: Profile,
@@ -65,8 +48,8 @@ const routes = [
 		component: Test,
 	},
 	{
-		path: '/test2',
-		name: 'Test2',
+		path: '/test2/:routeId',
+		name: 'Test2Dynamic',
 		component: Test2,
 	},
 	{

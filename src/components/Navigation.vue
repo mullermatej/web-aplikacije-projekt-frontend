@@ -45,7 +45,7 @@
 					<li class="nav-item">
 						<a
 							class="nav-link px-3"
-							href="/routes"
+							href="/test"
 							>Routes</a
 						>
 					</li>

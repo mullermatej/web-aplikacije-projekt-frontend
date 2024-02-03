@@ -47,9 +47,34 @@ let Korisnik = {
 			const response = await Service.patch(`/korisnici/${username}`, updates);
 			return response.data;
 		} catch (error) {
-			console.error('Error updating user info:', error);
+			console.error('Error updating user info: ', error);
 			throw error;
 		}
+	},
+	async updateUserImage(username, updates) {
+		try {
+			const response = await Service.patch(`/updateImage/${username}`, updates);
+			return response.data;
+		} catch (error) {
+			console.error('Error while trying to change user image: ', error);
+			throw error;
+		}
+	},
+};
+
+let Profile = {
+	async getAvatars() {
+		let response = await Service.get('/avatars');
+		let data = response.data;
+
+		let avatars = data.map((doc) => {
+			return {
+				id: doc._id,
+				name: doc.name,
+				imageUrl: doc.imageUrl,
+			};
+		});
+		return avatars;
 	},
 };
 
@@ -76,10 +101,8 @@ let Rute = {
 		return routes;
 	},
 	async getRouteById(routeId) {
-		console.log('Pozivam fju iz services');
 		try {
 			const response = await Service.get(`/rute/${routeId}`);
-			console.log('Povratna info o ruti: ', response.data);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching route by ID:', error);
@@ -116,11 +139,12 @@ let Auth = {
 		return true;
 	},
 
-	async register(username, email, password) {
+	async register(username, email, password, imageUrl) {
 		let response = await Service.post('/korisnici', {
 			username: username,
 			email: email,
 			password: password,
+			imageUrl: imageUrl,
 		});
 
 		return true;
@@ -183,4 +207,4 @@ let Auth = {
 	},
 };
 
-export { Auth, Rute, Korisnik };
+export { Auth, Rute, Korisnik, Profile };
