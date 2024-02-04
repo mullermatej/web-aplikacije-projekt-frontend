@@ -9,7 +9,26 @@
 		></v-img>
 		<p class="text-h4 text-center mt-4 mb-0">{{ route.name }}</p>
 		<p class="text-subtitle-2 text-center mt-0 mb-4">{{ route.location }}</p>
-		<p class="text-h5">Description</p>
+		<v-row>
+			<v-col align="center">
+				<v-btn
+					v-if="added"
+					class="my-2 rounded-pill"
+					@click="addFavourite(), (added = false)"
+				>
+					add &nbsp; <i class="fa-regular fa-heart"></i>
+				</v-btn>
+				<v-btn
+					v-else
+					class="my-2 rounded-pill"
+					@click="removeFavourite(), (added = true)"
+				>
+					added &nbsp; <i class="fa-solid fa-heart"></i>
+				</v-btn>
+			</v-col>
+		</v-row>
+
+		<p class="text-h5 mt-4">Description</p>
 		<p class="text-subtitle-1">
 			{{ route.description }}
 		</p>
@@ -51,13 +70,14 @@
 </template>
 
 <script>
-import { Rute } from '@/services';
+import { Auth, Rute, Korisnik } from '@/services';
 
 export default {
 	name: 'Test2',
 	data() {
 		return {
 			route: {},
+			added: true,
 		};
 	},
 	created() {
@@ -72,6 +92,21 @@ export default {
 			} catch (e) {
 				console.error(e);
 			}
+		},
+		async addFavourite() {
+			let updates = {
+				routeId: this.route._id,
+			};
+
+			let success = await Korisnik.addFavourite(Auth.state.username, updates);
+			if (success) {
+				console.log('Route added to favourites');
+			} else {
+				console.log('Unable to add route to favourites');
+			}
+		},
+		async removeFavourite() {
+			// to do
 		},
 	},
 };

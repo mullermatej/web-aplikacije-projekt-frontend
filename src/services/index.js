@@ -35,11 +35,19 @@ let Korisnik = {
 	async getUser(username) {
 		try {
 			const response = await Service.get(`/${username}`);
-			console.log('getUser service:', response.data);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching user by ID:', error);
 			throw error;
+		}
+	},
+	async getFavourites(username) {
+		try {
+			const response = await Service.get(`/favourites/${username}`);
+			return response.data;
+		} catch (err) {
+			console.error('Error fetching user by ID:', err);
+			throw err;
 		}
 	},
 	async updateUserInfo(username, updates) {
@@ -58,6 +66,14 @@ let Korisnik = {
 		} catch (error) {
 			console.error('Error while trying to change user image: ', error);
 			throw error;
+		}
+	},
+	async addFavourite(username, updates) {
+		try {
+			const response = await Service.patch(`/favourite/${username}`, updates);
+		} catch (err) {
+			console.error('Error while adding route to favourites', err);
+			throw err;
 		}
 	},
 };
@@ -145,6 +161,7 @@ let Auth = {
 			email: email,
 			password: password,
 			imageUrl: imageUrl,
+			favourites: [],
 		});
 
 		return true;

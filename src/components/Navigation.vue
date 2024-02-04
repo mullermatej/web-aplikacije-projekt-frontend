@@ -68,7 +68,7 @@
 						class="btn btn-md mr-2"
 						onclick="window.location.href = 'Register'"
 					>
-						Sign up
+						Register
 					</button>
 					<button
 						v-if="auth.authenticated"

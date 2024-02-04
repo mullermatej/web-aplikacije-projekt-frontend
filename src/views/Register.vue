@@ -83,6 +83,7 @@
 						type="text"
 						class="form-control"
 						placeholder="username"
+						required
 					/>
 					<p
 						class="form-text text-muted ml-1"
@@ -96,6 +97,7 @@
 						type="email"
 						class="form-control"
 						placeholder="email"
+						required
 					/>
 					<p
 						class="form-text text-muted ml-1"
@@ -109,6 +111,7 @@
 						type="password"
 						class="form-control"
 						placeholder="password"
+						required
 					/>
 					<p
 						class="form-text text-muted ml-1"
@@ -123,7 +126,7 @@
 							type="submit"
 							color="#A2B29F"
 						>
-							Sign up
+							Register
 						</v-btn>
 					</v-col>
 					<p
@@ -135,7 +138,7 @@
 							href="/Login"
 							style="color: #798777"
 						>
-							<strong>Sign in</strong></a
+							<strong>Log in</strong></a
 						>
 					</p>
 				</form>

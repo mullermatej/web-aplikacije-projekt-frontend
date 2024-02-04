@@ -312,8 +312,6 @@ export default {
 			try {
 				const response = await Profile.getAvatars();
 				this.avatars = response;
-
-				console.log(this.avatars);
 			} catch (error) {
 				console.error(error);
 			}
