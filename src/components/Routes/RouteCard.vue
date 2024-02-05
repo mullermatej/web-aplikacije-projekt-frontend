@@ -1,7 +1,7 @@
 <template>
 	<v-col>
 		<v-card
-			class="mx-auto my-8 rounded-xl"
+			class="mx-auto rounded-xl"
 			max-width="400"
 			href="#"
 			style="text-decoration: none"
