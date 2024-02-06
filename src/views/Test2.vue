@@ -4,7 +4,7 @@
 			width="100%"
 			height="300"
 			cover
-			class="mx-auto rounded-xl"
+			class="mx-auto rounded"
 			:src="route.imageUrl"
 		></v-img>
 		<p class="text-h4 text-center mt-4 mb-0">{{ route.name }}</p>
@@ -13,14 +13,16 @@
 			<v-col align="center">
 				<v-btn
 					v-if="added"
-					class="my-2 rounded-pill"
+					class="my-2 rounded-pill text-white"
+					color="#A3B29F"
 					@click="addFavourite(), (added = false)"
 				>
 					add &nbsp; <i class="fa-regular fa-heart"></i>
 				</v-btn>
 				<v-btn
 					v-else
-					class="my-2 rounded-pill"
+					class="my-2 rounded-pill text-white"
+					color="#A3B29F"
 					@click="removeFavourite(), (added = true)"
 				>
 					added &nbsp; <i class="fa-solid fa-heart"></i>
@@ -60,7 +62,7 @@
 			:src="route.startingPosition"
 			width="100%"
 			height="400"
-			class="rounded-xl"
+			class="rounded"
 			style="border: 0"
 			allowfullscreen="true"
 			loading="lazy"
@@ -77,11 +79,13 @@ export default {
 	data() {
 		return {
 			route: {},
+			favourites: [],
 			added: true,
 		};
 	},
 	created() {
 		this.getRoute();
+		this.getFavourites();
 	},
 	methods: {
 		async getRoute() {
@@ -97,7 +101,6 @@ export default {
 			let updates = {
 				routeId: this.route._id,
 			};
-
 			let success = await Korisnik.addFavourite(Auth.state.username, updates);
 			if (success) {
 				console.log('Route added to favourites');
@@ -107,6 +110,31 @@ export default {
 		},
 		async removeFavourite() {
 			// to do
+			let updates = {
+				routeId: this.route._id,
+			};
+			let success = await Korisnik.removeFavourite(Auth.state.username, updates);
+			if (success) {
+				console.log('Route removed from favourites');
+			} else {
+				console.log('Unable to remove route from favourites');
+			}
+		},
+		async getFavourites() {
+			let i = 0;
+			try {
+				const response = await Korisnik.getFavourites(Auth.state.username);
+				this.favourites = response.favourites;
+			} catch (err) {
+				console.error(err);
+			}
+			for (let favourite of this.favourites) {
+				this.getRoute(this.favourites[i]);
+				i = i + 1;
+			}
+			if (this.favourites.includes(this.$route.params.routeId)) {
+				this.added = false;
+			}
 		},
 	},
 };

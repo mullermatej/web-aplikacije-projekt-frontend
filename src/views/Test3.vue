@@ -19,6 +19,9 @@
 		>
 			Post image
 		</v-btn>
+		<iframe
+			src="https://maps.google.com/maps?q=44.84586271319418,13.840496489317161&hl=es;z=14&amp;output=embed"
+		></iframe>
 	</v-container>
 </template>
 

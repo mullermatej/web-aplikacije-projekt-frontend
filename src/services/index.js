@@ -76,6 +76,14 @@ let Korisnik = {
 			throw err;
 		}
 	},
+	async removeFavourite(username, updates) {
+		try {
+			const response = await Service.patch(`/removeFavourite/${username}`, updates);
+		} catch (err) {
+			console.error('Error while removing route from favourites', err);
+			throw err;
+		}
+	},
 };
 
 let Profile = {
@@ -112,6 +120,8 @@ let Rute = {
 				location: doc.location,
 				visited: doc.visited,
 				imageUrl: doc.imageUrl,
+				startingPosition: doc.startingPosition,
+				coordinates: doc.coordinates,
 			};
 		});
 		return routes;
@@ -122,6 +132,14 @@ let Rute = {
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching route by ID:', error);
+			throw error;
+		}
+	},
+	async addRoute(route) {
+		try {
+			const response = await Service.post(`/addRoute`, route);
+		} catch (error) {
+			console.error('Error while adding route:', error);
 			throw error;
 		}
 	},

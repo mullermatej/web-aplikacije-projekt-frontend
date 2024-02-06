@@ -22,7 +22,7 @@
 				</p>
 			</v-col>
 		</v-row>
-		<v-row>
+		<v-row v-if="routes.length > 0">
 			<v-col
 				v-for="route in routes"
 				:key="route._id"
@@ -36,6 +36,24 @@
 					style="text-decoration: none"
 				>
 					<RouteCard :route="route" />
+				</router-link>
+			</v-col>
+		</v-row>
+		<v-row v-else>
+			<v-col
+				align="center"
+				justify="center"
+			>
+				<router-link
+					:to="'/test/'"
+					style="text-decoration: none"
+				>
+					<v-btn
+						class="mt-3 text-white"
+						color="#a3b29f"
+					>
+						browse <i class="fa-solid fa-plus"></i>
+					</v-btn>
 				</router-link>
 			</v-col>
 		</v-row>
