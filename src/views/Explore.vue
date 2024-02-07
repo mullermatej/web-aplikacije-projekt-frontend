@@ -130,6 +130,7 @@
 										:width="300"
 										:height="169"
 										v-model="imageReference"
+										:quality="8"
 									>
 									</croppa>
 								</v-col>
@@ -179,7 +180,6 @@
 										showDot = true;
 										routeDialog = false;
 										coordinatesMode = true;
-										setCoordinates();
 									"
 								>
 									Close
@@ -200,8 +200,8 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import { Rute } from '@/services';
-import { db, storage } from '@/firebase';
+import { Rute, Auth } from '@/services';
+import { storage } from '@/firebase';
 
 export default {
 	name: 'Explore',
@@ -223,6 +223,7 @@ export default {
 			durationInput: 0,
 			difficultyInput: null,
 			locationInput: '',
+			imageUrlInput: '',
 			createdRoute: {},
 			coordinatesMode: false,
 			creatingRoute: false,
@@ -234,16 +235,14 @@ export default {
 	mounted() {
 		mapboxgl.accessToken =
 			'pk.eyJ1IjoibXVsbGVybWF0ZWoxOCIsImEiOiJjbGt3ZjdqZHEwdnBvM2twbTRrZDlodWpxIn0.LwbRQW9Up-KStWz9Jp3J5A';
-
 		this.map = new mapboxgl.Map({
 			container: 'map',
 			style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
-			center: [13.859928, 44.860742], // starting position
-			zoom: 12, // starting zoom,
+			center: [13.859928, 44.860742], // početna pozicija
+			zoom: 12, // početni zoom
 			scrollZoom: true,
 			maxZoom: 18,
 		});
-
 		this.map.on('move', () => {
 			this.centerCoordinates = this.map.getCenter();
 		});
@@ -256,7 +255,6 @@ export default {
 			} catch (err) {
 				console.error(err);
 			}
-
 			this.map.on('load', () => {
 				this.routes.forEach(({ id, coordinates }) => {
 					const geojson = this.createRouteGeojson(coordinates);
@@ -279,7 +277,6 @@ export default {
 				type: 'geojson',
 				data: geojson,
 			});
-
 			map.addLayer({
 				id: routeId,
 				type: 'line',
@@ -302,28 +299,67 @@ export default {
 			this.testCoordinates = [];
 			console.log('Coordinates reset to empty array!', this.testCoordinates);
 		},
+		async uploadImageAndGetUrl(blobData) {
+			try {
+				let imageName = 'userUploads/' + Auth.state.username + '/' + Date.now() + '.png';
+				const uploadTask = storage.ref(imageName).put(blobData);
+				return new Promise((resolve, reject) => {
+					uploadTask.on(
+						'state_changed',
+						(snapshot) => {},
+						(error) => {
+							console.error(error);
+							reject(error);
+						},
+						() => {
+							uploadTask.snapshot.ref
+								.getDownloadURL()
+								.then((url) => {
+									console.log('Uploaded image URL:', url);
+									resolve(url);
+								})
+								.catch((error) => {
+									console.error('Error getting download URL:', error);
+									reject(error);
+								});
+						}
+					);
+				});
+			} catch (error) {
+				console.error('Error uploading image:', error);
+				throw error;
+			}
+		},
 		async saveRoute() {
-			this.createdRoute = {
-				name: this.nameInput,
-				description: this.descriptionInput,
-				distance: this.distanceInput,
-				duration: this.durationInput,
-				difficulty: this.difficultyInput,
-				location: this.locationInput,
-				imageUrl:
-					'https://firebasestorage.googleapis.com/v0/b/walk-it-4c57e.appspot.com/o/adminUploads%2FrouteImages%2Flungomare-firebase.jpeg?alt=media&token=5cd1c0d2-1dd1-46eb-969d-429675abba2b',
-				startingPosition:
-					'https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d7128.995517444304!2d13.809396!3d44.861658!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDTCsDUxJzQyLjciTiAxM8KwNDgnMzcuOSJF!5e1!3m2!1shr!2shr!4v1706714895578!5m2!1shr!2shr',
-				coordinates: this.testCoordinates,
-			};
-
-			console.log(this.createdRoute);
-
-			let success = await Rute.addRoute(this.createdRoute);
-			if (success) {
-				console.log('Route added successfully');
-			} else {
-				console.log('Unable to add route');
+			try {
+				this.imageReference.generateBlob(async (blobData) => {
+					try {
+						const imageUrl = await this.uploadImageAndGetUrl(blobData);
+						this.imageUrlInput = imageUrl;
+						this.createdRoute = {
+							name: this.nameInput,
+							description: this.descriptionInput,
+							distance: this.distanceInput,
+							duration: this.durationInput,
+							difficulty: this.difficultyInput,
+							location: this.locationInput,
+							imageUrl: this.imageUrlInput,
+							startingPosition: `https://maps.google.com/maps?q=${this.testCoordinates[0][1]},${this.testCoordinates[0][0]}&hl=es;z=14&amp;output=embed`,
+							coordinates: this.testCoordinates,
+						};
+						console.log('Created Route:', this.createdRoute);
+						let success = await Rute.addRoute(this.createdRoute);
+						if (success) {
+							console.log('Route added successfully');
+						} else {
+							console.log('Unable to add route');
+						}
+					} catch (error) {
+						console.error('Error saving route:', error);
+					}
+				}, 'image/png');
+			} catch (error) {
+				console.error('Error generating blob:', error);
 			}
 		},
 	},
