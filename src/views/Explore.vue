@@ -2,156 +2,161 @@
 	<v-main>
 		<div style="position: relative">
 			<v-btn
+				class="rounded-xl"
+				color="white"
+				style="position: absolute; top: 10px; left: 10px; z-index: 1"
+				@click="saveCoordinates()"
+			>
+				{{ this.flippedCoordinates }}
+			</v-btn>
+			<v-btn
 				v-if="!creatingRoute"
-				style="position: absolute; top: 30px; left: 30px; z-index: 9999"
+				class="rounded-xl"
+				color="white"
+				style="position: absolute; top: 55px; left: 10px; z-index: 1"
 				@click="
 					routeDialog = true;
 					creatingRoute = true;
-					showDot = false;
 				"
-				>Create route</v-btn
-			>
+				>create
+			</v-btn>
+
 			<v-btn
 				v-if="coordinatesMode"
-				style="position: absolute; top: 30px; left: 30px; z-index: 9999"
-				@click="getCoordinates()"
-				>Add coordinates to array</v-btn
-			>
-			<v-btn
-				v-if="coordinatesMode"
-				style="position: absolute; top: 80px; left: 30px; z-index: 9999"
+				class="rounded-xl text-white"
+				color="#A2B39F"
+				style="position: absolute; top: 10px; left: 10px; z-index: 1"
 				@click="saveRoute()"
 				>Done</v-btn
 			>
 			<v-btn
 				v-if="coordinatesMode"
-				style="position: absolute; top: 80px; left: 120px; z-index: 9999"
+				class="rounded-xl text-white"
+				color="#FF6868"
+				style="position: absolute; top: 10px; left: 90px; z-index: 1"
 				@click="resetCoordinates()"
-				>Restart</v-btn
+				>Reset</v-btn
+			>
+			<v-btn
+				v-if="coordinatesMode"
+				class="rounded-xl"
+				color="white"
+				style="position: absolute; top: 55px; left: 10px; z-index: 1"
+				@click="getCoordinates()"
+				>Add coordinates</v-btn
 			>
 			<v-dialog
 				v-model="routeDialog"
 				width="auto"
+				persistent
 			>
-				<v-card>
-					<v-card-text>
-						<v-container>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col cols="12">
-									<v-text-field
-										v-model="nameInput"
-										label="Name"
-										hint="Choose a unique name"
-										persistent-hint
-										required
-									></v-text-field>
-								</v-col>
-							</v-row>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col cols="12">
-									<v-textarea
-										v-model="descriptionInput"
-										label="Description"
-										hint="Describe the best parts"
-										persistent-hint
-										required
-										auto-grow
-										rows="1"
-									></v-textarea>
-								</v-col>
-							</v-row>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col cols="6">
-									<v-text-field
-										v-model="distanceInput"
-										label="Distance"
-										type="number"
-										hint="Kilometers"
-										persistent-hint
-										required
-									></v-text-field>
-								</v-col>
-								<v-col cols="6">
-									<v-text-field
-										v-model="durationInput"
-										label="Duration"
-										type="number"
-										hint="Minutes"
-										persistent-hint
-										required
-									></v-text-field>
-								</v-col>
-							</v-row>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col cols="12">
-									<v-select
-										v-model="difficultyInput"
-										:items="items"
-										label="Difficulty"
-									></v-select>
-								</v-col>
-							</v-row>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col cols="12">
-									<v-text-field
-										v-model="locationInput"
-										label="Location"
-										hint="City/town name"
-										persistent-hint
-										required
-									></v-text-field>
-								</v-col>
-							</v-row>
-							<v-row
-								align="center"
-								justify="center"
-							>
-								<v-col
-									cols="12"
-									align="center"
-									justify="center"
-								>
-									<croppa
-										:width="300"
-										:height="169"
-										v-model="imageReference"
-										:quality="8"
-									>
-									</croppa>
-								</v-col>
-							</v-row>
-						</v-container>
-					</v-card-text>
-					<v-card-actions
-						justify="center"
-						align="center"
+				<v-sheet
+					width="400"
+					class="mx-auto"
+				>
+					<v-form
+						fast-fail
+						@submit.prevent
+						class="py-8 px-8"
 					>
-						<v-row>
-							<v-col>
-								<v-btn
-									color="primary"
-									@click="coordinatesDialog = true"
-									>Add coordinates &nbsp; <i class="fa-solid fa-plus"></i
-								></v-btn>
+						<v-text-field
+							v-model="routeName"
+							label="Name"
+							:rules="routeNameRules"
+						></v-text-field>
+
+						<v-textarea
+							v-model="routeDescription"
+							label="Description"
+							:rules="routeDescriptionRules"
+							auto-grow
+							rows="1"
+						></v-textarea>
+
+						<v-spacer></v-spacer>
+
+						<v-row
+							align="center"
+							justify="center"
+						>
+							<v-col cols="6">
+								<v-text-field
+									v-model="routeDistance"
+									label="Distance (kilometers)"
+									:rules="routeDistanceRules"
+									type="number"
+								></v-text-field>
+							</v-col>
+							<v-col cols="6">
+								<v-text-field
+									v-model="routeDuration"
+									label="Duration (minutes)"
+									:rules="routeDurationRules"
+									type="number"
+								></v-text-field>
 							</v-col>
 						</v-row>
-					</v-card-actions>
-				</v-card>
+
+						<v-select
+							v-model="routeDifficulty"
+							:rules="routeDifficultyRules"
+							:items="items"
+							label="Difficulty"
+						></v-select>
+
+						<v-text-field
+							v-model="routeLocation"
+							:rules="routeLocationRules"
+							label="Location"
+						></v-text-field>
+
+						<v-row
+							align="center"
+							justify="center"
+							class="mt-2"
+						>
+							<v-col
+								cols="12"
+								align="center"
+								justify="center"
+							>
+								<croppa
+									v-model="imageReference"
+									:width="300"
+									:height="169"
+									:accept="'image/*'"
+									:quality="8"
+								>
+								</croppa>
+							</v-col>
+						</v-row>
+
+						<v-row>
+							<v-col
+								><v-btn
+									@click="checkForm()"
+									block
+									type="submit"
+									class="mt-2 text-white rounded-xl"
+									color="#A2B39F"
+									>Add coordinates</v-btn
+								></v-col
+							>
+							<v-col
+								><v-btn
+									@click="
+										routeDialog = false;
+										creatingRoute = false;
+									"
+									block
+									class="mt-2 text-white rounded-xl"
+									color="#FF6868"
+									>Cancel</v-btn
+								></v-col
+							>
+						</v-row>
+					</v-form>
+				</v-sheet>
 			</v-dialog>
 			<v-dialog
 				v-model="coordinatesDialog"
@@ -173,7 +178,8 @@
 						<v-row>
 							<v-col>
 								<v-btn
-									color="primary"
+									class="text-white rounded-xl"
+									color="#A2B39F"
 									variant="text"
 									@click="
 										coordinatesDialog = false;
@@ -189,6 +195,49 @@
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
+			<v-dialog
+				v-model="successDialog"
+				width="auto"
+			>
+				<v-card
+					align="center"
+					class="pt-5"
+				>
+					<v-card-text>
+						<p class="text-h5">Route created successfully!</p>
+					</v-card-text>
+					<v-card-actions>
+						<v-btn
+							class="rounded-xl text-white"
+							color="#A2B39F"
+							block
+							@click="refreshSite()"
+							>Close</v-btn
+						>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+
+			<v-snackbar
+				v-model="snackbar"
+				:timeout="timeout"
+				align="center"
+				justify="center"
+			>
+				<v-row
+					alignt="center"
+					justify="center"
+				>
+					<v-col
+						cols="12"
+						align="center"
+						justify="center"
+					>
+						{{ snackbarText }}
+					</v-col>
+				</v-row>
+			</v-snackbar>
+
 			<div id="map"></div>
 			<div
 				id="middleDot"
@@ -207,26 +256,65 @@ export default {
 	name: 'Explore',
 	data() {
 		return {
-			name: '',
+			snackbar: false,
+			snackbarText: '',
+			timeout: 2000,
 			routes: [],
 			map: null,
 			centerCoordinates: null,
+			flippedCoordinates: 'Latitude: 0, Longitude: 0',
 			testCoordinates: [],
 			routeDialog: false,
 			coordinatesDialog: false,
-			showDot: false,
-			items: ['Easy', 'Medium', 'Hard'],
+			successDialog: false,
+			showDot: true,
 			imageReference: null,
-			nameInput: '',
-			descriptionInput: '',
-			distanceInput: 0,
-			durationInput: 0,
-			difficultyInput: null,
-			locationInput: '',
-			imageUrlInput: '',
 			createdRoute: {},
 			coordinatesMode: false,
 			creatingRoute: false,
+			routeName: '',
+			routeNameRules: [
+				(value) => {
+					if (value?.length > 3) return true;
+					return 'Name must be at least 4 characters.';
+				},
+			],
+			routeDescription: '',
+			routeDescriptionRules: [
+				(value) => {
+					if (value?.length > 15) return true;
+					return 'Please write a longer description.';
+				},
+			],
+			routeDistance: 0,
+			routeDistanceRules: [
+				(value) => {
+					if (value > 0.0) return true;
+					return 'Route must be longer.';
+				},
+			],
+			routeDuration: 1,
+			routeDurationRules: [
+				(value) => {
+					if (value > 0) return true;
+					return 'Route must be longer.';
+				},
+			],
+			routeDifficulty: null,
+			items: ['Easy', 'Medium', 'Hard'],
+			routeDifficultyRules: [
+				(value) => {
+					if (value !== null) return true;
+					return 'Please select an option.';
+				},
+			],
+			routeLocation: '',
+			routeLocationRules: [
+				(value) => {
+					if (value?.length > 1) return true;
+					return 'Please write the city/town.';
+				},
+			],
 		};
 	},
 	created() {
@@ -245,7 +333,20 @@ export default {
 		});
 		this.map.on('move', () => {
 			this.centerCoordinates = this.map.getCenter();
+			this.flippedCoordinates = `Latitude: ${this.centerCoordinates.lat.toFixed(
+				5
+			)}, Longitude: ${this.centerCoordinates.lng.toFixed(5)}`;
 		});
+		this.map.addControl(new mapboxgl.NavigationControl());
+		this.map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true,
+				},
+				trackUserLocation: true,
+				showUserHeading: true,
+			})
+		);
 	},
 	methods: {
 		async getAllRoutes() {
@@ -293,11 +394,31 @@ export default {
 		},
 		getCoordinates() {
 			this.testCoordinates.push([this.centerCoordinates.lng, this.centerCoordinates.lat]);
+			this.snackbarText = `Coordinates added (${this.centerCoordinates.lat}, ${this.centerCoordinates.lng})`;
+			this.snackbar = true;
 			console.log('Coordinates added!', this.testCoordinates);
 		},
 		resetCoordinates() {
 			this.testCoordinates = [];
+			this.snackbarText = 'All coordinates removed';
+			this.snackbar = true;
 			console.log('Coordinates reset to empty array!', this.testCoordinates);
+		},
+		checkForm() {
+			if (
+				this.routeName == '' ||
+				this.routeDescription == '' ||
+				this.routeDistance == 0 ||
+				this.routeDuration == 1 ||
+				this.routeLocation == '' ||
+				this.imageReference == null
+			) {
+				this.snackbarText = 'Please enter valid values.';
+				this.snackbar = true;
+				console.log('Image:', this.imageReference);
+				return false;
+			}
+			this.coordinatesDialog = true;
 		},
 		async uploadImageAndGetUrl(blobData) {
 			try {
@@ -331,19 +452,21 @@ export default {
 			}
 		},
 		async saveRoute() {
+			this.snackbarText = 'Route is being created ...';
+			this.snackbar = true;
 			try {
 				this.imageReference.generateBlob(async (blobData) => {
 					try {
-						const imageUrl = await this.uploadImageAndGetUrl(blobData);
-						this.imageUrlInput = imageUrl;
+						let imageUrl = await this.uploadImageAndGetUrl(blobData);
+
 						this.createdRoute = {
-							name: this.nameInput,
-							description: this.descriptionInput,
-							distance: this.distanceInput,
-							duration: this.durationInput,
-							difficulty: this.difficultyInput,
-							location: this.locationInput,
-							imageUrl: this.imageUrlInput,
+							name: this.routeName,
+							description: this.routeDescription,
+							distance: this.routeDistance,
+							duration: this.routeDuration,
+							difficulty: this.routeDifficulty,
+							location: this.routeLocation,
+							imageUrl: imageUrl,
 							startingPosition: `https://maps.google.com/maps?q=${this.testCoordinates[0][1]},${this.testCoordinates[0][0]}&hl=es;z=14&amp;output=embed`,
 							coordinates: this.testCoordinates,
 						};
@@ -351,16 +474,34 @@ export default {
 						let success = await Rute.addRoute(this.createdRoute);
 						if (success) {
 							console.log('Route added successfully');
+							this.successDialog = true;
+							this.coordinatesMode = false;
 						} else {
 							console.log('Unable to add route');
 						}
 					} catch (error) {
 						console.error('Error saving route:', error);
 					}
-				}, 'image/png');
+				});
 			} catch (error) {
 				console.error('Error generating blob:', error);
 			}
+		},
+		saveCoordinates() {
+			this.snackbarText = 'Coordinates copied.';
+			this.snackbar = true;
+			let value = `${this.centerCoordinates.lat}, ${this.centerCoordinates.lng}`;
+			navigator.clipboard.writeText(value).then(
+				function () {
+					console.log('Async: Copying to clipboard was successful!');
+				},
+				function (err) {
+					console.error('Async: Could not copy text: ', err);
+				}
+			);
+		},
+		refreshSite() {
+			location.reload();
 		},
 	},
 };
@@ -483,9 +624,9 @@ main {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 8px;
-	height: 8px;
-	background-color: red;
+	width: 6px;
+	height: 6px;
+	background-color: #a3b2a0;
 	border-radius: 50%;
 	z-index: 9999; /* Ensure it's above the map */
 }

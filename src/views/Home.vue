@@ -36,9 +36,10 @@
 									<h1 style="font-size: 3.5rem; color: #445462">Start exploring routes</h1>
 									<p></p>
 									<p style="font-size: 1.2rem; color: #445462">
-										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or
-										double click me to add your own content and make changes to the font. I’m a great place for you to
-										tell a story and let your users know a little more about you.
+										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just
+										click “Edit Text” or double click me to add your own content and make changes to
+										the font. I’m a great place for you to tell a story and let your users know a
+										little more about you.
 									</p>
 								</div>
 							</div>
@@ -76,9 +77,10 @@
 									<h1 style="font-size: 3.5rem; color: #445462">Find places to rest in nature</h1>
 									<p></p>
 									<p style="font-size: 1.2rem; color: #445462">
-										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or
-										double click me to add your own content and make changes to the font. I’m a great place for you to
-										tell a story and let your users know a little more about you.
+										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just
+										click “Edit Text” or double click me to add your own content and make changes to
+										the font. I’m a great place for you to tell a story and let your users know a
+										little more about you.
 									</p>
 								</div>
 							</div>
@@ -96,9 +98,10 @@
 									<h1 style="font-size: 3.5rem; color: #445462">On route location tracking</h1>
 									<p></p>
 									<p style="font-size: 1.2rem; color: #445462">
-										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or
-										double click me to add your own content and make changes to the font. I’m a great place for you to
-										tell a story and let your users know a little more about you.
+										I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just
+										click “Edit Text” or double click me to add your own content and make changes to
+										the font. I’m a great place for you to tell a story and let your users know a
+										little more about you.
 									</p>
 								</div>
 							</div>
@@ -131,7 +134,7 @@
 						class="container"
 						style="max-width: 70%"
 					>
-						<div class="avatars">
+						<!-- <div class="avatars">
 							<img
 								src="@/assets/woman.png"
 								alt=""
@@ -152,7 +155,7 @@
 								src="@/assets/woman (2).png"
 								alt=""
 							/>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

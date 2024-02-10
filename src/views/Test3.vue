@@ -1,10 +1,32 @@
 <template>
 	<v-container class="mx-auto">
+		<v-dialog
+			v-model="successDialog"
+			width="auto"
+		>
+			<v-card
+				align="center"
+				class="pt-5"
+			>
+				<v-card-text>
+					<p class="text-h5">Route created successfully!</p>
+				</v-card-text>
+				<v-card-actions>
+					<v-btn
+						color="primary"
+						block
+						@click="successDialog = false"
+						>Close</v-btn
+					>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<h1>Route dialog</h1>
 		<v-btn @click="routeDialog = true"> Open route dialog </v-btn>
 		<v-dialog
 			v-model="routeDialog"
 			width="auto"
+			persistent
 		>
 			<v-sheet
 				width="400"
@@ -66,12 +88,46 @@
 						label="Location"
 					></v-text-field>
 
-					<v-btn
-						type="submit"
-						block
+					<v-row
+						align="center"
+						justify="center"
 						class="mt-2"
-						>Submit</v-btn
 					>
+						<v-col
+							cols="12"
+							align="center"
+							justify="center"
+						>
+							<croppa
+								:width="300"
+								:height="169"
+								v-model="imageReference"
+								:quality="8"
+							>
+							</croppa>
+						</v-col>
+					</v-row>
+
+					<v-row>
+						<v-col
+							><v-btn
+								@click="coordinatesDialog = true"
+								block
+								class="mt-2 text-white"
+								color="#A2B39F"
+								>Add coordinates</v-btn
+							></v-col
+						>
+						<v-col
+							><v-btn
+								@click="routeDialog = false"
+								block
+								class="mt-2 text-white"
+								color="#FF6868"
+								>Cancel</v-btn
+							></v-col
+						>
+					</v-row>
 				</v-form>
 			</v-sheet>
 		</v-dialog>
@@ -122,6 +178,7 @@ export default {
 	components: { MyInput },
 	data() {
 		return {
+			successDialog: false,
 			selectedFile: null,
 			imageReference: null,
 			value: '',
@@ -167,7 +224,7 @@ export default {
 			routeLocationRules: [
 				(value) => {
 					if (value?.length > 1) return true;
-					return 'Please write the location of the route.';
+					return 'Please write the city/town.';
 				},
 			],
 		};

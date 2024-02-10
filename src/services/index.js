@@ -138,8 +138,18 @@ let Rute = {
 	async addRoute(route) {
 		try {
 			const response = await Service.post(`/addRoute`, route);
+			return response;
 		} catch (error) {
 			console.error('Error while adding route:', error);
+			throw error;
+		}
+	},
+	async addTag(routeId, updates) {
+		try {
+			const response = await Service.patch(`/rute/${routeId}/addTag`, updates);
+			return response;
+		} catch (error) {
+			console.error('Error while adding new tag:', error);
 			throw error;
 		}
 	},

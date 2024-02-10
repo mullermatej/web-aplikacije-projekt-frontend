@@ -286,6 +286,8 @@ export default {
 				});
 		},
 		handleSaveButton: function (changedUsername, changedEmail) {
+			if (changedUsername == '' && changedEmail == '') return false;
+
 			let userUpdates = {
 				email: changedEmail.trim() !== '' ? changedEmail.trim() : this.userEmail,
 				username: changedUsername.trim() !== '' ? changedUsername.trim() : this.username,
