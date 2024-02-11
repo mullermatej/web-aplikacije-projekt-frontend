@@ -126,6 +126,24 @@ let Rute = {
 		});
 		return routes;
 	},
+	async addPointOfInterest(routeId, newPointOfInterest) {
+		try {
+			const response = await Service.patch(`/pointsOfInterest/${routeId}`, newPointOfInterest);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
+	async getPointsOfInterest(routeId) {
+		try {
+			const response = await Service.get(`/pointsOfInterest/${routeId}`);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
 	async getRouteById(routeId) {
 		try {
 			const response = await Service.get(`/rute/${routeId}`);

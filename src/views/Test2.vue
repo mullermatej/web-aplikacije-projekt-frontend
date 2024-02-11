@@ -131,31 +131,45 @@
 			>
 		</p>
 
-		<v-row>
+		<v-row v-if="this.pointsOfInterest < 1">
+			<v-col>
+				<v-btn
+					class="rounded-pill text-white"
+					color="#a3b29f"
+					@click="poiDialog = true"
+				>
+					New <i class="fa-solid fa-plus"></i>
+				</v-btn>
+			</v-col>
+		</v-row>
+		<v-row v-else>
 			<v-col
-				v-for="point in pointsOfInterest"
+				v-for="point in this.pointsOfInterest"
 				:key="point.id"
 				cols="auto"
 			>
 				<v-card
-					class="mr-10 my-2"
+					class="mx-2 my-2 rounded-xl"
+					:href="`https://www.google.com/maps/place/${point.coordinates}`"
+					target="_blank"
+					max-width="350"
 					color="#99a897"
+					style="text-decoration: none"
 				>
 					<v-card-text>
 						<div class="text-white">
-							<div class="text-h6 mb-1">
-								{{ point.name }}
-							</div>
-							<div class="text-caption">{{ point.coordinates }}</div>
-							<v-img
-								class="mt-4 bg-white rounded-xl"
-								style="border: 3px solid white"
-								width="250"
-								height="180"
-								src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-							></v-img>
+							<v-card-title class="text-h5"> {{ point.name }} </v-card-title>
+							<v-card-subtitle>
+								<span class="text-body-2">{{ point.coordinates }}</span>
+							</v-card-subtitle>
 						</div>
 					</v-card-text>
+					<v-img
+						:src="point.imageUrl"
+						width="100%"
+						height="200"
+						cover
+					></v-img>
 				</v-card>
 			</v-col>
 		</v-row>
@@ -208,7 +222,7 @@
 					<v-row>
 						<v-col
 							><v-btn
-								@click="addPoi()"
+								@click="addPointOfInterest()"
 								block
 								type="submit"
 								class="mt-2 text-white rounded-xl"
@@ -285,43 +299,40 @@
 				</v-form>
 			</v-sheet>
 		</v-dialog>
+
+		<v-snackbar
+			v-model="snackbar"
+			timeout="2000"
+			align="center"
+			justify="center"
+		>
+			<v-row
+				alignt="center"
+				justify="center"
+			>
+				<v-col
+					cols="12"
+					align="center"
+					justify="center"
+				>
+					{{ snackbarText }}
+				</v-col>
+			</v-row>
+		</v-snackbar>
 	</v-container>
 </template>
 
 <script>
 import { Auth, Rute, Korisnik } from '@/services';
+import { storage } from '@/firebase';
 
 export default {
 	name: 'Test2',
 	data() {
 		return {
-			pointsOfInterest: [
-				{
-					id: '347347547',
-					name: 'Free parking spot',
-					coordinates: '44.87372259448554, 13.851071978057035',
-				},
-				{
-					id: '347347227',
-					name: 'Public table',
-					coordinates: '44.87372259448554, 13.851071978057035',
-				},
-				{
-					id: '347347227',
-					name: 'Public table',
-					coordinates: '44.87372259448554, 13.851071978057035',
-				},
-				{
-					id: '347347227',
-					name: 'Public table',
-					coordinates: '44.87372259448554, 13.851071978057035',
-				},
-				{
-					id: '347347227',
-					name: 'Public table',
-					coordinates: '44.87372259448554, 13.851071978057035',
-				},
-			],
+			snackbar: false,
+			snackbarText: '',
+			pointsOfInterest: null,
 			flippedCoordinates: this.centerCoordiant,
 			imageReference: null,
 			poiCoordinates: '',
@@ -355,6 +366,75 @@ export default {
 		this.getFavourites();
 	},
 	methods: {
+		async uploadImageAndGetUrl(blobData) {
+			try {
+				let imageName = 'userUploads/' + Auth.state.username + '/' + Date.now() + '.png';
+				const uploadTask = storage.ref(imageName).put(blobData);
+				return new Promise((resolve, reject) => {
+					uploadTask.on(
+						'state_changed',
+						(snapshot) => {},
+						(error) => {
+							console.error(error);
+							reject(error);
+						},
+						() => {
+							uploadTask.snapshot.ref
+								.getDownloadURL()
+								.then((url) => {
+									console.log('Uploaded image URL:', url);
+									resolve(url);
+								})
+								.catch((error) => {
+									console.error('Error getting download URL:', error);
+									reject(error);
+								});
+						}
+					);
+				});
+			} catch (error) {
+				console.error('Error uploading image:', error);
+				throw error;
+			}
+		},
+		async addPointOfInterest() {
+			this.snackbarText = 'Adding point of interest, please wait';
+			this.snackbar = true;
+			try {
+				this.imageReference.generateBlob(async (blobData) => {
+					try {
+						let imageUrl = await this.uploadImageAndGetUrl(blobData);
+						let newPointOfInterest = {
+							name: this.poiName,
+							coordinates: this.poiCoordinates,
+							imageUrl: imageUrl,
+						};
+
+						let success = await Rute.addPointOfInterest(this.$route.params.routeId, newPointOfInterest);
+						if (success) {
+							console.log('POI added');
+							this.pointsOfInterest = success.pointsOfInterest;
+							location.reload();
+						} else {
+							console.log('Unable to add POI');
+						}
+					} catch (error) {
+						console.error('Error saving POI:', error);
+					}
+				});
+			} catch (error) {
+				console.error('Error generating blob:', error);
+			}
+		},
+		async getPointsOfInterest() {
+			try {
+				const routeId = this.$route.params.routeId;
+				const response = await Rute.getPointsOfInterest(routeId);
+				this.pointsOfInterest = response.pointsOfInterest;
+			} catch (e) {
+				console.error(e);
+			}
+		},
 		async getRoute() {
 			try {
 				const routeId = this.$route.params.routeId;
@@ -364,6 +444,7 @@ export default {
 			} catch (e) {
 				console.error(e);
 			}
+			this.getPointsOfInterest();
 		},
 		async addFavourite() {
 			let updates = {
