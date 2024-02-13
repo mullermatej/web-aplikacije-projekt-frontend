@@ -7,13 +7,38 @@
 			class="mx-auto rounded"
 			:src="route.imageUrl"
 		></v-img>
-		<p class="text-h4 text-center mt-4 mb-0">{{ route.name }}</p>
-		<p class="text-subtitle-2 text-center mt-0 mb-4">{{ route.location }}</p>
+
+		<v-row>
+			<v-col
+				cols="4"
+				class="d-flex align-left"
+			>
+				<img
+					:src="route.creatorImg"
+					alt=""
+					width="40px"
+					height="40px"
+				/>
+				<p class="pt-2 pl-2">{{ route.createdBy }}</p>
+			</v-col>
+			<v-col
+				align="center"
+				justify="center"
+				cols="4"
+			>
+				<p class="text-h4 text-center mt-2 mb-0">{{ route.name }}</p>
+				<p class="text-subtitle-2 text-center">{{ route.location }}</p>
+			</v-col>
+			<v-col cols="4"
+				><p class="text-right pt-2">{{ route.date }}</p></v-col
+			>
+		</v-row>
+
 		<v-row>
 			<v-col align="center">
 				<v-btn
 					v-if="added"
-					class="my-2 rounded-pill text-white"
+					class="rounded-pill text-white"
 					color="#A3B29F"
 					@click="addFavourite(), (added = false)"
 				>
@@ -21,7 +46,7 @@
 				</v-btn>
 				<v-btn
 					v-else
-					class="my-2 rounded-pill text-white"
+					class="rounded-pill text-white"
 					color="#A3B29F"
 					@click="removeFavourite(), (added = true)"
 				>
@@ -80,44 +105,37 @@
 			>
 		</p>
 
-		<v-item-group
-			v-if="route.communityTags"
-			multiple
-			class="mb-5"
-		>
-			<v-item
-				v-for="tag in route.communityTags"
-				:key="tag"
-			>
-				<v-item class="mx-1 my-1">
-					<v-chip
-						class="text-white"
-						color="#798777"
-					>
-						{{ tag }}
-					</v-chip>
-				</v-item>
-			</v-item>
-		</v-item-group>
-		<v-item-group
-			v-else
-			multiple
-			class="mb-5"
-		>
-			<v-item class="mx-1 my-1">
-				<v-chip
-					class="text-white"
-					color="#798777"
+		<v-row v-if="route.communityTags < 1">
+			<v-col>
+				<v-btn
+					class="rounded-pill text-white"
+					color="#a3b29f"
 					@click="tagDialog = true"
 				>
-					<i
-						class="fa-solid fa-plus"
-						style="cursor: pointer; font-size: 10px"
-					></i>
-					&nbsp; to add
-				</v-chip>
-			</v-item>
-		</v-item-group>
+					New <i class="fa-solid fa-plus"></i>
+				</v-btn>
+			</v-col>
+		</v-row>
+		<v-row v-else>
+			<v-item-group
+				multiple
+				class="mb-5"
+			>
+				<v-item
+					v-for="tag in route.communityTags"
+					:key="tag"
+				>
+					<v-item class="mx-1 my-1">
+						<v-chip
+							class="text-white"
+							color="#798777"
+						>
+							{{ tag }}
+						</v-chip>
+					</v-item>
+				</v-item>
+			</v-item-group>
+		</v-row>
 
 		<p
 			class="text-h5 mt-10"

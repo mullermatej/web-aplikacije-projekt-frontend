@@ -1,56 +1,37 @@
 <template>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div
-			class="container"
-			style="max-width: 98%"
-		>
-			<a
-				class="navbar-brand"
-				href="../"
-				style="font-size: 2rem"
-				>Walk it</a
-			>
-			<button
-				class="navbar-toggler"
-				type="button"
-				data-toggle="collapse"
-				data-target="#navbarNavDropdown"
-				aria-controls="navbarNavDropdown"
-				aria-expanded="false"
-				aria-label="Toggle navigation"
-			>
-				<span class="navbar-toggler-icon"></span>
-			</button>
+	<v-container class="mx-auto">
+		<v-row>
+			<v-col>
+				<v-btn
+					class="text-h5 text-decoration-none"
+					plain
+					:to="{ name: 'Home' }"
+				>
+					Walk it
+				</v-btn>
+			</v-col>
 
-			<div
-				class="collapse navbar-collapse"
-				id="navbarNavDropdown"
-			>
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item">
-						<!-- ne smije biti hardcoded, nego izvući iz local storagea npr. -->
-						<a
-							class="nav-link px-3"
-							href="/profile"
-							>Profile</a
-						>
-					</li>
-					<li class="nav-item">
-						<a
-							class="nav-link px-3"
-							href="/explore"
-							>Explore</a
-						>
-					</li>
-					<li class="nav-item">
-						<a
-							class="nav-link px-3"
-							href="/test"
-							>Routes</a
-						>
-					</li>
-				</ul>
-
+			<v-col class="d-flex justify-space-around">
+				<v-btn
+					plain
+					class="text-decoration-none rounded-pill"
+					:to="{ name: 'Profile' }"
+					>Profile</v-btn
+				>
+				<v-btn
+					plain
+					class="text-decoration-none rounded-pill"
+					:to="{ name: 'Explore' }"
+					>Explore</v-btn
+				>
+				<v-btn
+					plain
+					class="text-decoration-none rounded-pill"
+					:to="{ name: 'Test' }"
+					>Routes</v-btn
+				>
+			</v-col>
+			<v-col align="right">
 				<section class="buttons">
 					<button
 						v-if="!auth.authenticated"
@@ -80,9 +61,9 @@
 						Logout
 					</button>
 				</section>
-			</div>
-		</div>
-	</nav>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
 <script>
 import { globalData } from '../../global.js';
@@ -134,6 +115,6 @@ export default {
 .navbar-light {
 	background-color: #fffefb !important;
 	border-width: 0 !important;
-	border-bottom: 1px solid #eee !important;
+	/* border-bottom: 1px solid #eee !important; */
 }
 </style>

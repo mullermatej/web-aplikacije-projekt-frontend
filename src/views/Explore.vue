@@ -2,18 +2,20 @@
 	<v-main>
 		<div style="position: relative">
 			<v-btn
-				class="rounded-xl"
+				class="rounded"
 				color="white"
-				style="position: absolute; top: 10px; left: 10px; z-index: 1"
+				elevation="0"
+				style="position: absolute; top: 55px; left: 10px; z-index: 1"
 				@click="saveCoordinates()"
 			>
 				{{ this.flippedCoordinates }}
 			</v-btn>
 			<v-btn
 				v-if="!creatingRoute"
-				class="rounded-xl"
+				class="rounded"
 				color="white"
-				style="position: absolute; top: 55px; left: 10px; z-index: 1"
+				elevation="0"
+				style="position: absolute; top: 100px; left: 10px; z-index: 1"
 				@click="
 					routeDialog = true;
 					creatingRoute = true;
@@ -23,25 +25,25 @@
 
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded-xl text-white"
+				class="rounded text-white"
 				color="#A2B39F"
-				style="position: absolute; top: 10px; left: 10px; z-index: 1"
+				style="position: absolute; top: 100px; left: 10px; z-index: 1"
 				@click="saveRoute()"
 				>Done</v-btn
 			>
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded-xl text-white"
+				class="rounded text-white"
 				color="#FF6868"
-				style="position: absolute; top: 10px; left: 90px; z-index: 1"
+				style="position: absolute; top: 100px; left: 90px; z-index: 1"
 				@click="resetCoordinates()"
 				>Reset</v-btn
 			>
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded-xl"
+				class="rounded"
 				color="white"
-				style="position: absolute; top: 55px; left: 10px; z-index: 1"
+				style="position: absolute; top: 145px; left: 10px; z-index: 1"
 				@click="getCoordinates()"
 				>Add coordinates</v-btn
 			>
@@ -249,13 +251,14 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import { Rute, Auth } from '@/services';
+import { Rute, Auth, Korisnik } from '@/services';
 import { storage } from '@/firebase';
 
 export default {
 	name: 'Explore',
 	data() {
 		return {
+			creatorImg: '',
 			snackbar: false,
 			snackbarText: '',
 			timeout: 2000,
@@ -275,8 +278,8 @@ export default {
 			routeName: '',
 			routeNameRules: [
 				(value) => {
-					if (value?.length > 3) return true;
-					return 'Name must be at least 4 characters.';
+					if (value?.length > 3 && value?.length < 30) return true;
+					return 'Enter a valid name.';
 				},
 			],
 			routeDescription: '',
@@ -326,17 +329,25 @@ export default {
 		this.map = new mapboxgl.Map({
 			container: 'map',
 			style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
-			center: [13.859928, 44.860742], // početna pozicija
-			zoom: 12, // početni zoom
+			center: [13.891513744940255, 45.05703740495804], // početna pozicija
+			zoom: 9, // početni zoom
 			scrollZoom: true,
 			maxZoom: 18,
+			minZoom: 9,
 		});
 		this.map.on('move', () => {
 			this.centerCoordinates = this.map.getCenter();
-			this.flippedCoordinates = `Latitude: ${this.centerCoordinates.lat.toFixed(
+			this.flippedCoordinates = `Lat: ${this.centerCoordinates.lat.toFixed(
 				5
-			)}, Longitude: ${this.centerCoordinates.lng.toFixed(5)}`;
+			)}, Lng: ${this.centerCoordinates.lng.toFixed(5)}`;
 		});
+		this.map.addControl(
+			new MapboxGeocoder({
+				accessToken: mapboxgl.accessToken,
+				mapboxgl: mapboxgl,
+			}),
+			'top-left'
+		);
 		this.map.addControl(new mapboxgl.NavigationControl());
 		this.map.addControl(
 			new mapboxgl.GeolocateControl({
@@ -357,11 +368,55 @@ export default {
 				console.error(err);
 			}
 			this.map.on('load', () => {
-				this.routes.forEach(({ id, coordinates }) => {
+				this.routes.forEach(({ id, coordinates, name, location }) => {
 					const geojson = this.createRouteGeojson(coordinates);
+					const geojsonMarkers = this.createMarkerGeojson(coordinates[0]);
 					this.addRoute(this.map, id, geojson);
+					// add markers to map
+					for (const feature of geojsonMarkers.features) {
+						const el = document.createElement('div');
+						el.className = 'marker';
+
+						const marker = new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(this.map);
+
+						this.map.setLayoutProperty(id, 'visibility', 'none');
+
+						marker.getElement().addEventListener('click', () => {
+							this.toggleRouteVisibility(id); // Toggle the visibility of the route paint
+						});
+						marker.getElement().addEventListener('mouseenter', () => {
+							if (this.map.getZoom() > 11) {
+								new mapboxgl.Popup({ offset: 25, closeButton: false })
+									.setLngLat(feature.geometry.coordinates)
+									.setHTML(
+										`<h2><a href="/test2/${id}" class="text-decoration-none">${name}</a></h2><p>${location}</p>`
+									)
+									.addTo(this.map);
+							}
+						});
+						marker.getElement().addEventListener('mouseleave', () => {
+							if (!document.getElementsByClassName('mapboxgl-popup')[0]) {
+								return false;
+							}
+							setTimeout(() => {
+								// Remove popup after delay
+								document.getElementsByClassName('mapboxgl-popup')[0].remove();
+							}, 1500);
+						});
+					}
 				});
 			});
+		},
+		toggleRouteVisibility(routeId) {
+			const layer = this.map.getLayer(routeId);
+			if (layer) {
+				const visibility = this.map.getLayoutProperty(routeId, 'visibility');
+				if (visibility === 'visible') {
+					this.map.setLayoutProperty(routeId, 'visibility', 'none'); // Hide the route paint
+				} else {
+					this.map.setLayoutProperty(routeId, 'visibility', 'visible'); // Show the route paint
+				}
+			}
 		},
 		createRouteGeojson(coordinates) {
 			return {
@@ -371,6 +426,24 @@ export default {
 					type: 'LineString',
 					coordinates: coordinates,
 				},
+			};
+		},
+		createMarkerGeojson(coordinates) {
+			return {
+				type: 'FeatureCollection',
+				features: [
+					{
+						type: 'Feature',
+						geometry: {
+							type: 'Point',
+							coordinates: coordinates,
+						},
+						properties: {
+							title: 'Mapbox',
+							description: 'Washington, D.C.',
+						},
+					},
+				],
 			};
 		},
 		addRoute(map, routeId, geojson) {
@@ -387,8 +460,8 @@ export default {
 					'line-cap': 'round',
 				},
 				paint: {
-					'line-color': '#49A7B1',
-					'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 14, 8],
+					'line-color': '#A2B29F',
+					'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 14, 4],
 				},
 			});
 		},
@@ -451,9 +524,24 @@ export default {
 				throw error;
 			}
 		},
+		async getUserImageUrl() {
+			const username = Auth.state.username;
+			Korisnik.getUser(username)
+				.then((response) => {
+					this.creatorImg = response.imageUrl;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		},
 		async saveRoute() {
 			this.snackbarText = 'Route is being created ...';
 			this.snackbar = true;
+			this.getUserImageUrl();
+			const currentDate = new Date();
+			const year = currentDate.getFullYear();
+			const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Adding 1 because month is zero-indexed
+			const day = String(currentDate.getDate()).padStart(2, '0');
 			try {
 				this.imageReference.generateBlob(async (blobData) => {
 					try {
@@ -466,11 +554,15 @@ export default {
 							duration: this.routeDuration,
 							difficulty: this.routeDifficulty,
 							location: this.routeLocation,
+							date: `${day}/${month}/${year}`,
+							createdBy: Auth.state.username,
+							creatorImg: this.creatorImg,
 							imageUrl: imageUrl,
 							startingPosition: `https://maps.google.com/maps?q=${this.testCoordinates[0][1]},${this.testCoordinates[0][0]}&hl=es;z=14&amp;output=embed`,
 							coordinates: this.testCoordinates,
+							communityTags: [],
+							pointsOfInterest: [],
 						};
-						console.log('Created Route:', this.createdRoute);
 						let success = await Rute.addRoute(this.createdRoute);
 						if (success) {
 							console.log('Route added successfully');
@@ -518,6 +610,18 @@ main {
 	height: 900px;
 }
 
+.geocoder {
+	position: absolute;
+	z-index: 1;
+	width: 50%;
+	left: 50%;
+	margin-left: -25%;
+	top: 10px;
+}
+.mapboxgl-ctrl-geocoder {
+	min-width: 100%;
+}
+
 .marker {
 	background-image: url('@/assets/CustomLogo1Walking.png');
 	background-size: cover;
@@ -552,13 +656,13 @@ main {
 	cursor: pointer;
 }
 
+.mapboxgl-popup {
+	max-width: 200px;
+}
+
 .mapboxgl-popup-content {
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 20px;
-	border-radius: 1rem;
-	background-color: #fffefb;
-	max-width: 320px;
 }
 .popupNaslov {
 	margin: 10px 0px 0 0px;
