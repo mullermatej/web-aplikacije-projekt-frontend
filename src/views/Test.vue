@@ -1,5 +1,34 @@
 <template>
 	<v-container class="mx-auto">
+		<v-row
+			align="center"
+			justify="center"
+		>
+			<v-col cols="12">
+				<v-autocomplete
+					:disabled="isUpdating"
+					:items="routes"
+					color="primary"
+					label="Search by city, country, difficulty or walk name"
+					item-text="name"
+					item-value="name"
+					class="primary--text"
+					:filter="customFilter"
+				>
+					<template v-slot:item="data">
+						<v-list-item-avatar>
+							<img :src="data.item.imageUrl" />
+						</v-list-item-avatar>
+						<v-list-item-content>
+							<v-list-item-title
+								@click="handleClick(data.item.id)"
+								v-html="data.item.name"
+							></v-list-item-title>
+						</v-list-item-content>
+					</template>
+				</v-autocomplete>
+			</v-col>
+		</v-row>
 		<v-row no-gutters>
 			<v-col
 				v-for="route in routes"
@@ -30,6 +59,7 @@ export default {
 	data() {
 		return {
 			routes: [],
+			isUpdating: false,
 		};
 	},
 	created() {
@@ -43,6 +73,20 @@ export default {
 			} catch (err) {
 				console.error(err);
 			}
+		},
+		handleClick(id) {
+			this.$router.push(`/Test2/${id}`);
+		},
+		customFilter(item, queryText, itemText) {
+			const searchText = queryText.toLowerCase();
+			const itemName = item.name.toLowerCase();
+			const itemLocation = item.location.toLowerCase();
+			const itemDifficulty = item.difficulty.toLowerCase();
+			return (
+				itemName.includes(searchText) ||
+				itemLocation.includes(searchText) ||
+				itemDifficulty.includes(searchText)
+			);
 		},
 	},
 };

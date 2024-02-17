@@ -14,12 +14,7 @@
 				lg="4"
 				class="py-0"
 			>
-				<p
-					class="py-0 text-center font-size-5"
-					style="font-size: 1.5rem"
-				>
-					favourite routes
-				</p>
+				<p class="text-uppercase py-0 text-center">Favourite walks</p>
 			</v-col>
 		</v-row>
 		<v-row v-if="routes.length > 0">

@@ -32,6 +32,15 @@ Service.interceptors.response.use(
 // Zadnje sam dodao service2, vjerojatno rijesit korjen problema, da se ne spremaju podaci u test bazu nego u walk_it od starta
 
 let Korisnik = {
+	async getCreatedWalks(userId) {
+		try {
+			const response = await Service.get(`/${userId}/createdWalks`);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching user by ID:', error);
+			throw error;
+		}
+	},
 	async getUser(username) {
 		try {
 			const response = await Service.get(`/${username}`);
@@ -208,6 +217,9 @@ let Auth = {
 			password: password,
 			imageUrl: imageUrl,
 			favourites: [],
+			createdWalks: [],
+			createdTags: [],
+			createdPoints: [],
 		});
 
 		return true;
@@ -232,7 +244,11 @@ let Auth = {
 	},
 	// Dohvati usera iz local storage-a
 	getUser() {
-		return JSON.parse(localStorage.getItem('user'));
+		if (localStorage.getItem('user') === null) {
+			return false;
+		} else {
+			return JSON.parse(localStorage.getItem('user'));
+		}
 	},
 	// Dohvati token iz local storage-a
 	getToken() {

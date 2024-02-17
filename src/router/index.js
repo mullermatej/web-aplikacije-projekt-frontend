@@ -6,6 +6,7 @@ import Home from '../views/Home.vue';
 import Test from '../views/Test.vue';
 import Test2 from '../views/Test2.vue';
 import Test3 from '../views/Test3.vue';
+import Uploads from '../views/Uploads.vue';
 import { Auth } from '@/services';
 
 Vue.use(VueRouter);
@@ -13,8 +14,8 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		name: 'Home',
-		component: Home,
+		name: 'Explore',
+		component: Explore,
 	},
 	{
 		path: '/login',
@@ -56,6 +57,11 @@ const routes = [
 		path: '/test3',
 		name: 'Test3',
 		component: Test3,
+	},
+	{
+		path: '/uploads',
+		name: 'Uploads',
+		component: Uploads,
 	},
 ];
 

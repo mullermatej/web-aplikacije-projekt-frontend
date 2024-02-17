@@ -2,71 +2,69 @@
 	<v-container class="mx-auto">
 		<v-row>
 			<v-col>
-				<v-btn
-					class="text-h5 text-decoration-none"
-					plain
-					:to="{ name: 'Home' }"
+				<router-link
+					:to="{ name: 'Explore' }"
+					class="text-decoration-none"
 				>
-					Walk it
-				</v-btn>
+					<p class="text-h5 font-weight-light text-uppercase">Walk it</p>
+				</router-link>
 			</v-col>
 
-			<v-col class="d-flex justify-space-around">
+			<v-col
+				v-if="device == 'lg'"
+				class="d-flex justify-space-around"
+			>
 				<v-btn
 					plain
-					class="text-decoration-none rounded-pill"
+					class="text-decoration-none text-caption rounded-pill"
 					:to="{ name: 'Profile' }"
 					>Profile</v-btn
 				>
 				<v-btn
 					plain
-					class="text-decoration-none rounded-pill"
+					class="text-decoration-none text-caption rounded-pill"
 					:to="{ name: 'Explore' }"
 					>Explore</v-btn
 				>
 				<v-btn
 					plain
-					class="text-decoration-none rounded-pill"
+					class="text-decoration-none text-caption rounded-pill"
 					:to="{ name: 'Test' }"
-					>Routes</v-btn
+					>Walks</v-btn
 				>
 			</v-col>
 			<v-col align="right">
 				<section class="buttons">
-					<button
+					<v-btn
 						v-if="!auth.authenticated"
-						type="button"
-						id="loginButton"
-						class="btn btn-md mr-2"
+						color="secondary"
+						class="text-caption mr-4"
 						onclick="window.location.href = 'Login'"
 					>
 						Log in
-					</button>
-					<button
+					</v-btn>
+					<v-btn
 						v-if="!auth.authenticated"
-						type="button"
-						id="signupButton"
-						class="btn btn-md mr-2"
+						class="text-caption"
+						color="primary"
 						onclick="window.location.href = 'Register'"
 					>
 						Register
-					</button>
-					<button
+					</v-btn>
+					<v-btn
 						v-if="auth.authenticated"
 						@click="logout"
-						type="button"
-						id="logoutButton"
-						class="btn btn-md my-2 my-sm-0 mr-2"
+						class="text-caption"
+						color="secondary"
 					>
-						Logout
-					</button>
+						Log out
+					</v-btn>
 				</section>
 			</v-col>
 		</v-row>
 	</v-container>
 </template>
 <script>
-import { globalData } from '../../global.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Auth } from '@/services';
@@ -76,7 +74,6 @@ export default {
 	data() {
 		return {
 			username: '',
-			mojeKoordinate: globalData.mojeKoordinate,
 			auth: Auth.state, // Ovo je reactive, pa se automatski updatea - ako stavim ... spread operator, ne radi
 		};
 	},
@@ -88,6 +85,11 @@ export default {
 		goHome() {
 			this.$router.push('/');
 			console.log(window.location.href);
+		},
+	},
+	computed: {
+		device() {
+			return this.$vuetify.breakpoint.name;
 		},
 	},
 };

@@ -1,7 +1,7 @@
 <template>
 	<v-col>
 		<v-card
-			class="mx-auto rounded-xl"
+			class="mx-auto rounded-xl mb-2"
 			max-width="400"
 			href="#"
 			style="text-decoration: none"
@@ -12,9 +12,9 @@
 				width="100%"
 				cover
 			></v-img>
-			<v-card-title class="text-h5"> {{ route.name }} </v-card-title>
+			<v-card-title class="text-h5 text-capitalize"> {{ route.name }} </v-card-title>
 			<v-card-subtitle class="d-flex justify-space-between">
-				<span class="text-body-2">{{ route.location }}</span>
+				<span class="text-body-2 text-capitalize">{{ route.location }}</span>
 				<span class="text-body-1">{{ route.distance }}km</span></v-card-subtitle
 			>
 		</v-card>

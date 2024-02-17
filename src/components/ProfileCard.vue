@@ -12,26 +12,22 @@
 			/>
 
 			<div class="user-info">
-				<h1 id="naslov-korisnikovog-profila">
+				<h1
+					id="naslov-korisnikovog-profila"
+					class="text-h4 font-weight-medium"
+				>
 					{{ username }}
 					<button
 						type="button"
 						id="follow-button"
-						class="btn btn-outline btn-sm ml-4"
+						class="btn btn-outline btn-sm mb-2 ml-5"
 						@click="openModel"
 					>
-						<span>edit</span>
+						<span class="text-capitalize text-subtitle-2">edit</span>
 						<i class="fa-solid fa-pen-to-square ml-1"></i>
 					</button>
 				</h1>
-				<!-- <span @click="openFollowersModal">
-					<p style="font-weight: 400; text-align: left">
-						<span style="cursor: pointer">FOLLOWERS: <strong>3</strong> </span>
-					</p>
-				</span> -->
 			</div>
-
-			<!-- Edit profile modal -->
 			<div
 				class="custom-model-main"
 				:class="{ 'model-open': showModal }"
@@ -48,11 +44,11 @@
 								</span>
 							</div>
 							<div class="naslov-flex">
-								<h1 style="font-weight: 300; color: #445462; font-size: 2.5rem; margin: 0 0 0 0">
-									{{ username }}'s preferences
-								</h1>
+								<p class="text-h5 text-uppercase font-weight-medium">{{ username }}'s preferences</p>
 							</div>
-							<div class="titles-text">avatar</div>
+
+							<p class="text-uppercase text-subtitle-1 font-weight-medium mb-0">avatar</p>
+
 							<div class="avatar-part">
 								<div id="avatar-image">
 									<img
@@ -63,32 +59,24 @@
 									/>
 								</div>
 								<div id="avatar-undertext">
-									<!-- <button
-										id="avatar-button"
-										type="button"
-										class="btn btn-md my-3 mr-2"
-										style="font-family: 'Alegreya Sans SC', sans-serif"
-										@click="openAvatarsModal"
-									>
-										change avatar
-									</button> -->
 									<v-btn
-										class="mt-3 text-white"
-										color="#798776"
+										class="mt-3 text-white text-caption"
+										color="primary"
 										@click="openAvatarsModal"
 									>
-										change avatar
+										view avatars
 									</v-btn>
 								</div>
 							</div>
-							<div class="titles-text">info</div>
+
+							<p class="text-uppercase text-subtitle-1 font-weight-medium">info</p>
 							<div class="personal-info">
 								<form>
 									<div>
 										<input
 											v-model="changedUsername"
 											type="text"
-											class="form-control"
+											class="text-subtitle-1 form-control"
 											:placeholder="username"
 											style="width: 300px"
 										/>
@@ -96,7 +84,7 @@
 											class="form-text text-muted ml-1"
 											style="font-size: 12px"
 										>
-											not required
+											Not required
 										</p>
 									</div>
 
@@ -104,36 +92,29 @@
 										<input
 											v-model="changedEmail"
 											type="text"
-											class="form-control"
+											class="text-subtitle-1 form-control"
 											:placeholder="userEmail"
+											disabled
 										/>
 										<p
 											class="form-text text-muted ml-1"
 											style="font-size: 12px"
 										>
-											not required
+											Cannot change
 										</p>
 									</div>
 									<div class="password-submit-center">
-										<!-- <button
-											id="user-info-popup-save"
-											type="button"
-											class="btn"
-											@click="handleSaveButton(changedUsername, changedEmail)"
-										>
-											spremi
-										</button> -->
 										<v-btn
-											class="text-white"
-											color="#798776"
+											class="text-white text-caption"
+											color="primary"
 											@click="handleSaveButton(changedUsername, changedEmail)"
 										>
-											save info
+											save new username
 										</v-btn>
 									</div>
 								</form>
 							</div>
-							<div class="titles-text">change password</div>
+							<p class="text-uppercase text-subtitle-1 font-weight-medium mt-8">change password</p>
 							<div class="change-password">
 								<form @submit.prevent="changePassword">
 									<div class="form-password-change">
@@ -141,14 +122,15 @@
 										<input
 											v-model="oldPassword"
 											type="password"
-											class="form-control"
+											class="text-subtitle-1 form-control"
 											id="exampleInputOldPassword1"
-											placeholder="old password"
+											placeholder="Old password"
 											style="width: 300px"
+											required
 										/>
 										<p
 											id="passwordHelpBlock"
-											class="form-text text-muted ml-1"
+											class="text-caption form-text text-muted ml-1 text-capitalize"
 										>
 											required
 										</p>
@@ -158,32 +140,26 @@
 										<input
 											v-model="newPassword"
 											type="password"
-											class="form-control"
+											class="text-subtitle-1 form-control"
 											id="exampleInputNewPassword1"
-											placeholder="new password"
+											placeholder="New password"
 											style="width: 300px"
+											required
 										/>
 										<p
 											id="passwordHelpBlock"
-											class="form-text text-muted ml-1"
+											class="text-caption form-text text-muted ml-1 text-capitalize"
 										>
 											required
 										</p>
 									</div>
 									<div class="password-submit-center">
-										<!-- <button
-											id="change-password-popup"
-											type="submit"
-											class="btn"
-										>
-											change
-										</button> -->
 										<v-btn
-											class="text-white"
+											class="text-white text-caption mt-4"
 											type="submit"
-											color="#798776"
+											color="primary"
 										>
-											change
+											change password
 										</v-btn>
 									</div>
 								</form>
@@ -196,8 +172,6 @@
 					@click="closeModel"
 				></div>
 			</div>
-
-			<!-- AvatarsModal -->
 			<div
 				class="avatars-custom-modal-main"
 				:class="{ 'avatars-modal-open': showAvatarsModal }"
@@ -214,9 +188,7 @@
 								</span>
 							</div>
 							<div class="naslov-flex">
-								<h1 style="font-weight: 300; color: #445462; font-size: 2rem; margin: 0 0 20px 0">
-									select your avatar
-								</h1>
+								<p class="text-h5 text-uppercase font-weight-medium">select your avatar</p>
 							</div>
 
 							<v-row>
@@ -285,11 +257,10 @@ export default {
 					console.error(error);
 				});
 		},
-		handleSaveButton: function (changedUsername, changedEmail) {
-			if (changedUsername == '' && changedEmail == '') return false;
+		handleSaveButton: function (changedUsername) {
+			if (changedUsername == '' || changedUsername.length < 3) return false;
 
 			let userUpdates = {
-				email: changedEmail.trim() !== '' ? changedEmail.trim() : this.userEmail,
 				username: changedUsername.trim() !== '' ? changedUsername.trim() : this.username,
 			};
 
@@ -361,10 +332,6 @@ export default {
 };
 </script>
 <style scoped>
-main {
-	font-family: 'Alegreya Sans SC', sans-serif;
-	background-color: #fffefb;
-}
 header {
 	max-width: 80%;
 	/* background-color: #64dfdf; */
@@ -372,7 +339,7 @@ header {
 	/* border-bottom: 1px solid #eee; */
 }
 #naslov-korisnikovog-profila {
-	font-size: 2.5rem;
+	font-size: 2rem;
 	font-weight: 300;
 	margin-top: 30px;
 	color: #445462;
@@ -444,7 +411,6 @@ header {
 	text-align: center;
 }
 #passwordHelpBlock {
-	font-size: 12px;
 	color: #798777;
 	margin: 4px 0 0 0;
 	padding: 0 0 0 0;

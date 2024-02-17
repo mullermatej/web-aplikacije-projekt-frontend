@@ -10,7 +10,7 @@
 
 		<v-row>
 			<v-col
-				cols="4"
+				cols="3"
 				class="d-flex align-left"
 			>
 				<img
@@ -19,18 +19,18 @@
 					width="40px"
 					height="40px"
 				/>
-				<p class="pt-2 pl-2">{{ route.createdBy }}</p>
+				<p class="pt-2 pl-2 text-body">{{ route.createdBy }}</p>
 			</v-col>
 			<v-col
 				align="center"
 				justify="center"
-				cols="4"
+				cols="6"
 			>
 				<p class="text-h4 text-center mt-2 mb-0">{{ route.name }}</p>
 				<p class="text-subtitle-2 text-center">{{ route.location }}</p>
 			</v-col>
-			<v-col cols="4"
-				><p class="text-right pt-2">{{ route.date }}</p></v-col
+			<v-col cols="3"
+				><p class="text-body text-right pt-2">{{ route.date }}</p></v-col
 			>
 		</v-row>
 
@@ -38,16 +38,16 @@
 			<v-col align="center">
 				<v-btn
 					v-if="added"
-					class="rounded-pill text-white"
-					color="#A3B29F"
+					class="rounded-pill text-white text-caption"
+					color="secondary"
 					@click="addFavourite(), (added = false)"
 				>
 					add &nbsp; <i class="fa-regular fa-heart"></i>
 				</v-btn>
 				<v-btn
 					v-else
-					class="rounded-pill text-white"
-					color="#A3B29F"
+					class="rounded-pill text-white text-caption"
+					color="secondary"
 					@click="removeFavourite(), (added = true)"
 				>
 					added &nbsp; <i class="fa-solid fa-heart"></i>
@@ -64,7 +64,7 @@
 
 		<v-item-group
 			multiple
-			class="mb-4"
+			class="mb-4 text-capitalize text-caption"
 		>
 			<v-item class="mx-1 my-1">
 				<v-chip
@@ -108,8 +108,7 @@
 		<v-row v-if="route.communityTags < 1">
 			<v-col>
 				<v-btn
-					class="rounded-pill text-white"
-					color="#a3b29f"
+					class="rounded-pill text-overline"
 					@click="tagDialog = true"
 				>
 					New <i class="fa-solid fa-plus"></i>
@@ -119,7 +118,7 @@
 		<v-row v-else>
 			<v-item-group
 				multiple
-				class="mb-5"
+				class="mb-5 text-capitalize text-caption"
 			>
 				<v-item
 					v-for="tag in route.communityTags"
@@ -128,7 +127,7 @@
 					<v-item class="mx-1 my-1">
 						<v-chip
 							class="text-white"
-							color="#798777"
+							color="primary"
 						>
 							{{ tag }}
 						</v-chip>
@@ -149,18 +148,23 @@
 			>
 		</p>
 
-		<v-row v-if="this.pointsOfInterest < 1">
+		<v-row
+			v-if="this.pointsOfInterest < 1"
+			class="mb-10"
+		>
 			<v-col>
 				<v-btn
-					class="rounded-pill text-white"
-					color="#a3b29f"
+					class="rounded-pill text-overline"
 					@click="poiDialog = true"
 				>
 					New <i class="fa-solid fa-plus"></i>
 				</v-btn>
 			</v-col>
 		</v-row>
-		<v-row v-else>
+		<v-row
+			v-else
+			class="mb-10"
+		>
 			<v-col
 				v-for="point in this.pointsOfInterest"
 				:key="point.id"
@@ -262,16 +266,7 @@
 			</v-sheet>
 		</v-dialog>
 
-		<iframe
-			:src="route.startingPosition"
-			width="100%"
-			height="400"
-			class="rounded mt-10"
-			style="border: 0"
-			allowfullscreen="true"
-			loading="lazy"
-			referrerpolicy="no-referrer-when-downgrade"
-		></iframe>
+		<div id="map"></div>
 
 		<v-dialog
 			v-model="tagDialog"
@@ -321,26 +316,15 @@
 		<v-snackbar
 			v-model="snackbar"
 			timeout="2000"
-			align="center"
-			justify="center"
+			color="primary"
 		>
-			<v-row
-				alignt="center"
-				justify="center"
-			>
-				<v-col
-					cols="12"
-					align="center"
-					justify="center"
-				>
-					{{ snackbarText }}
-				</v-col>
-			</v-row>
+			<div class="text-center text-caption">{{ snackbarText }}</div>
 		</v-snackbar>
 	</v-container>
 </template>
 
 <script>
+import mapboxgl from 'mapbox-gl';
 import { Auth, Rute, Korisnik } from '@/services';
 import { storage } from '@/firebase';
 
@@ -349,6 +333,7 @@ export default {
 	data() {
 		return {
 			snackbar: false,
+			map: null,
 			snackbarText: '',
 			pointsOfInterest: null,
 			flippedCoordinates: this.centerCoordiant,
@@ -382,6 +367,15 @@ export default {
 	created() {
 		this.getRoute();
 		this.getFavourites();
+	},
+	mounted() {
+		mapboxgl.accessToken =
+			'pk.eyJ1IjoibXVsbGVybWF0ZWoxOCIsImEiOiJjbGt3ZjdqZHEwdnBvM2twbTRrZDlodWpxIn0.LwbRQW9Up-KStWz9Jp3J5A';
+	},
+	computed: {
+		device() {
+			return this.$vuetify.breakpoint.name;
+		},
 	},
 	methods: {
 		async uploadImageAndGetUrl(blobData) {
@@ -429,8 +423,10 @@ export default {
 						};
 
 						let success = await Rute.addPointOfInterest(this.$route.params.routeId, newPointOfInterest);
+						// (username, routeId, pointName)
+						// u userov createdPoints array spremi novi objekt sa routeId i pointName ključevima
+						// treba patch za korisnika auth.state.username, u ključ createdPoints pushaj novi objekt
 						if (success) {
-							console.log('POI added');
 							this.pointsOfInterest = success.pointsOfInterest;
 							location.reload();
 						} else {
@@ -462,6 +458,37 @@ export default {
 			} catch (e) {
 				console.error(e);
 			}
+			this.map = new mapboxgl.Map({
+				container: 'map',
+				style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
+				center: this.route.coordinates[0], // početna pozicija
+				zoom: 15, // početni zoom
+				scrollZoom: true,
+				maxZoom: 18,
+				minZoom: 9,
+			});
+			this.map.on('load', () => {
+				const el = document.createElement('div');
+				el.className = 'marker';
+
+				const marker = new mapboxgl.Marker(el).setLngLat(this.route.coordinates[0]).addTo(this.map);
+
+				marker.getElement().addEventListener('click', () => {
+					window.open(
+						`https://www.google.com/maps/place/${this.route.coordinates[0][1]},${this.route.coordinates[0][0]}`
+					);
+				});
+			});
+			this.map.addControl(new mapboxgl.NavigationControl());
+			this.map.addControl(
+				new mapboxgl.GeolocateControl({
+					positionOptions: {
+						enableHighAccuracy: true,
+					},
+					trackUserLocation: true,
+					showUserHeading: true,
+				})
+			);
 			this.getPointsOfInterest();
 		},
 		async addFavourite() {
@@ -524,3 +551,10 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+#map {
+	width: 100%;
+	height: 400px;
+}
+</style>

@@ -1,9 +1,10 @@
 <template>
-	<v-container class="mx-auto">
+	<v-container fluid>
 		<v-row class="mt-5">
 			<v-col align="center">
 				<v-img
 					style="cursor: pointer"
+					class="mt-15"
 					:src="imageUrl"
 					height="200px"
 					width="200px"
@@ -14,7 +15,8 @@
 		</v-row>
 		<v-row>
 			<v-col align="center">
-				<p>Choose your avatar</p>
+				<p class="mb-0">Select your avatar</p>
+				<p class="text-caption">(can be changed later)</p>
 			</v-col>
 			<div
 				class="avatars-custom-modal-main"
@@ -35,9 +37,7 @@
 								class="naslov-flex"
 								align="center"
 							>
-								<h1 style="font-weight: 300; color: #445462; font-size: 2rem; margin: 0 0 20px 0">
-									select your avatar
-								</h1>
+								<p class="text-h5 text-uppercase font-weight-medium">select your avatar</p>
 							</div>
 
 							<v-row>
@@ -82,7 +82,7 @@
 						v-model="username"
 						type="text"
 						class="form-control"
-						placeholder="username"
+						placeholder="Username"
 						required
 					/>
 					<p
@@ -96,7 +96,7 @@
 						v-model="email"
 						type="email"
 						class="form-control"
-						placeholder="email"
+						placeholder="Email"
 						required
 					/>
 					<p
@@ -110,7 +110,7 @@
 						v-model="password"
 						type="password"
 						class="form-control"
-						placeholder="password"
+						placeholder="Password"
 						required
 					/>
 					<p
@@ -122,9 +122,9 @@
 
 					<v-col align="center">
 						<v-btn
-							class="mb-2 white--text"
+							class="mb-2 white--text text-caption"
 							type="submit"
-							color="#A2B29F"
+							color="secondary"
 						>
 							Register
 						</v-btn>

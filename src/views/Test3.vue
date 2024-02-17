@@ -171,11 +171,9 @@
 <script>
 import { Auth } from '@/services';
 import { db, storage } from '@/firebase';
-import MyInput from '@/components/Popups/MyInput.vue';
 
 export default {
 	name: 'Test3',
-	components: { MyInput },
 	data() {
 		return {
 			successDialog: false,

@@ -1,8 +1,13 @@
 <template>
 	<v-main>
 		<div style="position: relative">
+			<div id="map"></div>
+			<div
+				id="middleDot"
+				v-if="showDot"
+			></div>
 			<v-btn
-				class="rounded"
+				class="rounded text-caption"
 				color="white"
 				elevation="0"
 				style="position: absolute; top: 55px; left: 10px; z-index: 1"
@@ -11,39 +16,40 @@
 				{{ this.flippedCoordinates }}
 			</v-btn>
 			<v-btn
-				v-if="!creatingRoute"
-				class="rounded"
+				v-if="routeDialog == false"
+				class="rounded text-caption"
 				color="white"
 				elevation="0"
 				style="position: absolute; top: 100px; left: 10px; z-index: 1"
 				@click="
 					routeDialog = true;
-					creatingRoute = true;
+					showDot = false;
 				"
 				>create
 			</v-btn>
 
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded text-white"
+				class="rounded text-caption text-white"
 				color="#A2B39F"
-				style="position: absolute; top: 100px; left: 10px; z-index: 1"
+				style="position: absolute; top: 145px; left: 10px; z-index: 1"
 				@click="saveRoute()"
 				>Done</v-btn
 			>
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded text-white"
+				class="rounded text-caption text-white"
 				color="#FF6868"
-				style="position: absolute; top: 100px; left: 90px; z-index: 1"
+				style="position: absolute; top: 145px; left: 90px; z-index: 1"
 				@click="resetCoordinates()"
 				>Reset</v-btn
 			>
 			<v-btn
 				v-if="coordinatesMode"
-				class="rounded"
-				color="white"
-				style="position: absolute; top: 145px; left: 10px; z-index: 1"
+				class="rounded text-caption"
+				color="white "
+				elevation="0"
+				style="position: absolute; top: 100px; left: 10px; z-index: 1"
 				@click="getCoordinates()"
 				>Add coordinates</v-btn
 			>
@@ -139,7 +145,7 @@
 									@click="checkForm()"
 									block
 									type="submit"
-									class="mt-2 text-white rounded-xl"
+									class="mt-2 text-white rounded-xl text-caption"
 									color="#A2B39F"
 									>Add coordinates</v-btn
 								></v-col
@@ -148,10 +154,10 @@
 								><v-btn
 									@click="
 										routeDialog = false;
-										creatingRoute = false;
+										showDot = true;
 									"
 									block
-									class="mt-2 text-white rounded-xl"
+									class="mt-2 text-white rounded-xl text-caption"
 									color="#FF6868"
 									>Cancel</v-btn
 								></v-col
@@ -168,7 +174,7 @@
 				<v-card>
 					<v-card-title>Instructions</v-card-title>
 					<v-card-text>
-						<p class="text-subtitle">1. After clicking "CLOSE" a red dot will appear.</p>
+						<p class="text-subtitle">1. Position the dot to the walks starting position.</p>
 						<p class="text-subtitle">2. Click "ADD COORDINATES" to add the current center coordinates.</p>
 						<p class="text-subtitle">3. Move the map to the next position and click again.</p>
 						<p class="text-subtitle">4. When finished click "DONE".</p>
@@ -206,11 +212,11 @@
 					class="pt-5"
 				>
 					<v-card-text>
-						<p class="text-h5">Route created successfully!</p>
+						<p class="text-h5">Walk created successfully!</p>
 					</v-card-text>
 					<v-card-actions>
 						<v-btn
-							class="rounded-xl text-white"
+							class="rounded-xl text-white text-caption"
 							color="#A2B39F"
 							block
 							@click="refreshSite()"
@@ -223,28 +229,10 @@
 			<v-snackbar
 				v-model="snackbar"
 				:timeout="timeout"
-				align="center"
-				justify="center"
+				color="primary"
 			>
-				<v-row
-					alignt="center"
-					justify="center"
-				>
-					<v-col
-						cols="12"
-						align="center"
-						justify="center"
-					>
-						{{ snackbarText }}
-					</v-col>
-				</v-row>
+				<div class="text-center text-caption">{{ snackbarText }}</div>
 			</v-snackbar>
-
-			<div id="map"></div>
-			<div
-				id="middleDot"
-				v-if="showDot"
-			></div>
 		</div>
 	</v-main>
 </template>
@@ -329,7 +317,7 @@ export default {
 		this.map = new mapboxgl.Map({
 			container: 'map',
 			style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
-			center: [13.891513744940255, 45.05703740495804], // početna pozicija
+			center: [13.86954111349425, 45.11521330940678], // početna pozicija
 			zoom: 9, // početni zoom
 			scrollZoom: true,
 			maxZoom: 18,
@@ -371,8 +359,9 @@ export default {
 				this.routes.forEach(({ id, coordinates, name, location }) => {
 					const geojson = this.createRouteGeojson(coordinates);
 					const geojsonMarkers = this.createMarkerGeojson(coordinates[0]);
+
 					this.addRoute(this.map, id, geojson);
-					// add markers to map
+
 					for (const feature of geojsonMarkers.features) {
 						const el = document.createElement('div');
 						el.className = 'marker';
@@ -382,14 +371,14 @@ export default {
 						this.map.setLayoutProperty(id, 'visibility', 'none');
 
 						marker.getElement().addEventListener('click', () => {
-							this.toggleRouteVisibility(id); // Toggle the visibility of the route paint
+							this.toggleRouteVisibility(id);
 						});
 						marker.getElement().addEventListener('mouseenter', () => {
 							if (this.map.getZoom() > 11) {
 								new mapboxgl.Popup({ offset: 25, closeButton: false })
 									.setLngLat(feature.geometry.coordinates)
 									.setHTML(
-										`<h2><a href="/test2/${id}" class="text-decoration-none">${name}</a></h2><p>${location}</p>`
+										`<h2 class="text-h6"><a href="/test2/${id}" class="text-decoration-none">${name}</a></h2><p class="text-subtitle-1">${location}</p>`
 									)
 									.addTo(this.map);
 							}
@@ -401,7 +390,7 @@ export default {
 							setTimeout(() => {
 								// Remove popup after delay
 								document.getElementsByClassName('mapboxgl-popup')[0].remove();
-							}, 1500);
+							}, 1200);
 						});
 					}
 				});
@@ -467,9 +456,8 @@ export default {
 		},
 		getCoordinates() {
 			this.testCoordinates.push([this.centerCoordinates.lng, this.centerCoordinates.lat]);
-			this.snackbarText = `Coordinates added (${this.centerCoordinates.lat}, ${this.centerCoordinates.lng})`;
+			this.snackbarText = `Coordinates added!`;
 			this.snackbar = true;
-			console.log('Coordinates added!', this.testCoordinates);
 		},
 		resetCoordinates() {
 			this.testCoordinates = [];
@@ -488,10 +476,10 @@ export default {
 			) {
 				this.snackbarText = 'Please enter valid values.';
 				this.snackbar = true;
-				console.log('Image:', this.imageReference);
 				return false;
 			}
 			this.coordinatesDialog = true;
+			this.showDot = true;
 		},
 		async uploadImageAndGetUrl(blobData) {
 			try {
@@ -540,13 +528,12 @@ export default {
 			this.getUserImageUrl();
 			const currentDate = new Date();
 			const year = currentDate.getFullYear();
-			const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Adding 1 because month is zero-indexed
+			const month = String(currentDate.getMonth() + 1).padStart(2, '0');
 			const day = String(currentDate.getDate()).padStart(2, '0');
 			try {
 				this.imageReference.generateBlob(async (blobData) => {
 					try {
 						let imageUrl = await this.uploadImageAndGetUrl(blobData);
-
 						this.createdRoute = {
 							name: this.routeName,
 							description: this.routeDescription,
@@ -582,7 +569,7 @@ export default {
 		saveCoordinates() {
 			this.snackbarText = 'Coordinates copied.';
 			this.snackbar = true;
-			let value = `${this.centerCoordinates.lat}, ${this.centerCoordinates.lng}`;
+			let value = `${this.centerCoordinates.lat.toFixed(8)}, ${this.centerCoordinates.lng.toFixed(8)}`;
 			navigator.clipboard.writeText(value).then(
 				function () {
 					console.log('Async: Copying to clipboard was successful!');
@@ -625,33 +612,8 @@ main {
 .marker {
 	background-image: url('@/assets/CustomLogo1Walking.png');
 	background-size: cover;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	cursor: pointer;
-}
-.marker-krajRute {
-	background-image: url('@/assets/CustomLogo2WalkingEnd.png');
-	background-size: cover;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	cursor: pointer;
-}
-
-.marker-klupica {
-	background-image: url('@/assets/CustomLogo4Klupica.png');
-	background-size: cover;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	cursor: pointer;
-}
-.marker-stol {
-	background-image: url('@/assets/CustomLogo5Stol.png');
-	background-size: cover;
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 	cursor: pointer;
 }
@@ -728,10 +690,10 @@ main {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 6px;
-	height: 6px;
-	background-color: #a3b2a0;
+	width: 7px;
+	height: 7px;
+	background-color: black;
 	border-radius: 50%;
-	z-index: 9999; /* Ensure it's above the map */
+	z-index: 9999;
 }
 </style>
