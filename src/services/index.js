@@ -41,6 +41,15 @@ let Korisnik = {
 			throw error;
 		}
 	},
+	async saveCreatedWalk(userId, newRoute) {
+		try {
+			const response = await Service.patch(`/${userId}/addCreatedWalk`, newRoute);
+			return response;
+		} catch (error) {
+			console.error('Error error:', error);
+			throw error;
+		}
+	},
 	async getUser(username) {
 		try {
 			const response = await Service.get(`/${username}`);

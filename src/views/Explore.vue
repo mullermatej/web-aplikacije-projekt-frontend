@@ -550,9 +550,23 @@ export default {
 							communityTags: [],
 							pointsOfInterest: [],
 						};
-						let success = await Rute.addRoute(this.createdRoute);
-						if (success) {
+						let data = await Rute.addRoute(this.createdRoute);
+						if (data) {
 							console.log('Route added successfully');
+							// console.log('Data: ', data.data.newRoute);
+
+							try {
+								let newRoute = {
+									id: data.data.newRoute._id,
+									name: data.data.newRoute.name,
+								};
+								console.log('Wait, saveCreatedWalk is in progress!');
+								await Korisnik.saveCreatedWalk(Auth.state.username, newRoute);
+							} catch (e) {
+								console.error(e);
+							}
+							console.log('Finished saveCreatedWalk!');
+
 							this.successDialog = true;
 							this.coordinatesMode = false;
 						} else {

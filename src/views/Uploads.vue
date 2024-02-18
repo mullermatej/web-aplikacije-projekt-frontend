@@ -28,7 +28,11 @@
 			justify="center"
 		>
 			<v-col cols="1">
-				<i class="fa-solid fa-trash"></i>
+				<i
+					class="fa-solid fa-trash"
+					style="cursor: pointer"
+					@click="handleClick(walk.routeId)"
+				></i>
 			</v-col>
 			<v-col
 				lg="2"
@@ -76,6 +80,9 @@ export default {
 		this.getUser();
 	},
 	methods: {
+		handleClick(x) {
+			console.log(x);
+		},
 		async getUser() {
 			const username = Auth.state.username;
 			Korisnik.getUser(username)
