@@ -5,7 +5,9 @@
 			height="300"
 			cover
 			class="mx-auto rounded"
+			style="cursor: pointer"
 			:src="route.imageUrl"
+			@click="handleImage(route.imageUrl)"
 		></v-img>
 
 		<v-row>
@@ -39,7 +41,7 @@
 				<v-btn
 					v-if="added"
 					class="rounded-pill text-white text-caption"
-					color="secondary"
+					color="accent"
 					@click="addFavourite(), (added = false)"
 				>
 					add &nbsp; <i class="fa-regular fa-heart"></i>
@@ -47,7 +49,7 @@
 				<v-btn
 					v-else
 					class="rounded-pill text-white text-caption"
-					color="secondary"
+					color="accent"
 					@click="removeFavourite(), (added = true)"
 				>
 					added &nbsp; <i class="fa-solid fa-heart"></i>
@@ -69,7 +71,7 @@
 			<v-item class="mx-1 my-1">
 				<v-chip
 					class="text-white"
-					color="#A2B29F"
+					color="accent"
 				>
 					{{ route.distance }} kilometers
 				</v-chip>
@@ -77,7 +79,7 @@
 			<v-item class="mx-1 my-1">
 				<v-chip
 					class="text-white"
-					color="#A2B29F"
+					color="accent"
 				>
 					{{ route.difficulty }} difficulty
 				</v-chip>
@@ -86,7 +88,7 @@
 			<v-item class="mx-1 my-1">
 				<v-chip
 					class="text-white"
-					color="#A2B29F"
+					color="accent"
 				>
 					takes about {{ route.duration }} minutes
 				</v-chip>
@@ -292,7 +294,7 @@
 					<v-row>
 						<v-col>
 							<v-btn
-								class="rounded-xl text-white"
+								class="rounded-xl text-white text-caption"
 								color="#A2B39F"
 								block
 								@click="addTag()"
@@ -301,7 +303,7 @@
 						</v-col>
 						<v-col>
 							<v-btn
-								class="rounded-xl text-white"
+								class="rounded-xl text-white text-caption"
 								color="#FF6868"
 								block
 								@click="tagDialog = false"
@@ -428,6 +430,15 @@ export default {
 						// treba patch za korisnika auth.state.username, u ključ createdPoints pushaj novi objekt
 						if (success) {
 							this.pointsOfInterest = success.pointsOfInterest;
+							try {
+								let newPoint = {
+									routeId: this.$route.params.routeId,
+									name: this.poiName,
+								};
+								await Korisnik.addCreatedPoint(Auth.state.username, newPoint);
+							} catch (e) {
+								console.error(e);
+							}
 							location.reload();
 						} else {
 							console.log('Unable to add POI');
@@ -540,6 +551,16 @@ export default {
 				let success = await Rute.addTag(routeId, updates);
 				if (success) {
 					console.log('New tag added');
+					let newTag = {
+						routeId: this.$route.params.routeId,
+						value: this.newTag,
+					};
+					try {
+						await Korisnik.addCreatedTag(Auth.state.username, newTag);
+						console.log('Tag added to createdTags.');
+					} catch (e) {
+						console.error(e);
+					}
 				} else {
 					console.log('Unable to add new tag');
 				}
@@ -547,6 +568,9 @@ export default {
 				console.error(e);
 			}
 			location.reload();
+		},
+		handleImage(imageUrl) {
+			window.open(imageUrl, '_blank');
 		},
 	},
 };

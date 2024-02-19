@@ -3,8 +3,8 @@
 		<v-row>
 			<v-col>
 				<router-link
-					:to="{ name: 'Explore' }"
-					class="text-decoration-none"
+					:to="{ name: 'Home' }"
+					class="text-decoration-none black--text"
 				>
 					<p class="text-h5 font-weight-light text-uppercase">Walk it</p>
 				</router-link>
@@ -35,27 +35,27 @@
 			</v-col>
 			<v-col align="right">
 				<section class="buttons">
-					<v-btn
+					<!-- <v-btn
 						v-if="!auth.authenticated"
-						color="secondary"
+						color="primary"
 						class="text-caption mr-4"
 						onclick="window.location.href = 'Login'"
 					>
 						Log in
-					</v-btn>
-					<v-btn
+					</v-btn> -->
+					<!-- <v-btn
 						v-if="!auth.authenticated"
 						class="text-caption"
 						color="primary"
 						onclick="window.location.href = 'Register'"
 					>
 						Register
-					</v-btn>
+					</v-btn> -->
 					<v-btn
 						v-if="auth.authenticated"
 						@click="logout"
 						class="text-caption"
-						color="secondary"
+						color="primary"
 					>
 						Log out
 					</v-btn>

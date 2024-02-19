@@ -124,7 +124,7 @@
 						<v-btn
 							class="mb-2 white--text text-caption"
 							type="submit"
-							color="secondary"
+							color="accent"
 						>
 							Register
 						</v-btn>
@@ -136,7 +136,7 @@
 						Already have an account?
 						<a
 							href="/Login"
-							style="color: #798777"
+							class="primary--text"
 						>
 							<strong>Log in</strong></a
 						>

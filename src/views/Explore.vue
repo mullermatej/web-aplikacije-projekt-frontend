@@ -449,7 +449,7 @@ export default {
 					'line-cap': 'round',
 				},
 				paint: {
-					'line-color': '#A2B29F',
+					'line-color': '#85B7FF',
 					'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 14, 4],
 				},
 			});
@@ -552,20 +552,15 @@ export default {
 						};
 						let data = await Rute.addRoute(this.createdRoute);
 						if (data) {
-							console.log('Route added successfully');
-							// console.log('Data: ', data.data.newRoute);
-
 							try {
 								let newRoute = {
-									id: data.data.newRoute._id,
+									routeId: data.data.newRoute._id,
 									name: data.data.newRoute.name,
 								};
-								console.log('Wait, saveCreatedWalk is in progress!');
-								await Korisnik.saveCreatedWalk(Auth.state.username, newRoute);
+								await Korisnik.addCreatedWalk(Auth.state.username, newRoute);
 							} catch (e) {
 								console.error(e);
 							}
-							console.log('Finished saveCreatedWalk!');
 
 							this.successDialog = true;
 							this.coordinatesMode = false;
@@ -624,10 +619,10 @@ main {
 }
 
 .marker {
-	background-image: url('@/assets/CustomLogo1Walking.png');
+	background-image: url('@/assets/BlueTree.png');
 	background-size: cover;
-	width: 40px;
-	height: 40px;
+	width: 35px;
+	height: 35px;
 	border-radius: 50%;
 	cursor: pointer;
 }

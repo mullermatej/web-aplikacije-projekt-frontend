@@ -32,6 +32,33 @@ Service.interceptors.response.use(
 // Zadnje sam dodao service2, vjerojatno rijesit korjen problema, da se ne spremaju podaci u test bazu nego u walk_it od starta
 
 let Korisnik = {
+	async deleteCreatedWalk(username, walkId) {
+		try {
+			const response = await Service.delete(`/deleteCreatedWalk/${username}/${walkId}`);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
+	async getCreatedPoints(userId) {
+		try {
+			const response = await Service.get(`/${userId}/createdPoints`);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching user by ID:', error);
+			throw error;
+		}
+	},
+	async getCreatedTags(userId) {
+		try {
+			const response = await Service.get(`/${userId}/createdTags`);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching user by ID:', error);
+			throw error;
+		}
+	},
 	async getCreatedWalks(userId) {
 		try {
 			const response = await Service.get(`/${userId}/createdWalks`);
@@ -41,9 +68,27 @@ let Korisnik = {
 			throw error;
 		}
 	},
-	async saveCreatedWalk(userId, newRoute) {
+	async addCreatedPoint(username, newPoint) {
 		try {
-			const response = await Service.patch(`/${userId}/addCreatedWalk`, newRoute);
+			const response = await Service.patch(`/${username}/addCreatedPoint`, newPoint);
+			return response;
+		} catch (error) {
+			console.error('Error error:', error);
+			throw error;
+		}
+	},
+	async addCreatedTag(username, newTag) {
+		try {
+			const response = await Service.patch(`/${username}/addCreatedTag`, newTag);
+			return response;
+		} catch (error) {
+			console.error('Error error:', error);
+			throw error;
+		}
+	},
+	async addCreatedWalk(username, newRoute) {
+		try {
+			const response = await Service.patch(`/${username}/addCreatedWalk`, newRoute);
 			return response;
 		} catch (error) {
 			console.error('Error error:', error);
@@ -143,6 +188,15 @@ let Rute = {
 			};
 		});
 		return routes;
+	},
+	async deleteWalk(walkId) {
+		try {
+			const response = await Service.delete(`/deleteWalk/${walkId}`);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
 	},
 	async addPointOfInterest(routeId, newPointOfInterest) {
 		try {

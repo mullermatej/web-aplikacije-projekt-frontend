@@ -44,8 +44,8 @@
 					style="text-decoration: none"
 				>
 					<v-btn
-						class="mt-3 text-white"
-						color="#a3b29f"
+						class="mt-3 text-white text-caption"
+						color="accent"
 					>
 						browse <i class="fa-solid fa-plus"></i>
 					</v-btn>

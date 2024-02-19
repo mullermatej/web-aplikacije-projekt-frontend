@@ -6,7 +6,7 @@
 	>
 		<v-row>
 			<v-col>
-				<p class="text-h1 text-center mx-auto primary--text">WALK IT</p>
+				<p class="text-h1 text-center mx-auto">WALK IT</p>
 				<form @submit.prevent="login">
 					<v-row
 						justify="center"
@@ -69,7 +69,7 @@
 							<v-btn
 								class="white--text text-caption"
 								type="submit"
-								color="secondary"
+								color="accent"
 							>
 								Log in
 							</v-btn>
