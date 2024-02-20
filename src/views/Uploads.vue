@@ -90,7 +90,7 @@
 				<i
 					class="fa-solid fa-trash"
 					style="cursor: pointer"
-					@click="deletePoint(point.routeId)"
+					@click="deletePoint(point.routeId, point.name)"
 				></i>
 			</v-col>
 			<v-col
@@ -125,12 +125,35 @@ export default {
 		this.getUser();
 	},
 	methods: {
-		async deleteTag(walkId, tagValue) {
+		async deletePoint(walkId, pointName) {
 			try {
-				let success = await Rute.deleteTag(walkId, tagValue); // Nastaviti na services napravit deleteTag, pronaci rutu sa walkId, i pronaći point sa tagValue imenom
+				let pointObject = {
+					name: pointName,
+				};
+				let success = await Rute.deletePoint(walkId, pointObject);
 				if (success) {
 					try {
-						await Korisnik.deleteCreatedWalk(Auth.state.username, walkId);
+						await Korisnik.deleteCreatedPoint(Auth.state.username, pointObject);
+					} catch (e) {
+						console.error(e);
+					}
+				} else {
+					console.log('Error while deleting route.');
+				}
+			} catch (e) {
+				console.error(e);
+			}
+			location.reload();
+		},
+		async deleteTag(walkId, tagValue) {
+			try {
+				let tagObject = {
+					value: tagValue,
+				};
+				let success = await Rute.deleteTag(walkId, tagObject); // Nastaviti na services napravit deleteTag, pronaci rutu sa walkId, i pronaći point sa tagValue imenom
+				if (success) {
+					try {
+						await Korisnik.deleteCreatedTag(Auth.state.username, tagObject);
 					} catch (e) {
 						console.error(e);
 					}

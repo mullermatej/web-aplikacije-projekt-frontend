@@ -32,6 +32,24 @@ Service.interceptors.response.use(
 // Zadnje sam dodao service2, vjerojatno rijesit korjen problema, da se ne spremaju podaci u test bazu nego u walk_it od starta
 
 let Korisnik = {
+	async deleteCreatedPoint(username, pointObject) {
+		try {
+			const response = await Service.patch(`/deleteCreatedPoint/${username}`, pointObject);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
+	async deleteCreatedTag(username, tagObject) {
+		try {
+			const response = await Service.patch(`/deleteCreatedTag/${username}`, tagObject);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
 	async deleteCreatedWalk(username, walkId) {
 		try {
 			const response = await Service.delete(`/deleteCreatedWalk/${username}/${walkId}`);
@@ -188,6 +206,24 @@ let Rute = {
 			};
 		});
 		return routes;
+	},
+	async deletePoint(walkId, pointObject) {
+		try {
+			const response = await Service.patch(`/deletePoint/${walkId}`, pointObject);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
+	},
+	async deleteTag(walkId, tagObject) {
+		try {
+			const response = await Service.patch(`/deleteTag/${walkId}`, tagObject);
+			return response;
+		} catch (error) {
+			console.error('Error fetching points of interest:', error);
+			throw error;
+		}
 	},
 	async deleteWalk(walkId) {
 		try {

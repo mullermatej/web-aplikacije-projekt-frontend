@@ -1,9 +1,9 @@
 <template>
-	<v-container>
+	<v-container mx-auto>
 		<v-row
 			justify="center"
 			align="center"
-			class="mt-15"
+			class="my-6"
 		>
 			<v-col
 				cols="12"
@@ -11,7 +11,7 @@
 				align="center"
 			>
 				<p class="text-h2 text-uppercase text-center">
-					Welcome back, <span class="font-weight-medium accent--text">{{ username }} </span>!
+					It's great to see you, <span class="font-weight-medium accent--text">{{ username }} </span>!
 				</p>
 				<p class="text-subtitle-1 font-weight-medium text-uppercase text-center">
 					start exploring new walks and locations
@@ -54,7 +54,6 @@
 		</v-row>
 
 		<v-row
-			class="mt-15"
 			align="center"
 			justify="center"
 		>
@@ -66,7 +65,7 @@
 			>
 				<img
 					src="@/assets/Hiking.jpg"
-					height="270px"
+					height="250px"
 				/>
 
 				<p class="px-2">
@@ -90,7 +89,7 @@
 			>
 				<img
 					src="@/assets/Explore.jpg"
-					height="270px"
+					height="250px"
 				/>
 				<p class="px-2">
 					<i class="fa-solid fa-signs-post"></i> Each route will contain
@@ -115,7 +114,7 @@
 			>
 				<img
 					src="@/assets/Find.jpg"
-					height="270px"
+					height="250px"
 				/>
 				<p class="px-2">
 					<i class="fa-solid fa-map-pin"></i> You can <span class="font-weight-bold">search</span> trough

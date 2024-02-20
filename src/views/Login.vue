@@ -6,7 +6,7 @@
 	>
 		<v-row>
 			<v-col>
-				<p class="text-h1 text-center mx-auto">WALK IT</p>
+				<p class="text-h1 text-center mx-auto">WALK <span class="accent--text">IT</span></p>
 				<form @submit.prevent="login">
 					<v-row
 						justify="center"

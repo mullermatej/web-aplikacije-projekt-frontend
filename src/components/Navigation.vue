@@ -6,7 +6,7 @@
 					:to="{ name: 'Home' }"
 					class="text-decoration-none black--text"
 				>
-					<p class="text-h5 font-weight-light text-uppercase">Walk it</p>
+					<p class="text-h5 font-weight-light text-uppercase">Walk <span class="accent--text">it</span></p>
 				</router-link>
 			</v-col>
 

@@ -21,18 +21,18 @@
 					width="40px"
 					height="40px"
 				/>
-				<p class="pt-2 pl-2 text-body">{{ route.createdBy }}</p>
+				<p class="pt-2 pl-2 text-caption">{{ route.createdBy }}</p>
 			</v-col>
 			<v-col
 				align="center"
 				justify="center"
 				cols="6"
 			>
-				<p class="text-h4 text-center mt-2 mb-0">{{ route.name }}</p>
+				<p class="text-h5 text-center mt-2 mb-0">{{ route.name }}</p>
 				<p class="text-subtitle-2 text-center">{{ route.location }}</p>
 			</v-col>
 			<v-col cols="3"
-				><p class="text-body text-right pt-2">{{ route.date }}</p></v-col
+				><p class="text-caption text-right pt-2">{{ route.date }}</p></v-col
 			>
 		</v-row>
 
