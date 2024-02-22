@@ -1,27 +1,10 @@
 <template>
-	<v-container justify-center>
-		<v-row>
+	<v-container class="mx-auto">
+		<v-row class="mt-6">
 			<p class="text-h6 font-weight-medium">Walks</p>
 		</v-row>
 		<v-row
-			class="text-center"
-			justify="center"
-		>
-			<v-col cols="1"></v-col>
-			<v-col
-				lg="2"
-				md="4"
-				sm="6"
-				><p class="mb-0 text-decoration-underline text-left">Identification number</p></v-col
-			>
-			<v-col
-				lg="2"
-				md="4"
-				sm="6"
-				><p class="mb-0 text-decoration-underline text-left">Name</p></v-col
-			>
-		</v-row>
-		<v-row
+			v-if="createdWalks.length > 0"
 			v-for="walk of createdWalks"
 			:key="walk.routeId"
 			class="text-center"
@@ -47,10 +30,20 @@
 				><p class="text-subtitle-2 font-weight-light text-left">{{ walk.name }}</p></v-col
 			>
 		</v-row>
+		<v-row v-if="!createdWalks.length > 0">
+			<v-col>
+				<p class="text-subtitle-2 font-weight-light text-center">
+					You haven't created any points of interest yet.
+				</p>
+			</v-col>
+		</v-row>
+
 		<v-row>
 			<p class="text-h6 font-weight-medium">Tags</p>
 		</v-row>
+
 		<v-row
+			v-if="createdTags.length > 0"
 			v-for="tag of createdTags"
 			:key="tag.value"
 			class="text-center"
@@ -76,11 +69,17 @@
 				><p class="text-subtitle-2 font-weight-light text-left">{{ tag.value }}</p></v-col
 			>
 		</v-row>
+		<v-row v-if="!createdTags.length > 0">
+			<v-col>
+				<p class="text-subtitle-2 font-weight-light text-center">You haven't created any tags yet.</p>
+			</v-col>
+		</v-row>
 
 		<v-row>
 			<p class="text-h6 font-weight-medium">Points of interest</p>
 		</v-row>
 		<v-row
+			v-if="createdPoints.length > 0"
 			v-for="point of createdPoints"
 			:key="point.name"
 			class="text-center"
@@ -105,6 +104,13 @@
 				sm="6"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ point.name }}</p></v-col
 			>
+		</v-row>
+		<v-row v-if="!createdPoints.length > 0">
+			<v-col>
+				<p class="text-subtitle-2 font-weight-light text-center">
+					You haven't created any points of interest yet.
+				</p>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>

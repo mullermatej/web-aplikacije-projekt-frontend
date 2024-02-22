@@ -303,7 +303,7 @@ export default {
 			let success = await Auth.changePassword(this.oldPassword, this.newPassword);
 			console.log('Rezultat promjene lozinke ', success);
 			if (success) {
-				this.$router.push({ name: 'Home' });
+				this.$router.go();
 				alert('Password changed!');
 			} else {
 				alert('Please correctly enter your current password.');

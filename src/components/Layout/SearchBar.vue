@@ -17,6 +17,7 @@
 				<v-list-item-title
 					@click="handleClick(data.item.id)"
 					v-html="data.item.name"
+					class="text-capitalize"
 				></v-list-item-title>
 			</v-list-item-content>
 		</template>

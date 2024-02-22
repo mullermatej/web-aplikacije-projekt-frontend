@@ -46,7 +46,7 @@
 			<v-btn
 				v-if="coordinatesMode"
 				class="rounded text-caption"
-				color="white "
+				color="white"
 				elevation="0"
 				style="position: absolute; top: 100px; left: 10px; z-index: 1"
 				@click="getCoordinates()"
@@ -145,7 +145,7 @@
 									block
 									type="submit"
 									class="mt-2 text-white rounded-xl text-caption"
-									color="#A2B39F"
+									color="primary"
 									>Add coordinates</v-btn
 								></v-col
 							>
@@ -323,7 +323,7 @@ export default {
 								new mapboxgl.Popup({ offset: 25, closeButton: false })
 									.setLngLat(feature.geometry.coordinates)
 									.setHTML(
-										`<h2 class="text-h6"><a href="/test2/${id}" class="text-decoration-none">${name}</a></h2><p class="text-subtitle-1">${location}</p>`
+										`<h2 class="text-h6"><a href="/walks/${id}" class="text-decoration-none">${name}</a></h2><p class="text-subtitle-1">${location}</p>`
 									)
 									.addTo(this.map);
 							}
@@ -468,6 +468,7 @@ export default {
 				});
 		},
 		async saveRoute() {
+			this.timeout = 7000;
 			this.snackbarText = 'Route is being created ...';
 			this.snackbar = true;
 			this.getUserImageUrl();

@@ -99,7 +99,7 @@
 		>
 			Community tags
 			<v-btn
-				v-if="route.communityTags[0]"
+				v-if="showTag == false"
 				@click="tagDialog = true"
 				outlined
 				class="ml-2 rounded-pill text-overline"
@@ -107,12 +107,12 @@
 			></v-btn>
 		</p>
 
-		<v-row v-if="!route.communityTags[0]">
+		<v-row v-if="showTag == true">
 			<v-col>
 				<v-btn
 					@click="tagDialog = true"
 					outlined
-					class="ml-2 rounded-pill text-overline"
+					class="rounded-pill text-overline"
 					>Add <i class="fa-solid fa-plus"></i
 				></v-btn>
 			</v-col>
@@ -144,7 +144,7 @@
 		>
 			Points of interest
 			<v-btn
-				v-if="route.pointsOfInterest[0]"
+				v-if="showPoint == false"
 				@click="poiDialog = true"
 				outlined
 				class="ml-2 rounded-pill text-overline"
@@ -153,7 +153,7 @@
 		</p>
 
 		<v-row
-			v-if="!route.pointsOfInterest[0]"
+			v-if="showPoint == true"
 			class="mb-10"
 		>
 			<v-col>
@@ -162,7 +162,7 @@
 					outlined
 					@click="poiDialog = true"
 				>
-					Add <i class="fa-solid fa-plus"></i>
+					Add<i class="fa-solid fa-plus"></i>
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -222,7 +222,7 @@ import TagDialog from '@/components/Dialogs/TagDialog.vue';
 import PointDialog from '@/components/Dialogs/PointDialog.vue';
 
 export default {
-	name: 'Test2',
+	name: 'Walk',
 	components: { TagDialog, PointDialog },
 	data() {
 		return {
@@ -230,22 +230,52 @@ export default {
 			route: {},
 			favourites: [],
 			communityTags: [],
-			map: null,
 			pointsOfInterest: null,
 			map: null,
 			centerCoordinates: null,
 			tagDialog: false,
 			poiDialog: false,
 			added: true,
+			showTag: true,
+			showPoint: true,
 		};
 	},
 	created() {
-		this.getRoute();
 		this.getFavourites();
+		this.getRoute();
 	},
 	mounted() {
 		mapboxgl.accessToken =
 			'pk.eyJ1IjoibXVsbGVybWF0ZWoxOCIsImEiOiJjbGt3ZjdqZHEwdnBvM2twbTRrZDlodWpxIn0.LwbRQW9Up-KStWz9Jp3J5A';
+		this.map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
+			center: [13.86954111349425, 45.11521330940678],
+			zoom: 15,
+			scrollZoom: true,
+			maxZoom: 18,
+			minZoom: 9,
+		});
+		this.map.on('load', () => {
+			const el = document.createElement('div');
+			el.className = 'marker';
+			const marker = new mapboxgl.Marker(el).setLngLat(this.route.coordinates[0]).addTo(this.map);
+			marker.getElement().addEventListener('click', () => {
+				window.open(
+					`https://www.google.com/maps/place/${this.route.coordinates[0][1]},${this.route.coordinates[0][0]}`
+				);
+			});
+		});
+		this.map.addControl(new mapboxgl.NavigationControl());
+		this.map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true,
+				},
+				trackUserLocation: true,
+				showUserHeading: true,
+			})
+		);
 	},
 	computed: {
 		device() {
@@ -253,11 +283,15 @@ export default {
 		},
 	},
 	methods: {
+		handleTest(x) {
+			console.log(x);
+		},
 		async getPointsOfInterest() {
 			try {
 				const routeId = this.$route.params.routeId;
 				const response = await Rute.getPointsOfInterest(routeId);
 				this.pointsOfInterest = response.pointsOfInterest;
+				if (this.pointsOfInterest.length > 0) this.showPoint = false;
 			} catch (e) {
 				console.error(e);
 			}
@@ -268,40 +302,11 @@ export default {
 				const response = await Rute.getRouteById(routeId);
 				this.route = response;
 				this.communityTags = this.route.communityTags;
+				if (this.communityTags.length > 0) this.showTag = false;
 			} catch (e) {
 				console.error(e);
 			}
-			this.map = new mapboxgl.Map({
-				container: 'map',
-				style: 'mapbox://styles/mullermatej18/clkxpusvp005m01p83bzb9x0z',
-				center: this.route.coordinates[0], // početna pozicija
-				zoom: 15, // početni zoom
-				scrollZoom: true,
-				maxZoom: 18,
-				minZoom: 9,
-			});
-			this.map.on('load', () => {
-				const el = document.createElement('div');
-				el.className = 'marker';
-
-				const marker = new mapboxgl.Marker(el).setLngLat(this.route.coordinates[0]).addTo(this.map);
-
-				marker.getElement().addEventListener('click', () => {
-					window.open(
-						`https://www.google.com/maps/place/${this.route.coordinates[0][1]},${this.route.coordinates[0][0]}`
-					);
-				});
-			});
-			this.map.addControl(new mapboxgl.NavigationControl());
-			this.map.addControl(
-				new mapboxgl.GeolocateControl({
-					positionOptions: {
-						enableHighAccuracy: true,
-					},
-					trackUserLocation: true,
-					showUserHeading: true,
-				})
-			);
+			this.map.setCenter(this.route.coordinates[0]);
 			this.getPointsOfInterest();
 		},
 		async addFavourite() {

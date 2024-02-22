@@ -11,13 +11,11 @@
 				<p class="text-subtitle">2. Click "ADD COORDINATES" to add the current center coordinates.</p>
 				<p class="text-subtitle">3. Move the map to the next position and click again.</p>
 				<p class="text-subtitle">4. When finished click "DONE".</p>
-			</v-card-text>
-			<v-card-actions
-				justify="center"
-				align="center"
-			>
 				<v-row>
-					<v-col>
+					<v-col
+						justify="center"
+						align="center"
+					>
 						<v-btn
 							class="text-white rounded-xl text-caption"
 							color="primary"
@@ -28,7 +26,7 @@
 						</v-btn>
 					</v-col>
 				</v-row>
-			</v-card-actions>
+			</v-card-text>
 		</v-card>
 	</v-dialog>
 </template>

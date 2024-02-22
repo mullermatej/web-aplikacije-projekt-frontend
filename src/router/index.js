@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
 import Explore from '../views/Explore.vue';
 import Profile from '../views/Profile.vue';
 import Home from '../views/Home.vue';

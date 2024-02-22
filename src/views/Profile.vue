@@ -34,13 +34,13 @@
 				</router-link>
 			</v-col>
 		</v-row>
-		<v-row v-else>
+		<v-row v-if="showBrowse">
 			<v-col
 				align="center"
 				justify="center"
 			>
 				<router-link
-					:to="'/test/'"
+					:to="'/walks'"
 					style="text-decoration: none"
 				>
 					<v-btn
@@ -67,6 +67,7 @@ export default {
 		return {
 			favourites: [],
 			routes: [],
+			showBrowse: false,
 		};
 	},
 	created() {
@@ -85,6 +86,7 @@ export default {
 				this.getRoute(this.favourites[i]);
 				i = i + 1;
 			}
+			if (this.favourites.length == 0) this.showBrowse = true;
 		},
 		async getRoute(favourite) {
 			try {

@@ -138,6 +138,9 @@
 <script>
 import { Auth, Rute } from '@/services';
 import SearchBar from '@/components/Layout/SearchBar.vue';
+import image1 from '@/assets/Home1.jpg';
+import image2 from '@/assets/Home2.jpg';
+import image3 from '@/assets/Home3.jpg';
 
 export default {
 	name: 'Home',
@@ -146,11 +149,7 @@ export default {
 		return {
 			username: Auth.state.username,
 			routes: [],
-			images: [
-				'https://firebasestorage.googleapis.com/v0/b/walk-it-4c57e.appspot.com/o/adminUploads%2FhomepageImages%2FMountain%20Sunset%20Tourists.jpg?alt=media&token=1972af27-cb44-4164-92c3-9b5cc945a9ab',
-				'https://firebasestorage.googleapis.com/v0/b/walk-it-4c57e.appspot.com/o/adminUploads%2FhomepageImages%2FHimalayan%20Trekking%20Group.jpg?alt=media&token=36919614-b1f9-45a7-860d-f0670699e934',
-				'https://firebasestorage.googleapis.com/v0/b/walk-it-4c57e.appspot.com/o/adminUploads%2FhomepageImages%2FMan%20with%20Dog%20Pine%20Forest%202.jpg?alt=media&token=bb2fb164-b28c-4f33-a821-cad89064c74d',
-			],
+			images: [image1, image2, image3],
 			carouselHeight: 500,
 		};
 	},
