@@ -198,7 +198,6 @@ export default {
 			try {
 				let data = await Korisnik.getCreatedPoints(userId);
 				this.createdPoints = data.createdPoints;
-				console.log(this.createdPoints);
 			} catch (e) {
 				console.error(e);
 			}
@@ -207,7 +206,6 @@ export default {
 			try {
 				let data = await Korisnik.getCreatedTags(userId);
 				this.createdTags = data.createdTags;
-				console.log(this.createdTags);
 			} catch (e) {
 				console.error(e);
 			}
@@ -216,7 +214,6 @@ export default {
 			try {
 				let data = await Korisnik.getCreatedWalks(userId);
 				this.createdWalks = data.createdWalks;
-				console.log(this.createdWalks);
 			} catch (e) {
 				console.error(e);
 			}

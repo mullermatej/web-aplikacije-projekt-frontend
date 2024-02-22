@@ -14,7 +14,7 @@
 				lg="4"
 				class="py-0"
 			>
-				<p class="text-uppercase py-0 text-center">Favourite walks</p>
+				<p class="text-uppercase mt-8 text-center">Favourite walks</p>
 			</v-col>
 		</v-row>
 		<v-row v-if="routes.length > 0">
@@ -27,10 +27,10 @@
 				lg="4"
 			>
 				<router-link
-					:to="'/test2/' + route._id"
+					:to="'/walks/' + route._id"
 					style="text-decoration: none"
 				>
-					<RouteCard :route="route" />
+					<WalkCard :route="route" />
 				</router-link>
 			</v-col>
 		</v-row>
@@ -56,13 +56,13 @@
 </template>
 
 <script>
-import ProfileCard from '../components/ProfileCard.vue';
-import RouteCard from '@/components/Routes/RouteCard.vue';
+import ProfileCard from '../components/Cards/ProfileCard.vue';
+import WalkCard from '@/components/Cards/WalkCard.vue';
 import { Korisnik, Auth, Rute } from '@/services';
 
 export default {
 	name: 'Profile',
-	components: { ProfileCard, RouteCard },
+	components: { ProfileCard, WalkCard },
 	data() {
 		return {
 			favourites: [],
@@ -91,8 +91,6 @@ export default {
 				const routeId = favourite;
 				const response = await Rute.getRouteById(routeId);
 				this.routes.push(response);
-
-				console.log(this.routes);
 			} catch (e) {
 				console.error(e);
 			}

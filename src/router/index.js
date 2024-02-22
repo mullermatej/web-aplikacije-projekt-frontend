@@ -3,9 +3,8 @@ import VueRouter from 'vue-router';
 import Explore from '../views/Explore.vue';
 import Profile from '../views/Profile.vue';
 import Home from '../views/Home.vue';
-import Test from '../views/Test.vue';
-import Test2 from '../views/Test2.vue';
-import Test3 from '../views/Test3.vue';
+import Walks from '../views/Walks.vue';
+import Walk from '../views/Walk.vue';
 import Uploads from '../views/Uploads.vue';
 import { Auth } from '@/services';
 
@@ -20,18 +19,12 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
+		component: Login,
 	},
 	{
 		path: '/register',
 		name: 'Register',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue'),
+		component: Register,
 	},
 	{
 		path: '/explore',
@@ -44,19 +37,14 @@ const routes = [
 		component: Profile,
 	},
 	{
-		path: '/test',
-		name: 'Test',
-		component: Test,
+		path: '/walks',
+		name: 'Walks',
+		component: Walks,
 	},
 	{
-		path: '/test2/:routeId',
-		name: 'Test2Dynamic',
-		component: Test2,
-	},
-	{
-		path: '/test3',
-		name: 'Test3',
-		component: Test3,
+		path: '/walks/:routeId',
+		name: 'Walk',
+		component: Walk,
 	},
 	{
 		path: '/uploads',
@@ -73,20 +61,16 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	const javneStranice = ['/Login', '/Register'];
-	const loginPotreban = !javneStranice.includes(to.path); // Login je potreban kada stranica na koju zelis doci nije u javneStranice
-	const user = Auth.getUser(); // Provjeriti da li user postoji u local storage-u
-
+	const loginPotreban = !javneStranice.includes(to.path);
+	const user = Auth.getUser();
 	if (loginPotreban && !user) {
-		// Ako je login potreban i user ne postoji u local storage-u onda ga preusmjeri na login
 		next('/Login');
 		return;
 	}
 	if (!loginPotreban && user) {
-		// Ako je login potreban i user ne postoji u local storage-u onda ga preusmjeri na login
 		next('/');
 		return;
 	}
-
 	next();
 });
 

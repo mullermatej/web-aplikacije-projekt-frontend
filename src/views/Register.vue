@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { Auth, Korisnik, Profile } from '@/services';
+import { Auth, Profile } from '@/services';
 
 export default {
 	name: 'Register',
@@ -171,7 +171,7 @@ export default {
 		async register() {
 			let success = await Auth.register(this.username, this.email, this.password, this.imageUrl);
 			if (success == true) {
-				this.$router.push({ name: 'Login' }); // Mozemo koristit this.$router.push("/home") jer smo u vuejs komponenti
+				this.$router.push({ name: 'Login' });
 			}
 		},
 		async getAvatars() {

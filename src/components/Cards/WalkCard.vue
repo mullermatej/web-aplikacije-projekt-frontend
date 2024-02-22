@@ -23,7 +23,7 @@
 
 <script>
 export default {
-	name: 'RouteCard',
+	name: 'WalkCard',
 	props: ['route'],
 };
 </script>

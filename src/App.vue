@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue';
-import Navigation from '@/components/Navigation.vue';
+import Navigation from '@/components/Layout/Navigation.vue';
 import { Auth } from '@/services';
 
 export default {
@@ -20,10 +19,8 @@ export default {
 		};
 	},
 	components: {
-		Footer,
 		Navigation,
 	},
-	methods: {},
 };
 </script>
 

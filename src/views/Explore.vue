@@ -27,7 +27,6 @@
 				"
 				>create
 			</v-btn>
-
 			<v-btn
 				v-if="coordinatesMode"
 				class="rounded text-caption text-white"
@@ -166,70 +165,18 @@
 					</v-form>
 				</v-sheet>
 			</v-dialog>
-			<v-dialog
-				v-model="coordinatesDialog"
-				width="auto"
-				persistent
-			>
-				<v-card>
-					<v-card-title>Instructions</v-card-title>
-					<v-card-text>
-						<p class="text-subtitle">1. Position the dot to the walks starting position.</p>
-						<p class="text-subtitle">2. Click "ADD COORDINATES" to add the current center coordinates.</p>
-						<p class="text-subtitle">3. Move the map to the next position and click again.</p>
-						<p class="text-subtitle">4. When finished click "DONE".</p>
-					</v-card-text>
-					<v-card-actions
-						justify="center"
-						align="center"
-					>
-						<v-row>
-							<v-col>
-								<v-btn
-									class="text-white rounded-xl"
-									color="#A2B39F"
-									variant="text"
-									@click="
-										coordinatesDialog = false;
-										showDot = true;
-										routeDialog = false;
-										coordinatesMode = true;
-									"
-								>
-									Close
-								</v-btn>
-							</v-col>
-						</v-row>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-			<v-dialog
-				v-model="successDialog"
-				width="auto"
-			>
-				<v-card
-					align="center"
-					class="pt-5"
-				>
-					<v-card-text>
-						<p class="text-h5">Walk created successfully!</p>
-					</v-card-text>
-					<v-card-actions>
-						<v-btn
-							class="rounded-xl text-white text-caption"
-							color="#A2B39F"
-							block
-							@click="refreshSite()"
-							>Close</v-btn
-						>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
+			<CoordinatesDialog
+				:open="coordinatesDialog"
+				@handleCoordinatesDialog="handleCoordinatesDialog()"
+			/>
+			<SuccessDialog
+				:open="successDialog"
+				@refresh="refreshSite()"
+			/>
 
 			<v-snackbar
 				v-model="snackbar"
 				:timeout="timeout"
-				color="primary"
 			>
 				<div class="text-center text-caption">{{ snackbarText }}</div>
 			</v-snackbar>
@@ -241,28 +188,31 @@
 import mapboxgl from 'mapbox-gl';
 import { Rute, Auth, Korisnik } from '@/services';
 import { storage } from '@/firebase';
+import SuccessDialog from '@/components/Dialogs/SuccessDialog.vue';
+import CoordinatesDialog from '@/components/Dialogs/CoordinatesDialog.vue';
 
 export default {
 	name: 'Explore',
+	components: { SuccessDialog, CoordinatesDialog },
 	data() {
 		return {
-			creatorImg: '',
-			snackbar: false,
-			snackbarText: '',
-			timeout: 2000,
+			createdRoute: {},
 			routes: [],
+			testCoordinates: [],
+			flippedCoordinates: 'Latitude: 0, Longitude: 0',
+			creatorImg: '',
+			snackbarText: '',
+			snackbar: false,
+			timeout: 2000,
 			map: null,
 			centerCoordinates: null,
-			flippedCoordinates: 'Latitude: 0, Longitude: 0',
-			testCoordinates: [],
-			routeDialog: false,
-			coordinatesDialog: false,
-			successDialog: false,
 			showDot: true,
 			imageReference: null,
-			createdRoute: {},
 			coordinatesMode: false,
 			creatingRoute: false,
+			coordinatesDialog: false,
+			successDialog: false,
+			routeDialog: false,
 			routeName: '',
 			routeNameRules: [
 				(value) => {
@@ -359,17 +309,12 @@ export default {
 				this.routes.forEach(({ id, coordinates, name, location }) => {
 					const geojson = this.createRouteGeojson(coordinates);
 					const geojsonMarkers = this.createMarkerGeojson(coordinates[0]);
-
 					this.addRoute(this.map, id, geojson);
-
 					for (const feature of geojsonMarkers.features) {
 						const el = document.createElement('div');
 						el.className = 'marker';
-
 						const marker = new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(this.map);
-
 						this.map.setLayoutProperty(id, 'visibility', 'none');
-
 						marker.getElement().addEventListener('click', () => {
 							this.toggleRouteVisibility(id);
 						});
@@ -561,7 +506,6 @@ export default {
 							} catch (e) {
 								console.error(e);
 							}
-
 							this.successDialog = true;
 							this.coordinatesMode = false;
 						} else {
@@ -588,6 +532,12 @@ export default {
 				}
 			);
 		},
+		handleCoordinatesDialog() {
+			this.coordinatesDialog = false;
+			this.showDot = true;
+			this.routeDialog = false;
+			this.coordinatesMode = true;
+		},
 		refreshSite() {
 			location.reload();
 		},
@@ -596,26 +546,9 @@ export default {
 </script>
 
 <style>
-main {
-	font-family: 'Alegreya Sans SC', sans-serif;
-	background-color: #fffefb;
-}
-/* Your component-specific styles here */
 #map {
 	width: 100%;
 	height: 900px;
-}
-
-.geocoder {
-	position: absolute;
-	z-index: 1;
-	width: 50%;
-	left: 50%;
-	margin-left: -25%;
-	top: 10px;
-}
-.mapboxgl-ctrl-geocoder {
-	min-width: 100%;
 }
 
 .marker {
@@ -633,65 +566,6 @@ main {
 
 .mapboxgl-popup-content {
 	text-align: center;
-	font-family: 'Open Sans', sans-serif;
-}
-.popupNaslov {
-	margin: 10px 0px 0 0px;
-}
-
-.popupDescription {
-	font-size: 15px;
-	text-align: left;
-}
-
-.popupNaslovDescription {
-	text-align: left;
-	margin: 0 0 5px 0;
-	text-transform: uppercase;
-	font-size: 18px;
-}
-
-#cross-mark {
-	position: absolute;
-	top: 53%;
-	left: 49.7%;
-	width: 10px;
-	height: 10px;
-	background-color: #82b1ff;
-	/* transform: translate(-20%, -20%); */
-	pointer-events: none;
-}
-/* Add a CSS class for the smaller marker size */
-.marker-small {
-	width: 15px;
-	height: 15px;
-	transition: width 0.3s ease, height 0.3s ease;
-}
-
-/* Add a CSS class for the larger marker size */
-.marker-large {
-	width: 30px;
-	height: 30px;
-	transition: width 0.3s ease, height 0.3s ease;
-}
-
-.icon-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-.icon-container p {
-	margin: 0 0 0 0;
-}
-
-.icon-with-text {
-	display: flex;
-	align-items: center;
-	margin-right: 20px;
-}
-
-.icon-with-text svg {
-	margin-right: 5px;
 }
 
 #middleDot {

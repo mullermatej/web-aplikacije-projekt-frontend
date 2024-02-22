@@ -1,222 +1,237 @@
 <template>
 	<v-container class="mx-auto">
-		<header
-			class="container"
-			style="margin-top: 40px; padding-bottom: 20px"
-		>
-			<img
-				:src="imageUrl"
-				alt="profileImage"
-				width="150px"
-				height="150px"
-			/>
-
-			<div class="user-info">
-				<h1
-					id="naslov-korisnikovog-profila"
-					class="text-h4 font-weight-medium"
-				>
-					{{ username }}
-					<button
-						type="button"
-						id="follow-button"
-						class="btn btn-outline btn-sm mb-2 ml-5"
-						@click="openModel"
-					>
-						<span class="text-capitalize text-subtitle-2">edit</span>
-						<i class="fa-solid fa-pen-to-square ml-1"></i>
-					</button>
-				</h1>
-			</div>
-			<div
-				class="custom-model-main"
-				:class="{ 'model-open': showModal }"
+		<v-row align="center">
+			<v-col
+				align="right"
+				lg="4"
+				sm="6"
 			>
-				<div class="custom-model-inner">
-					<div class="custom-model-wrap">
-						<div class="pop-up-content-wrap">
-							<div class="zatvori-ikona">
-								<span style="cursor: pointer">
-									<i
-										class="fa-regular fa-circle-xmark"
-										@click="closeModel"
-									></i>
-								</span>
-							</div>
-							<div class="naslov-flex">
-								<p class="text-h5 text-uppercase font-weight-medium">{{ username }}'s preferences</p>
-							</div>
+				<img
+					:src="imageUrl"
+					alt="profileImage"
+					width="130px"
+					height="130px"
+				/>
+			</v-col>
+			<v-col
+				justify="center"
+				align="left"
+				lg="4"
+				sm="6"
+			>
+				<p class="text-h5 text-uppercase font-weight-medium">
+					{{ username }}
+					<span class="text-h5"
+						><i
+							@click="showModal = true"
+							style="cursor: pointer"
+							class="fa-solid fa-pen-to-square ml-2 font-weight-thin"
+						></i
+					></span>
+				</p>
+			</v-col>
+		</v-row>
+		<div
+			class="custom-model-main"
+			:class="{ 'model-open': showModal }"
+		>
+			<div class="custom-model-inner">
+				<div class="custom-model-wrap">
+					<div class="pop-up-content-wrap">
+						<div class="zatvori-ikona">
+							<span style="cursor: pointer">
+								<i
+									class="fa-regular fa-circle-xmark"
+									@click="showModal = false"
+								></i>
+							</span>
+						</div>
+						<div class="naslov-flex">
+							<p class="text-h5 text-uppercase font-weight-medium">{{ username }}'s preferences</p>
+						</div>
 
-							<p class="text-uppercase text-subtitle-1 font-weight-medium mb-0">avatar</p>
+						<p class="text-uppercase text-subtitle-1 font-weight-medium mb-0">avatar</p>
 
-							<div class="avatar-part">
-								<div id="avatar-image">
-									<img
-										:src="imageUrl"
-										alt=""
-										width="150px"
-										height="150px"
+						<div class="avatar-part">
+							<div id="avatar-image">
+								<img
+									:src="imageUrl"
+									alt=""
+									width="150px"
+									height="150px"
+								/>
+							</div>
+							<div id="avatar-undertext">
+								<v-btn
+									class="mt-3 text-white text-caption"
+									color="primary"
+									@click="showAvatarsModal = true"
+								>
+									view avatars
+								</v-btn>
+							</div>
+						</div>
+
+						<p class="text-uppercase text-subtitle-1 font-weight-medium">info</p>
+						<div class="personal-info">
+							<form>
+								<div>
+									<input
+										v-model="changedUsername"
+										type="text"
+										class="text-subtitle-1 form-control"
+										:placeholder="username"
+										style="width: 300px"
 									/>
-								</div>
-								<div id="avatar-undertext">
-									<v-btn
-										class="mt-3 text-white text-caption"
-										color="primary"
-										@click="openAvatarsModal"
+									<p
+										class="form-text text-muted ml-1"
+										style="font-size: 12px"
 									>
-										view avatars
+										Not required
+									</p>
+								</div>
+
+								<div>
+									<input
+										v-model="changedEmail"
+										type="text"
+										class="text-subtitle-1 form-control"
+										:placeholder="userEmail"
+										disabled
+									/>
+									<p
+										class="form-text text-muted ml-1"
+										style="font-size: 12px"
+									>
+										Cannot change
+									</p>
+								</div>
+								<div class="password-submit-center">
+									<v-btn
+										class="text-white text-caption"
+										color="primary"
+										@click="handleSaveButton(changedUsername, changedEmail)"
+									>
+										save new username
 									</v-btn>
 								</div>
-							</div>
-
-							<p class="text-uppercase text-subtitle-1 font-weight-medium">info</p>
-							<div class="personal-info">
-								<form>
-									<div>
-										<input
-											v-model="changedUsername"
-											type="text"
-											class="text-subtitle-1 form-control"
-											:placeholder="username"
-											style="width: 300px"
-										/>
-										<p
-											class="form-text text-muted ml-1"
-											style="font-size: 12px"
-										>
-											Not required
-										</p>
-									</div>
-
-									<div>
-										<input
-											v-model="changedEmail"
-											type="text"
-											class="text-subtitle-1 form-control"
-											:placeholder="userEmail"
-											disabled
-										/>
-										<p
-											class="form-text text-muted ml-1"
-											style="font-size: 12px"
-										>
-											Cannot change
-										</p>
-									</div>
-									<div class="password-submit-center">
-										<v-btn
-											class="text-white text-caption"
-											color="primary"
-											@click="handleSaveButton(changedUsername, changedEmail)"
-										>
-											save new username
-										</v-btn>
-									</div>
-								</form>
-							</div>
-							<p class="text-uppercase text-subtitle-1 font-weight-medium mt-8">change password</p>
-							<div class="change-password">
-								<form @submit.prevent="changePassword">
-									<div class="form-password-change">
-										<label for="exampleInputOldPassword1"></label>
-										<input
-											v-model="oldPassword"
-											type="password"
-											class="text-subtitle-1 form-control"
-											id="exampleInputOldPassword1"
-											placeholder="Old password"
-											style="width: 300px"
-											required
-										/>
-										<p
-											id="passwordHelpBlock"
-											class="text-caption form-text text-muted ml-1 text-capitalize"
-										>
-											required
-										</p>
-									</div>
-									<div class="form-password-change">
-										<label for="exampleInputNewPassword1"></label>
-										<input
-											v-model="newPassword"
-											type="password"
-											class="text-subtitle-1 form-control"
-											id="exampleInputNewPassword1"
-											placeholder="New password"
-											style="width: 300px"
-											required
-										/>
-										<p
-											id="passwordHelpBlock"
-											class="text-caption form-text text-muted ml-1 text-capitalize"
-										>
-											required
-										</p>
-									</div>
-									<div class="password-submit-center">
-										<v-btn
-											class="text-white text-caption mt-4"
-											type="submit"
-											color="primary"
-										>
-											change password
-										</v-btn>
-									</div>
-								</form>
-							</div>
+							</form>
 						</div>
+						<p class="text-uppercase text-subtitle-1 font-weight-medium mt-8">change password</p>
+						<div class="change-password">
+							<form @submit.prevent="changePassword">
+								<div class="form-password-change">
+									<label for="exampleInputOldPassword1"></label>
+									<input
+										v-model="oldPassword"
+										type="password"
+										class="text-subtitle-1 form-control"
+										id="exampleInputOldPassword1"
+										placeholder="Old password"
+										style="width: 300px"
+										required
+									/>
+									<p
+										id="passwordHelpBlock"
+										class="text-caption form-text text-muted ml-1 text-capitalize"
+									>
+										required
+									</p>
+								</div>
+								<div class="form-password-change">
+									<label for="exampleInputNewPassword1"></label>
+									<input
+										v-model="newPassword"
+										type="password"
+										class="text-subtitle-1 form-control"
+										id="exampleInputNewPassword1"
+										placeholder="New password"
+										style="width: 300px"
+										required
+									/>
+									<p
+										id="passwordHelpBlock"
+										class="text-caption form-text text-muted ml-1 text-capitalize"
+									>
+										required
+									</p>
+								</div>
+								<div class="password-submit-center">
+									<v-btn
+										class="text-white text-caption mt-4"
+										type="submit"
+										color="primary"
+									>
+										change password
+									</v-btn>
+								</div>
+							</form>
+						</div>
+						<v-row>
+							<v-col
+								justify="center"
+								align="center"
+							>
+								<v-btn
+									class="mt-6 text-caption"
+									color="error"
+									:to="{ name: 'Uploads' }"
+									>My uploads</v-btn
+								>
+							</v-col>
+						</v-row>
 					</div>
 				</div>
-				<div
-					class="bg-overlay"
-					@click="closeModel"
-				></div>
 			</div>
 			<div
-				class="avatars-custom-modal-main"
-				:class="{ 'avatars-modal-open': showAvatarsModal }"
-			>
-				<div class="avatars-custom-modal-inner">
-					<div class="avatars-custom-modal-wrap">
-						<div class="avatars-pop-up-content-wrap">
-							<div class="zatvori-ikona">
-								<span style="cursor: pointer">
-									<i
-										class="fa-regular fa-circle-xmark"
-										@click="closeAvatarsModal"
-									></i>
-								</span>
-							</div>
-							<div class="naslov-flex">
-								<p class="text-h5 text-uppercase font-weight-medium">select your avatar</p>
-							</div>
-
-							<v-row>
-								<v-col
-									v-for="avatar in avatars"
-									:key="avatar.id"
-									align="center"
-									justify="center"
-								>
-									<img
-										:src="avatar.imageUrl"
-										alt="avatar"
-										width="100px"
-										height="100px"
-										style="cursor: pointer"
-										@click="handleAvatar(avatar.imageUrl)"
-									/>
-								</v-col>
-							</v-row>
+				class="bg-overlay"
+				@click="showModal = false"
+			></div>
+		</div>
+		<div
+			class="avatars-custom-modal-main"
+			:class="{ 'avatars-modal-open': showAvatarsModal }"
+		>
+			<div class="avatars-custom-modal-inner">
+				<div class="avatars-custom-modal-wrap">
+					<div class="avatars-pop-up-content-wrap">
+						<div class="zatvori-ikona">
+							<span style="cursor: pointer">
+								<i
+									class="fa-regular fa-circle-xmark"
+									@click="showAvatarsModal = false"
+								></i>
+							</span>
 						</div>
+						<div class="naslov-flex">
+							<p class="text-h5 text-uppercase font-weight-medium">select your avatar</p>
+						</div>
+
+						<v-row>
+							<v-col
+								v-for="avatar in avatars"
+								:key="avatar.id"
+								align="center"
+								justify="center"
+							>
+								<img
+									:src="avatar.imageUrl"
+									alt="avatar"
+									width="100px"
+									height="100px"
+									style="cursor: pointer"
+									@click="handleAvatar(avatar.imageUrl)"
+								/>
+							</v-col>
+						</v-row>
 					</div>
 				</div>
-				<div
-					class="avatars-bg-overlay"
-					@click="closeAvatarsModal"
-				></div>
 			</div>
-		</header>
+			<div
+				class="avatars-bg-overlay"
+				@click="showAvatarsModal = false"
+			></div>
+		</div>
 	</v-container>
 </template>
 
@@ -234,7 +249,6 @@ export default {
 			userEmail: '',
 			showAvatarsModal: false,
 			showModal: false,
-			showFollowersModal: false,
 			oldPassword: '',
 			newPassword: '',
 			avatars: [],
@@ -259,11 +273,9 @@ export default {
 		},
 		handleSaveButton: function (changedUsername) {
 			if (changedUsername == '' || changedUsername.length < 3) return false;
-
 			let userUpdates = {
 				username: changedUsername.trim() !== '' ? changedUsername.trim() : this.username,
 			};
-
 			Korisnik.updateUserInfo(Auth.state.username, userUpdates)
 				.then((response) => {
 					console.log('User info updated successfully:', response);
@@ -271,12 +283,10 @@ export default {
 				.catch((error) => {
 					console.error('Error updating user info:', error);
 				});
-
 			const newUser = {
 				token: Auth.getToken(),
 				username: changedUsername,
 			};
-
 			localStorage.removeItem('user');
 			localStorage.setItem('user', JSON.stringify(newUser));
 			window.location.reload();
@@ -294,109 +304,43 @@ export default {
 			console.log('Rezultat promjene lozinke ', success);
 			if (success) {
 				this.$router.push({ name: 'Home' });
-				alert('Password changed successfully!');
+				alert('Password changed!');
 			} else {
-				alert('Wrong password or an error occurred.');
+				alert('Please correctly enter your current password.');
 			}
 		},
 		async handleAvatar(imageUrl) {
 			this.imageUrl = imageUrl;
-
 			let userUpdates = {
 				imageUrl: imageUrl,
 			};
-
-			// updateaj korisnika sa patch, zamijeni mu imageUrl sa ovim
-			let success = await Korisnik.updateUserImage(this.username, userUpdates);
-			if (success) {
-				console.log('User image changed successfully');
-			} else {
-				console.log('Error while changing user image');
+			try {
+				await Korisnik.updateUserImage(this.username, userUpdates);
+			} catch (e) {
+				console.error(e);
 			}
-
-			this.showAvatarsModal = false;
-		},
-		openModel() {
-			this.showModal = true;
-		},
-		openAvatarsModal() {
-			this.showAvatarsModal = true;
-		},
-		closeModel() {
-			this.showModal = false;
-		},
-		closeAvatarsModal() {
 			this.showAvatarsModal = false;
 		},
 	},
 };
 </script>
 <style scoped>
-header {
-	max-width: 80%;
-	/* background-color: #64dfdf; */
-	display: flex;
-	/* border-bottom: 1px solid #eee; */
-}
-#naslov-korisnikovog-profila {
-	font-size: 2rem;
-	font-weight: 300;
-	margin-top: 30px;
-	color: #445462;
-}
-.user-info {
-	margin: 0 0 0 30px;
-	color: #445462;
-}
-#follow-button {
-	background-color: white;
-	color: #445462;
-	border: 2px solid #445462;
-	border-radius: 5px;
-	font-weight: 700;
-	font-size: 15px;
-	padding: 5px 10px;
-}
-#follow-button:hover {
-	background-color: #ededed;
-	color: #445462;
-
-	border-radius: 5px;
-	font-weight: 700;
-	font-size: 15px;
-	padding: 5px 10px;
-}
 .naslov-flex {
 	text-align: center;
 }
 .zatvori-ikona {
 	text-align: right;
 	margin: 0 0 0 0;
-	font-size: 1.5rem;
-	color: #798777;
+	font-size: 1rem;
 }
 .avatar-part {
 	text-align: center;
-}
-.avatar-images {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 0 0 0;
-}
-.titles-text {
-	font-size: 1.5rem;
-	margin: 8px 0 8px 0;
 }
 .personal-info {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-}
-#avatar-button {
-	background-color: #798777;
-	color: #fff;
 }
 .form-password-change {
 	margin: -20px 0 0 0;
@@ -409,19 +353,6 @@ header {
 }
 .password-submit-center {
 	text-align: center;
-}
-#passwordHelpBlock {
-	color: #798777;
-	margin: 4px 0 0 0;
-	padding: 0 0 0 0;
-}
-#change-password-popup {
-	background-color: #798777;
-	color: #fff;
-}
-#user-info-popup-save {
-	background-color: #798777;
-	color: #fff;
 }
 /* Edit Profile Modal */
 .custom-model-main {
@@ -523,7 +454,6 @@ header {
 		margin-top: 45px;
 	}
 }
-/* Edit Profile Modal kraj */
 /* Avatars Modal */
 .avatars-custom-modal-main {
 	text-align: center;
@@ -532,7 +462,7 @@ header {
 	top: 0;
 	right: 0;
 	bottom: 0;
-	left: 0; /* z-index: 1050; */
+	left: 0;
 	-webkit-overflow-scrolling: touch;
 	outline: 0;
 	opacity: 0;
@@ -624,10 +554,4 @@ header {
 		margin-top: 45px;
 	}
 }
-.avatar-selection img {
-	width: 100px;
-	height: 100px;
-	margin: 20px 10px 10px 10px;
-}
-/* Avatars Modal kraj */
 </style>

@@ -1,13 +1,11 @@
 import axios from 'axios';
 import $router from '@/router';
 
-// Kreiranje instance axios-a za komunikaciju sa backend-om
 let Service = axios.create({
-	baseURL: 'http://localhost:3000', // Za lakse mijenjanje kad se publisha
-	timeout: 1000, // Cekaj 1 sekundu na odgovor od backenda
+	baseURL: 'http://localhost:3000',
+	timeout: 1000,
 });
 
-// prije svakog poslanog requesta na backend izvrši:
 Service.interceptors.request.use((request) => {
 	try {
 		request.headers['Authorization'] = 'Bearer ' + Auth.getToken();
@@ -16,20 +14,16 @@ Service.interceptors.request.use((request) => {
 	}
 	return request;
 });
-// Isto se poziva i nakon svakog requesta, ali samo ako je doslo do greske
 Service.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response.status === 401 || error.response.status === 403) {
-			alert('Uneseni podaci nisu ispravni!');
-			// 401 Unauthorized, 403 Forbidden (nema prava)
-			Auth.logout(); // Brisanje tokena iz local storage-a
-			$router.go(); // Refreshanje stranice
+			alert('Incorrect information');
+			Auth.logout();
+			$router.go();
 		}
 	}
 );
-
-// Zadnje sam dodao service2, vjerojatno rijesit korjen problema, da se ne spremaju podaci u test bazu nego u walk_it od starta
 
 let Korisnik = {
 	async deleteCreatedPoint(username, pointObject) {
@@ -184,12 +178,9 @@ let Profile = {
 };
 
 let Rute = {
-	// Fetch all routes from the database
 	async getAll() {
 		let response = await Service.get(`/rute`);
 		let data = response.data;
-
-		// Remapiranje podataka iz baze u oblik koji zelim
 		let routes = data.map((doc) => {
 			return {
 				id: doc._id,
@@ -292,7 +283,6 @@ let Rute = {
 	},
 };
 
-// Definiranje metoda za komunikaciju sa backend-om, za sad samo login
 let Auth = {
 	async login(username, email, password) {
 		let response = await Service.post('/auth', {
@@ -300,15 +290,10 @@ let Auth = {
 			email: email,
 			password: password,
 		});
-
 		let user = response.data;
-
 		localStorage.setItem('user', JSON.stringify(user));
-		// localStorage.setItem('userEmail', user.username);
-
 		return true;
 	},
-
 	async register(username, email, password, imageUrl) {
 		let response = await Service.post('/korisnici', {
 			username: username,
@@ -320,28 +305,24 @@ let Auth = {
 			createdTags: [],
 			createdPoints: [],
 		});
-
 		return true;
 	},
-
-	// Potrebno je bilo staviti return response da funkcionira tocna i kriva izmjena lozinke
 	async changePassword(oldPassword, newPassword) {
 		try {
 			const response = await Service.patch('/korisnici', {
 				old_password: oldPassword,
 				new_password: newPassword,
 			});
-			return response; // Return the actual response status from the backend
+			return response;
 		} catch (error) {
 			console.error('An error occurred:', error);
-			return false; // Return false when there's an error
+			return false;
 		}
 	},
 	logout() {
 		localStorage.removeItem('user');
 		localStorage.removeItem('koordinate');
 	},
-	// Dohvati usera iz local storage-a
 	getUser() {
 		if (localStorage.getItem('user') === null) {
 			return false;
@@ -349,7 +330,6 @@ let Auth = {
 			return JSON.parse(localStorage.getItem('user'));
 		}
 	},
-	// Dohvati token iz local storage-a
 	getToken() {
 		let user = Auth.getUser();
 		if (user && user.token) {
@@ -358,24 +338,17 @@ let Auth = {
 			return false;
 		}
 	},
-	// Pomocna metoda za provjeru da li je user ulogiran
 	authenticated() {
 		let user = Auth.getUser();
 		if (user && user.token) {
-			// Ako user postoji i ima token (strozija provjera) onda vrati true
 			return true;
 		}
 		return false;
 	},
-	// Pomocna metoda za dohvacanje userovog emaila
 	state: {
-		// get pretvara atribut  u funkciju ali se on i dalje moze citat sa ... kao atribut, insane
 		get authenticated() {
 			return Auth.authenticated();
 		},
-		// Upute za koristenje:
-		// 1. auth: Auth.state je ubacen u app.vue, vj treba i u ostale komponente
-		// 2. pozvati {{ auth.userEmail }} u template-u i to dohvaca korisnikov email
 		get username() {
 			let user = Auth.getUser();
 			if (user) {
