@@ -323,7 +323,7 @@ export default {
 								new mapboxgl.Popup({ offset: 25, closeButton: false })
 									.setLngLat(feature.geometry.coordinates)
 									.setHTML(
-										`<h2 class="text-h6"><a href="/walks/${id}" class="text-decoration-none">${name}</a></h2><p class="text-subtitle-1">${location}</p>`
+										`<h2 class="text-h6"><a href="/Walks/${id}" class="text-decoration-none">${name}</a></h2><p class="text-subtitle-1">${location}</p>`
 									)
 									.addTo(this.map);
 							}
