@@ -123,8 +123,6 @@
 	</v-container>
 </template>
 <script>
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Auth } from '@/services';
 
 export default {
@@ -132,15 +130,15 @@ export default {
 	data() {
 		return {
 			username: '',
-			auth: Auth.state, // Ovo je reactive, pa se automatski updatea - ako stavim ... spread operator, ne radi
+			auth: Auth.state,
 			drawer: null,
 			menuOpen: false,
 		};
 	},
 	methods: {
 		logout() {
-			Auth.logout(); // Metoda nije asikrona, ne treba await jer samo brise token iz local storagea :)
-			this.$router.go(); // Refresha stranicu, before each se opet poziva i redirecta na login
+			Auth.logout();
+			this.$router.go();
 		},
 		toggleMenu() {
 			this.menuOpen = !this.menuOpen;
