@@ -32,6 +32,12 @@
 					:to="{ name: 'Walks' }"
 					>Walks</v-btn
 				>
+				<v-btn
+					plain
+					class="text-decoration-none text-caption rounded-pill"
+					:to="{ name: 'Uploads' }"
+					>Uploads</v-btn
+				>
 			</v-col>
 			<v-col
 				v-if="device == 'lg'"

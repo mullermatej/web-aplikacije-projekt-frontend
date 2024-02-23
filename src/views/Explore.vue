@@ -10,7 +10,7 @@
 				class="rounded text-caption"
 				color="white"
 				elevation="0"
-				style="position: absolute; top: 55px; left: 10px; z-index: 1"
+				style="position: absolute; top: 70px; left: 10px; z-index: 1"
 				@click="saveCoordinates()"
 			>
 				{{ this.flippedCoordinates }}
@@ -20,7 +20,7 @@
 				class="rounded text-caption"
 				color="white"
 				elevation="0"
-				style="position: absolute; top: 100px; left: 10px; z-index: 1"
+				style="position: absolute; top: 115px; left: 10px; z-index: 1"
 				@click="
 					routeDialog = true;
 					showDot = false;

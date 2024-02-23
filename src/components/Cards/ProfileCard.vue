@@ -143,19 +143,6 @@
 								</v-col>
 							</form>
 						</div>
-						<v-row>
-							<v-col
-								justify="center"
-								align="center"
-							>
-								<v-btn
-									class="mt-6 text-caption"
-									color="error"
-									:to="{ name: 'Uploads' }"
-									>My uploads</v-btn
-								>
-							</v-col>
-						</v-row>
 					</div>
 				</div>
 			</div>
