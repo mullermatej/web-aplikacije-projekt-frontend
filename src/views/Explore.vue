@@ -30,7 +30,7 @@
 			<v-btn
 				v-if="coordinatesMode"
 				class="rounded text-caption text-white"
-				color="#A2B39F"
+				color="primary"
 				style="position: absolute; top: 145px; left: 10px; z-index: 1"
 				@click="saveRoute()"
 				>Done</v-btn
@@ -38,7 +38,7 @@
 			<v-btn
 				v-if="coordinatesMode"
 				class="rounded text-caption text-white"
-				color="#FF6868"
+				color="error"
 				style="position: absolute; top: 145px; left: 90px; z-index: 1"
 				@click="resetCoordinates()"
 				>Reset</v-btn
@@ -156,8 +156,8 @@
 										showDot = true;
 									"
 									block
-									class="mt-2 text-white rounded-xl text-caption"
-									color="#FF6868"
+									class="mt-2 white--text rounded-xl text-caption"
+									color="error"
 									>Cancel</v-btn
 								></v-col
 							>

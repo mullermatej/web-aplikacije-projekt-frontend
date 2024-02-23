@@ -2,7 +2,7 @@ import axios from 'axios';
 import $router from '@/router';
 
 let Service = axios.create({
-	baseURL: 'https://web-aplikacije-projekt-backend.onrender.com/',
+	baseURL: 'http://localhost:3000',
 	timeout: 1000,
 });
 
@@ -284,10 +284,9 @@ let Rute = {
 };
 
 let Auth = {
-	async login(username, email, password) {
+	async login(username, password) {
 		let response = await Service.post('/auth', {
 			username: username,
-			email: email,
 			password: password,
 		});
 		let user = response.data;

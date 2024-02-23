@@ -78,48 +78,47 @@
 				sm="6"
 			>
 				<form @submit.prevent="register">
-					<input
-						v-model="username"
-						type="text"
-						class="form-control"
-						placeholder="Username"
-						required
-					/>
-					<p
-						class="form-text text-muted ml-1"
-						style="font-size: 12px"
+					<v-col
+						align="center"
+						justify="center"
 					>
-						Required
-					</p>
-
-					<input
-						v-model="email"
-						type="email"
-						class="form-control"
-						placeholder="Email"
-						required
-					/>
-					<p
-						class="form-text text-muted ml-1"
-						style="font-size: 12px"
+						<v-text-field
+							v-model="username"
+							label="Username"
+							required
+							style="width: 300px"
+							class="ma-0 pa-0"
+						>
+						</v-text-field>
+					</v-col>
+					<v-col
+						align="center"
+						justify="center"
 					>
-						Required
-					</p>
-
-					<input
-						v-model="password"
-						type="password"
-						class="form-control"
-						placeholder="Password"
-						required
-					/>
-					<p
-						class="form-text text-muted ml-1"
-						style="font-size: 12px"
+						<v-text-field
+							v-model="email"
+							type="email"
+							label="Email"
+							required
+							style="width: 300px"
+							class="ma-0 pa-0"
+						>
+						</v-text-field>
+					</v-col>
+					<v-col
+						align="center"
+						justify="center"
 					>
-						Required
-					</p>
-
+						<v-text-field
+							v-model="password"
+							type="password"
+							label="Password"
+							required
+							style="width: 300px"
+							class="ma-0 pa-0"
+						>
+						</v-text-field>
+					</v-col>
 					<v-col align="center">
 						<v-btn
 							class="mb-2 white--text text-caption"
@@ -134,12 +133,12 @@
 						style="font-weight: 400"
 					>
 						Already have an account?
-						<a
-							href="/Login"
-							class="primary--text"
+						<router-link
+							to="/Login"
+							class="mt-2 nav-link text-decoration-underline accent--text"
 						>
-							<strong>Log in</strong></a
-						>
+							<strong>Log in</strong>
+						</router-link>
 					</p>
 				</form>
 			</v-col>

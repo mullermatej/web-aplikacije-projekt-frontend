@@ -1,7 +1,7 @@
 <template>
 	<v-container class="mx-auto">
 		<v-row class="mt-6">
-			<p class="text-h6 font-weight-medium">Walks</p>
+			<p class="text-h6 ml-4 font-weight-light">Walks</p>
 		</v-row>
 		<v-row
 			v-if="createdWalks.length > 0"
@@ -18,15 +18,15 @@
 				></i>
 			</v-col>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ walk.routeId }}</p></v-col
 			>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ walk.name }}</p></v-col
 			>
 		</v-row>
@@ -39,7 +39,7 @@
 		</v-row>
 
 		<v-row>
-			<p class="text-h6 font-weight-medium">Tags</p>
+			<p class="text-h6 ml-4 font-weight-light">Tags</p>
 		</v-row>
 
 		<v-row
@@ -57,15 +57,15 @@
 				></i>
 			</v-col>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ tag.routeId }}</p></v-col
 			>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ tag.value }}</p></v-col
 			>
 		</v-row>
@@ -76,7 +76,7 @@
 		</v-row>
 
 		<v-row>
-			<p class="text-h6 font-weight-medium">Points of interest</p>
+			<p class="text-h6 ml-4 font-weight-light">Points of interest</p>
 		</v-row>
 		<v-row
 			v-if="createdPoints.length > 0"
@@ -93,15 +93,15 @@
 				></i>
 			</v-col>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ point.routeId }}</p></v-col
 			>
 			<v-col
-				lg="2"
+				lg="3"
 				md="4"
-				sm="6"
+				sm="5"
 				><p class="text-subtitle-2 font-weight-light text-left">{{ point.name }}</p></v-col
 			>
 		</v-row>

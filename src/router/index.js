@@ -19,37 +19,37 @@ const routes = [
 		component: Home,
 	},
 	{
-		path: '/login',
+		path: '/Login',
 		name: 'Login',
 		component: Login,
 	},
 	{
-		path: '/register',
+		path: '/Register',
 		name: 'Register',
 		component: Register,
 	},
 	{
-		path: '/explore',
+		path: '/Explore',
 		name: 'Explore',
 		component: Explore,
 	},
 	{
-		path: '/profile',
+		path: '/Profile',
 		name: 'Profile',
 		component: Profile,
 	},
 	{
-		path: '/walks',
+		path: '/Walks',
 		name: 'Walks',
 		component: Walks,
 	},
 	{
-		path: '/walks/:routeId',
+		path: '/Walks/:routeId',
 		name: 'Walk',
 		component: Walk,
 	},
 	{
-		path: '/uploads',
+		path: '/Uploads',
 		name: 'Uploads',
 		component: Uploads,
 	},
@@ -67,10 +67,6 @@ router.beforeEach((to, from, next) => {
 	const user = Auth.getUser();
 	if (loginPotreban && !user) {
 		next('/Login');
-		return;
-	}
-	if (!loginPotreban && user) {
-		next('/');
 		return;
 	}
 	next();

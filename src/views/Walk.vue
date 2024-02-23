@@ -4,7 +4,7 @@
 			width="100%"
 			height="300"
 			cover
-			class="mx-auto rounded"
+			class="mx-auto mb-2 rounded"
 			style="cursor: pointer"
 			:src="route.imageUrl"
 			@click="handleImage(route.imageUrl)"
@@ -94,7 +94,7 @@
 			</v-item>
 		</v-item-group>
 		<p
-			class="text-h5 mt-10"
+			class="text-h5 mt-6"
 			justify="center"
 		>
 			Community tags
@@ -120,7 +120,7 @@
 		<v-row v-else>
 			<v-item-group
 				multiple
-				class="mb-5 text-capitalize text-caption"
+				class="my-4 ml-3 text-capitalize text-caption"
 			>
 				<v-item
 					v-for="tag in route.communityTags"
@@ -185,9 +185,9 @@
 				>
 					<v-card-text>
 						<div class="text-white">
-							<v-card-title class="text-h5"> {{ point.name }} </v-card-title>
+							<v-card-title class="text-h5 white--text"> {{ point.name }} </v-card-title>
 							<v-card-subtitle>
-								<span class="text-body-2">{{ point.coordinates }}</span>
+								<span class="text-body-2 white--text">{{ point.coordinates }}</span>
 							</v-card-subtitle>
 						</div>
 					</v-card-text>

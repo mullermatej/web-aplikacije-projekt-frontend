@@ -15,7 +15,7 @@
 			</v-list-item-avatar>
 			<v-list-item-content>
 				<v-list-item-title
-					@click="handleClick(data.item.id)"
+					@click="$router.push(`/walks/${data.item.id}`)"
 					v-html="data.item.name"
 					class="text-capitalize"
 				></v-list-item-title>
@@ -34,7 +34,6 @@ export default {
 			isUpdating: false,
 		};
 	},
-	created() {},
 	methods: {
 		customFilter(item, queryText, itemText) {
 			const searchText = queryText.toLowerCase();
@@ -46,9 +45,6 @@ export default {
 				itemLocation.includes(searchText) ||
 				itemDifficulty.includes(searchText)
 			);
-		},
-		handleClick(id) {
-			this.$router.push(`/walks/${id}`);
 		},
 	},
 };

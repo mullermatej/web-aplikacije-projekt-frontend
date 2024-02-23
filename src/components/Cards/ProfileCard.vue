@@ -75,38 +75,28 @@
 						<p class="text-uppercase text-subtitle-1 font-weight-medium">info</p>
 						<div class="personal-info">
 							<form>
-								<div>
-									<input
-										v-model="changedUsername"
-										type="text"
-										class="text-subtitle-1 form-control"
-										:placeholder="username"
-										style="width: 300px"
-									/>
-									<p
-										class="form-text text-muted ml-1"
-										style="font-size: 12px"
-									>
-										Not required
-									</p>
-								</div>
+								<v-text-field
+									v-model="changedUsername"
+									type="text"
+									class="text-subtitle-1 ma-0 pa-0"
+									label="New username"
+									style="width: 250px"
+								>
+								</v-text-field>
 
-								<div>
-									<input
-										v-model="changedEmail"
-										type="text"
-										class="text-subtitle-1 form-control"
-										:placeholder="userEmail"
-										disabled
-									/>
-									<p
-										class="form-text text-muted ml-1"
-										style="font-size: 12px"
-									>
-										Cannot change
-									</p>
-								</div>
-								<div class="password-submit-center">
+								<v-text-field
+									v-model="changedEmail"
+									type="text"
+									class="text-subtitle-1 ma-0 pa-0"
+									:label="userEmail"
+									disabled
+								>
+								</v-text-field>
+
+								<v-col
+									justify="center"
+									align="center"
+								>
 									<v-btn
 										class="text-white text-caption"
 										color="primary"
@@ -114,57 +104,43 @@
 									>
 										save new username
 									</v-btn>
-								</div>
+								</v-col>
 							</form>
 						</div>
 						<p class="text-uppercase text-subtitle-1 font-weight-medium mt-8">change password</p>
 						<div class="change-password">
 							<form @submit.prevent="changePassword">
-								<div class="form-password-change">
-									<label for="exampleInputOldPassword1"></label>
-									<input
-										v-model="oldPassword"
-										type="password"
-										class="text-subtitle-1 form-control"
-										id="exampleInputOldPassword1"
-										placeholder="Old password"
-										style="width: 300px"
-										required
-									/>
-									<p
-										id="passwordHelpBlock"
-										class="text-caption form-text text-muted ml-1 text-capitalize"
-									>
-										required
-									</p>
-								</div>
-								<div class="form-password-change">
-									<label for="exampleInputNewPassword1"></label>
-									<input
-										v-model="newPassword"
-										type="password"
-										class="text-subtitle-1 form-control"
-										id="exampleInputNewPassword1"
-										placeholder="New password"
-										style="width: 300px"
-										required
-									/>
-									<p
-										id="passwordHelpBlock"
-										class="text-caption form-text text-muted ml-1 text-capitalize"
-									>
-										required
-									</p>
-								</div>
-								<div class="password-submit-center">
+								<v-text-field
+									v-model="oldPassword"
+									type="password"
+									class="text-subtitle-1 ma-0 pa-0"
+									label="Old password"
+									style="width: 250px"
+									required
+								>
+								</v-text-field>
+
+								<label for="exampleInputNewPassword1"></label>
+								<v-text-field
+									v-model="newPassword"
+									type="password"
+									class="text-subtitle-1 ma-0 pa-0"
+									label="New password"
+									style="width: 250px"
+									required
+								/>
+								<v-col
+									align="center"
+									justify="center"
+								>
 									<v-btn
-										class="text-white text-caption mt-4"
+										class="text-white text-caption"
 										type="submit"
 										color="primary"
 									>
 										change password
 									</v-btn>
-								</div>
+								</v-col>
 							</form>
 						</div>
 						<v-row>
@@ -342,18 +318,14 @@ export default {
 	justify-content: center;
 	align-items: center;
 }
-.form-password-change {
-	margin: -20px 0 0 0;
-}
+
 .change-password {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
-.password-submit-center {
-	text-align: center;
-}
+
 /* Edit Profile Modal */
 .custom-model-main {
 	text-align: center;

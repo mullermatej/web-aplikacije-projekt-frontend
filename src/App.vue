@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<v-main>
-			<Navigation v-if="exists" />
+			<Navigation v-if="showNavigation" />
 			<router-view />
 		</v-main>
 	</v-app>
@@ -9,17 +9,26 @@
 
 <script>
 import Navigation from '@/components/Layout/Navigation.vue';
-import { Auth } from '@/services';
 
 export default {
 	name: 'App',
 	data() {
 		return {
-			exists: Auth.getUser(),
+			showNavigation: true,
 		};
 	},
 	components: {
 		Navigation,
+	},
+	created() {
+		this.checkRoute();
+	},
+	methods: {
+		checkRoute() {
+			if (this.$route.name == 'Login' || this.$route.name == 'Register') {
+				this.showNavigation = false;
+			}
+		},
 	},
 };
 </script>
