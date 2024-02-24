@@ -31,7 +31,7 @@
 				v-if="coordinatesMode"
 				class="rounded text-caption text-white"
 				color="primary"
-				style="position: absolute; top: 145px; left: 10px; z-index: 1"
+				style="position: absolute; top: 160px; left: 10px; z-index: 1"
 				@click="saveRoute()"
 				>Done</v-btn
 			>
@@ -39,7 +39,7 @@
 				v-if="coordinatesMode"
 				class="rounded text-caption text-white"
 				color="error"
-				style="position: absolute; top: 145px; left: 90px; z-index: 1"
+				style="position: absolute; top: 160px; left: 90px; z-index: 1"
 				@click="resetCoordinates()"
 				>Reset</v-btn
 			>
@@ -48,7 +48,7 @@
 				class="rounded text-caption"
 				color="white"
 				elevation="0"
-				style="position: absolute; top: 100px; left: 10px; z-index: 1"
+				style="position: absolute; top: 115px; left: 10px; z-index: 1"
 				@click="getCoordinates()"
 				>Add coordinates</v-btn
 			>
