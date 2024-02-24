@@ -62,6 +62,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+	window.scrollTo(0, 0);
 	const javneStranice = ['/Login', '/Register'];
 	const loginPotreban = !javneStranice.includes(to.path);
 	const user = Auth.getUser();

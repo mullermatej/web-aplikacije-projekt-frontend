@@ -112,6 +112,18 @@
 								>
 							</v-list-item>
 							<v-list-item>
+								<v-list-item-title
+									align="center"
+									justify="center"
+									><v-btn
+										plain
+										class="text-decoration-none text-caption rounded-pill"
+										:to="{ name: 'Uploads' }"
+										>Uploads</v-btn
+									></v-list-item-title
+								>
+							</v-list-item>
+							<v-list-item>
 								<v-btn
 									v-if="auth.authenticated"
 									@click="logout"
