@@ -1,8 +1,9 @@
 import axios from 'axios';
 import $router from '@/router';
 // baseURL: 'http://localhost:3000/',
+// baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
 let Service = axios.create({
-	baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
+	baseURL: 'http://localhost:3000/',
 	timeout: 1000,
 });
 
@@ -306,9 +307,10 @@ let Auth = {
 		});
 		return true;
 	},
-	async changePassword(oldPassword, newPassword) {
+	async changePassword(username, oldPassword, newPassword) {
 		try {
 			const response = await Service.patch('/korisnici', {
+				username: username,
 				old_password: oldPassword,
 				new_password: newPassword,
 			});
