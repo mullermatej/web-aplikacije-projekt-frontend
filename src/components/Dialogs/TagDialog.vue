@@ -66,11 +66,7 @@ export default {
 		async addTag() {
 			if (this.newTag == '' || this.newTag.length < 3 || this.newTag.length > 22) return false;
 			try {
-				const routeId = this.$route.params.routeId;
-				let updates = {
-					newTag: this.newTag,
-				};
-				let success = await Rute.addTag(routeId, updates);
+				let success = await Rute.addTag(this.$route.params.routeId, this.newTag);
 				if (success) {
 					console.log('New tag added');
 					let newTag = {

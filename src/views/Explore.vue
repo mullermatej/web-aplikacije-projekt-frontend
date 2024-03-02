@@ -333,7 +333,6 @@ export default {
 								return false;
 							}
 							setTimeout(() => {
-								// Remove popup after delay
 								document.getElementsByClassName('mapboxgl-popup')[0].remove();
 							}, 1200);
 						});
@@ -499,11 +498,11 @@ export default {
 						let data = await Rute.addRoute(this.createdRoute);
 						if (data) {
 							try {
-								let newRoute = {
-									routeId: data.data.newRoute._id,
-									name: data.data.newRoute.name,
+								let newWalk = {
+									routeId: data.data.addedWalk._id,
+									name: data.data.addedWalk.name,
 								};
-								await Korisnik.addCreatedWalk(Auth.state.username, newRoute);
+								await Korisnik.addCreatedWalk(Auth.state.username, newWalk);
 							} catch (e) {
 								console.error(e);
 							}

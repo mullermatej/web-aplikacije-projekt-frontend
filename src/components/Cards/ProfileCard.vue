@@ -236,10 +236,9 @@ export default {
 		},
 		handleSaveButton: function (changedUsername) {
 			if (changedUsername == '' || changedUsername.length < 3) return false;
-			let userUpdates = {
-				username: changedUsername.trim() !== '' ? changedUsername.trim() : this.username,
-			};
-			Korisnik.updateUserInfo(Auth.state.username, userUpdates)
+			const username = changedUsername.trim() !== '' ? changedUsername.trim() : this.username;
+
+			Korisnik.updateUserInfo(Auth.state.username, username)
 				.then((response) => {
 					console.log('User info updated successfully:', response);
 				})
@@ -274,11 +273,8 @@ export default {
 		},
 		async handleAvatar(imageUrl) {
 			this.imageUrl = imageUrl;
-			let userUpdates = {
-				imageUrl: imageUrl,
-			};
 			try {
-				await Korisnik.updateUserImage(this.username, userUpdates);
+				await Korisnik.updateUserImage(this.username, imageUrl);
 			} catch (e) {
 				console.error(e);
 			}

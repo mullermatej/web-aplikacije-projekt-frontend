@@ -3,7 +3,7 @@ import $router from '@/router';
 // baseURL: 'http://localhost:3000/',
 // baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
 let Service = axios.create({
-	baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
+	baseURL: 'http://localhost:3000/',
 	timeout: 1000,
 });
 
@@ -15,6 +15,7 @@ Service.interceptors.request.use((request) => {
 	}
 	return request;
 });
+
 Service.interceptors.response.use(
 	(response) => response,
 	(error) => {
@@ -27,18 +28,18 @@ Service.interceptors.response.use(
 );
 
 let Korisnik = {
-	async deleteCreatedPoint(username, pointObject) {
+	async deleteCreatedPoint(username, pointName) {
 		try {
-			const response = await Service.patch(`/deleteCreatedPoint/${username}`, pointObject);
+			const response = await Service.delete(`/users/${username}/pointsOfInterest/${pointName}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
 			throw error;
 		}
 	},
-	async deleteCreatedTag(username, tagObject) {
+	async deleteCreatedTag(username, tagValue) {
 		try {
-			const response = await Service.patch(`/deleteCreatedTag/${username}`, tagObject);
+			const response = await Service.delete(`/users/${username}/tags/${tagValue}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
@@ -47,7 +48,7 @@ let Korisnik = {
 	},
 	async deleteCreatedWalk(username, walkId) {
 		try {
-			const response = await Service.delete(`/deleteCreatedWalk/${username}/${walkId}`);
+			const response = await Service.delete(`/users/${username}/walks/${walkId}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
@@ -56,7 +57,7 @@ let Korisnik = {
 	},
 	async getCreatedPoints(userId) {
 		try {
-			const response = await Service.get(`/${userId}/createdPoints`);
+			const response = await Service.get(`/users/${userId}/pointsOfInterest`);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching user by ID:', error);
@@ -65,7 +66,7 @@ let Korisnik = {
 	},
 	async getCreatedTags(userId) {
 		try {
-			const response = await Service.get(`/${userId}/createdTags`);
+			const response = await Service.get(`/users/${userId}/tags`);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching user by ID:', error);
@@ -74,7 +75,7 @@ let Korisnik = {
 	},
 	async getCreatedWalks(userId) {
 		try {
-			const response = await Service.get(`/${userId}/createdWalks`);
+			const response = await Service.get(`/users/${userId}/walks`);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching user by ID:', error);
@@ -83,7 +84,7 @@ let Korisnik = {
 	},
 	async addCreatedPoint(username, newPoint) {
 		try {
-			const response = await Service.patch(`/${username}/addCreatedPoint`, newPoint);
+			const response = await Service.post(`/users/${username}/pointsOfInterest`, newPoint);
 			return response;
 		} catch (error) {
 			console.error('Error error:', error);
@@ -92,16 +93,16 @@ let Korisnik = {
 	},
 	async addCreatedTag(username, newTag) {
 		try {
-			const response = await Service.patch(`/${username}/addCreatedTag`, newTag);
+			const response = await Service.post(`/users/${username}/tags`, newTag);
 			return response;
 		} catch (error) {
 			console.error('Error error:', error);
 			throw error;
 		}
 	},
-	async addCreatedWalk(username, newRoute) {
+	async addCreatedWalk(username, newWalk) {
 		try {
-			const response = await Service.patch(`/${username}/addCreatedWalk`, newRoute);
+			const response = await Service.post(`/users/${username}/walks/`, newWalk);
 			return response;
 		} catch (error) {
 			console.error('Error error:', error);
@@ -110,51 +111,51 @@ let Korisnik = {
 	},
 	async getUser(username) {
 		try {
-			const response = await Service.get(`/${username}`);
+			const response = await Service.get(`/users/${username}`);
 			return response.data;
 		} catch (error) {
-			console.error('Error fetching user by ID:', error);
+			console.error('Error getting user by ID:', error);
 			throw error;
 		}
 	},
 	async getFavourites(username) {
 		try {
-			const response = await Service.get(`/favourites/${username}`);
+			const response = await Service.get(`/users/${username}/favourites`);
 			return response.data;
 		} catch (err) {
 			console.error('Error fetching user by ID:', err);
 			throw err;
 		}
 	},
-	async updateUserInfo(username, updates) {
+	async updateUserInfo(username, newUsername) {
 		try {
-			const response = await Service.patch(`/korisnici/${username}`, updates);
+			const response = await Service.patch(`/users/${username}`, { newUsername });
 			return response.data;
 		} catch (error) {
 			console.error('Error updating user info: ', error);
 			throw error;
 		}
 	},
-	async updateUserImage(username, updates) {
+	async updateUserImage(username, imageUrl) {
 		try {
-			const response = await Service.patch(`/updateImage/${username}`, updates);
+			const response = await Service.patch(`/users/${username}/images`, { imageUrl });
 			return response.data;
 		} catch (error) {
 			console.error('Error while trying to change user image: ', error);
 			throw error;
 		}
 	},
-	async addFavourite(username, updates) {
+	async addFavourite(username, walkId) {
 		try {
-			const response = await Service.patch(`/favourite/${username}`, updates);
+			await Service.post(`/users/${username}/favourites/${walkId}`);
 		} catch (err) {
 			console.error('Error while adding route to favourites', err);
 			throw err;
 		}
 	},
-	async removeFavourite(username, updates) {
+	async removeFavourite(username, walkId) {
 		try {
-			const response = await Service.patch(`/removeFavourite/${username}`, updates);
+			await Service.delete(`/users/${username}/favourites/${walkId}`);
 		} catch (err) {
 			console.error('Error while removing route from favourites', err);
 			throw err;
@@ -180,7 +181,7 @@ let Profile = {
 
 let Rute = {
 	async getAll() {
-		let response = await Service.get(`/rute`);
+		let response = await Service.get(`/walks`);
 		let data = response.data;
 		let routes = data.map((doc) => {
 			return {
@@ -199,18 +200,18 @@ let Rute = {
 		});
 		return routes;
 	},
-	async deletePoint(walkId, pointObject) {
+	async deletePoint(walkId, pointName) {
 		try {
-			const response = await Service.patch(`/deletePoint/${walkId}`, pointObject);
+			const response = await Service.delete(`/walks/${walkId}/pointsOfInterest/${pointName}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
 			throw error;
 		}
 	},
-	async deleteTag(walkId, tagObject) {
+	async deleteTag(walkId, tagValue) {
 		try {
-			const response = await Service.patch(`/deleteTag/${walkId}`, tagObject);
+			const response = await Service.delete(`/walks/${walkId}/tags/${tagValue}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
@@ -219,52 +220,52 @@ let Rute = {
 	},
 	async deleteWalk(walkId) {
 		try {
-			const response = await Service.delete(`/deleteWalk/${walkId}`);
+			const response = await Service.delete(`/walks/${walkId}`);
 			return response;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
 			throw error;
 		}
 	},
-	async addPointOfInterest(routeId, newPointOfInterest) {
+	async addPointOfInterest(walkId, newPointOfInterest) {
 		try {
-			const response = await Service.patch(`/pointsOfInterest/${routeId}`, newPointOfInterest);
+			const response = await Service.post(`/walks/${walkId}/pointsOfInterest`, newPointOfInterest);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
 			throw error;
 		}
 	},
-	async getPointsOfInterest(routeId) {
+	async getPointsOfInterest(walkId) {
 		try {
-			const response = await Service.get(`/pointsOfInterest/${routeId}`);
+			const response = await Service.get(`/walks/${walkId}/pointsOfInterest`);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching points of interest:', error);
 			throw error;
 		}
 	},
-	async getRouteById(routeId) {
+	async getRouteById(walkId) {
 		try {
-			const response = await Service.get(`/rute/${routeId}`);
+			const response = await Service.get(`/walks/${walkId}`);
 			return response.data;
 		} catch (error) {
 			console.error('Error fetching route by ID:', error);
 			throw error;
 		}
 	},
-	async addRoute(route) {
+	async addRoute(walk) {
 		try {
-			const response = await Service.post(`/addRoute`, route);
+			const response = await Service.post(`/walks`, walk);
 			return response;
 		} catch (error) {
-			console.error('Error while adding route:', error);
+			console.error('Error while adding walk:', error);
 			throw error;
 		}
 	},
-	async addTag(routeId, updates) {
+	async addTag(walkId, tagName) {
 		try {
-			const response = await Service.patch(`/rute/${routeId}/addTag`, updates);
+			const response = await Service.post(`/walks/${walkId}/tags`, { tagName });
 			return response;
 		} catch (error) {
 			console.error('Error while adding new tag:', error);
@@ -295,7 +296,7 @@ let Auth = {
 		return true;
 	},
 	async register(username, email, password, imageUrl) {
-		let response = await Service.post('/korisnici', {
+		await Service.post('/users', {
 			username: username,
 			email: email,
 			password: password,
@@ -309,8 +310,7 @@ let Auth = {
 	},
 	async changePassword(username, oldPassword, newPassword) {
 		try {
-			const response = await Service.patch('/korisnici', {
-				username: username,
+			const response = await Service.patch(`/users/${username}/passwords`, {
 				old_password: oldPassword,
 				new_password: newPassword,
 			});

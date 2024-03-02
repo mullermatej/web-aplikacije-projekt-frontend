@@ -133,13 +133,10 @@ export default {
 	methods: {
 		async deletePoint(walkId, pointName) {
 			try {
-				let pointObject = {
-					name: pointName,
-				};
-				let success = await Rute.deletePoint(walkId, pointObject);
+				let success = await Rute.deletePoint(walkId, pointName);
 				if (success) {
 					try {
-						await Korisnik.deleteCreatedPoint(Auth.state.username, pointObject);
+						await Korisnik.deleteCreatedPoint(Auth.state.username, pointName);
 					} catch (e) {
 						console.error(e);
 					}
@@ -153,13 +150,10 @@ export default {
 		},
 		async deleteTag(walkId, tagValue) {
 			try {
-				let tagObject = {
-					value: tagValue,
-				};
-				let success = await Rute.deleteTag(walkId, tagObject); // Nastaviti na services napravit deleteTag, pronaci rutu sa walkId, i pronaći point sa tagValue imenom
+				let success = await Rute.deleteTag(walkId, tagValue);
 				if (success) {
 					try {
-						await Korisnik.deleteCreatedTag(Auth.state.username, tagObject);
+						await Korisnik.deleteCreatedTag(Auth.state.username, tagValue);
 					} catch (e) {
 						console.error(e);
 					}

@@ -283,9 +283,6 @@ export default {
 		},
 	},
 	methods: {
-		handleTest(x) {
-			console.log(x);
-		},
 		async getPointsOfInterest() {
 			try {
 				const routeId = this.$route.params.routeId;
@@ -310,21 +307,15 @@ export default {
 			this.getPointsOfInterest();
 		},
 		async addFavourite() {
-			let updates = {
-				routeId: this.route._id,
-			};
 			try {
-				await Korisnik.addFavourite(Auth.state.username, updates);
+				await Korisnik.addFavourite(Auth.state.username, this.route._id);
 			} catch (e) {
 				console.error(e);
 			}
 		},
 		async removeFavourite() {
-			let updates = {
-				routeId: this.route._id,
-			};
 			try {
-				await Korisnik.removeFavourite(Auth.state.username, updates);
+				await Korisnik.removeFavourite(Auth.state.username, this.route._id);
 			} catch (e) {
 				console.error(e);
 			}
