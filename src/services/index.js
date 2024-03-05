@@ -3,7 +3,7 @@ import $router from '@/router';
 // baseURL: 'http://localhost:3000/',
 // baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
 let Service = axios.create({
-	baseURL: 'http://localhost:3000/',
+	baseURL: 'https://web-aplikacije-projekt-backend.onrender.com',
 	timeout: 1000,
 });
 
